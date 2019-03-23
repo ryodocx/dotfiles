@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+set -e
+
+printUsage() {
+    echo "usage: dl <URL> [</path/to/filename>]"
+    echo "* defult save path: ./filename"
+}
+
+# check dependencies
+if ! { type curl &>/dev/null || type wget &>/dev/null; }; then
+    echo "required: curl or wget"
+    exit 1
+fi
+
+# check args
+if [ $# -ge 1 -o $# -le 2 ]; then
+    url=${1:-"<undefined>"}
+    filepath=${2:-"${url##*/}"}
+else
+    printUsage
+    exit 1
+fi
+
+# curl
+if type curl &>/dev/null; then
+    curl -o ${filepath} -fLO ${url}
+    exit 0
+fi
+
+# wget
+if type wget &>/dev/null; then
+    wget -O ${filepath} ${url}
+    exit 0
+fi
