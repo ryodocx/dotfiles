@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 cd $(dirname $0)
 ln -sfnv $(pwd)/bin/ ~/.bin
