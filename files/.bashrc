@@ -16,6 +16,7 @@ PROMPT_COMMAND="_prompte_command"
 # History
 export HISTSIZE=5000
 export HISTTIMEFORMAT='%F %T '
+echo $(sort ~/.cd_history | uniq) > ~/.cd_history
 ################################################################################
 # Bash Completion
 [ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion # mac
@@ -59,12 +60,12 @@ complete -F _go_completion go
 export PATH=$PATH:~/.bin
 # export EDITOR=code # VSCode
 # Go
-export GOROOT=${ASDFINSTALLS}/golang/1.12/go
+export GOROOT=${ASDFINSTALLS}/golang/1.12.1/go
 export GOPATH=~/go
 export GO111MODULE=on
 export PATH=$PATH:${GOPATH}/bin
 # gcloud
-export CLOUDSDK_PYTHON=${ASDFINSTALLS}/python/2.7.15/bin/python
+export CLOUDSDK_PYTHON=${ASDFINSTALLS}/python/2.7.16/bin/python
 # krew: Package manager for "kubectl plugins" https://krew.dev
 export PATH=$PATH:~/.krew/bin
 ################################################################################
