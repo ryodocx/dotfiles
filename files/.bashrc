@@ -8,53 +8,39 @@ ASDFINSTALLS=~/.asdf/installs
 # Prompt
 PS1="\W \$ "
 function _prompte_command() {
+    exitCode="$?"
+    if [ ! $exitCode = 0 ]; then
+        echo "[ExitCode=$exitCode]" >&2
+    fi
     history -a
-    echo $(pwd) >> ~/.cd_history
+    echo $(pwd) >>~/.cd_history
 }
 PROMPT_COMMAND="_prompte_command"
 ################################################################################
 # History
 export HISTSIZE=5000
 export HISTTIMEFORMAT='%F %T '
-echo $(sort ~/.cd_history | uniq) > ~/.cd_history
+echo $(sort ~/.cd_history | uniq) >~/.cd_history
 ################################################################################
 # Bash Completion
 [ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion # mac
-[ -f /etc/bash_completion ] && . /etc/bash_completion                     # linux
-for f in ~/.bash_completion_local/*; do
-    . $f
+[ -f /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion
+[ -f /etc/bash_completion ] && . /etc/bash_completion # linux
+for script in ~/.bash_completion_local/*; do
+    if [ -r $script ]; then
+        . $script
+    fi
+done
+for script in /etc/profile.d/*.sh; do
+    if [ -r $script ]; then
+        . $script
+    fi
 done
 
-# terraform
-complete -C terraform terraform
-# kubectl
-. <(kubectl completion bash)
-
-# aws
-# complete -C aws_completer aws
 # # gcloud # TODO
 # source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.bash.inc
 # source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.bash.inc
-# az #TODO
-
-# go
-_go_completion() {
-    cur="${COMP_WORDS[COMP_CWORD]}"
-    case "${COMP_WORDS[COMP_CWORD - 1]}" in
-    "go")
-        comms="bug build clean doc env fix fmt generate get install list mod run test tool version vet"
-        COMPREPLY=($(compgen -W "${comms}" -- ${cur}))
-        ;;
-    *)
-        files=$(find ${PWD} -mindepth 1 -maxdepth 1 -type f -iname "*.go" -exec basename {} \;)
-        dirs=$(find ${PWD} -mindepth 1 -maxdepth 1 -type d -not -name ".*" -exec basename {} \;)
-        repl="${files} ${dirs}"
-        COMPREPLY=($(compgen -W "${repl}" -- ${cur}))
-        ;;
-    esac
-    return 0
-}
-complete -F _go_completion go
+# source az.completion.sh
 ################################################################################
 # env
 export PATH=$PATH:~/.bin
