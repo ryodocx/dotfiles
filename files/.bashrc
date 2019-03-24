@@ -79,7 +79,7 @@ alias relogin='exec $SHELL -l'
 
 # cd
 function peco-cd() {
-    local filtered=$(find . -type d -name '.git' -prune -o -type d 2>/dev/null | grep -vE "^\.$" | peco)
+    local filtered=$(find . -type d -name '.git' -prune -o -type d 2>/dev/null | grep -vE "^\.$" | peco --query ${READLINE_LINE} | head -n 1)
     if [ -n "${filtered}" ]; then
         cd ${filtered}
     fi
@@ -87,7 +87,7 @@ function peco-cd() {
 
 # cd-history
 function peco-cd-history() {
-    local filtered=$(cat ~/.cd_history | sort | uniq | peco)
+    local filtered=$(cat ~/.cd_history | sort | uniq | peco --query ${READLINE_LINE} | head -n 1)
     if [ -n "${filtered}" ]; then
         cd ${filtered}
     fi
@@ -102,7 +102,7 @@ function peco-history() {
         echo "No history" >&2
         return
     fi
-    local CMD=$(fc -l $FIRST | sort -k 2 -k 1nr | uniq -f 1 | sort -nr | sed -E 's/^[0-9]+[[:blank:]]+//' | peco | head -n 1)
+    local CMD=$(fc -l $FIRST | sort -k 2 -k 1nr | uniq -f 1 | sort -nr | sed -E 's/^[0-9]+[[:blank:]]+//' | peco --query ${READLINE_LINE} | head -n 1)
     if [ -n "$CMD" ]; then
         history -s $CMD
         if type osascript >/dev/null 2>&1; then
@@ -116,7 +116,7 @@ bind -x '"\C-r": peco-history'
 
 # ghq
 function peco-ghq() {
-    local filtered=$(ghq list --full-path | peco)
+    local filtered=$(ghq list --full-path | peco --query ${READLINE_LINE} | head -n 1)
     if [ -n "${filtered}" ]; then
         cd ${filtered}
     fi
@@ -125,7 +125,7 @@ bind -x '"\C-g": peco-ghq'
 
 # git-log
 function peco-gitlog() {
-    local filtered=$(git log --no-merges --date=short --pretty='format:%h %cd %an%d %s' | peco | cut -d" " -f1)
+    local filtered=$(git log --no-merges --date=short --pretty='format:%h %cd %an%d %s' | peco --query ${READLINE_LINE} | head -n 1 | cut -d" " -f1)
     if [ -n "${filtered}" ]; then
         git show ${filtered}
     fi
@@ -133,7 +133,7 @@ function peco-gitlog() {
 
 # peco's commands
 function peco-peco() {
-    local filtered=$(compgen -c | grep -E '^peco-.+$' | grep -vE '^peco-peco$' | peco)
+    local filtered=$(compgen -c | grep -E '^peco-.+$' | grep -vE '^peco-peco$' | peco --query ${READLINE_LINE} | head -n 1)
     if [ -n "${filtered}" ]; then
         eval ${filtered}
     fi
