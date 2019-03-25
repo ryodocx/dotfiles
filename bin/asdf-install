@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-set -ex
+set -e
 
 toolName=$1
-asdf plugin-add ${toolName} || :
+url=$2
+asdf plugin-add ${toolName} ${url}
 version="$(asdf list-all ${toolName} | grep-by-stable-version | sort-by-version -r | head -n 1)"
 asdf install ${toolName} ${version}
 asdf global ${toolName} ${version}
