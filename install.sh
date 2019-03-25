@@ -38,7 +38,8 @@ cd $(dirname $0)
 
     function asdf-plugin-add() {
         toolName=$1
-        asdf plugin-add ${toolName} || :
+        url=$2
+        asdf plugin-add ${toolName} $2 || :
     }
 
     asdf-plugin-add terraform
@@ -47,6 +48,7 @@ cd $(dirname $0)
     asdf-plugin-add python && asdf install python 2.7.16
     asdf-plugin-add golang
     asdf-plugin-add nodejs && bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
+    asdf-plugin-add direnv https://github.com/ryodocx/asdf-direnv.git
     cd ~
     asdf install
 )
