@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 cd $(dirname $0)
+
 ################################################################################
 # asdf
 (
@@ -25,7 +26,6 @@ cd $(dirname $0)
             gpg \
             unixodbc ||
             :
-        # sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
         ;;
     "Linux")
         # ubuntu
