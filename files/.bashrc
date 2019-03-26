@@ -3,12 +3,13 @@
 (
     cd ~/.dotfiles
     git pull &>/dev/null
-)
+) &
 ################################################################################
 # asdf
 ASDFINSTALLS=~/.asdf/installs
 . ~/.asdf/asdf.sh
 . ~/.asdf/completions/asdf.bash
+asdf install 1>/dev/null &
 ################################################################################
 # Prompt
 PS1="\W \$ "
@@ -25,19 +26,17 @@ PROMPT_COMMAND="_prompte_command"
 # History
 export HISTSIZE=5000
 export HISTTIMEFORMAT='%F %T '
-echo $(sort ~/.cd_history | uniq) >~/.cd_history
+echo $(sort ~/.cd_history | uniq) >~/.cd_history &
 ################################################################################
 # Bash Completion
 [ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion # mac
 [ -f /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion
 [ -f /etc/bash_completion ] && . /etc/bash_completion # linux
 for script in ~/.bash_completion_local/*; do
-    if [ -r $script ]; then
-        . $script
-    fi
+    . $script
 done
 for script in /etc/profile.d/*.sh; do
-    if [ -r $script ]; then
+    if [ -f $script ]; then
         . $script
     fi
 done
@@ -131,4 +130,6 @@ function peco-peco() {
     fi
 }
 bind -x '"\C-n": peco-peco'
+################################################################################
+wait
 ################################################################################
