@@ -24,6 +24,7 @@ function _prompte_command() {
 PROMPT_COMMAND="_prompte_command"
 ################################################################################
 # History
+unset HISTCONTROL
 export HISTSIZE=5000
 export HISTTIMEFORMAT='%F %T '
 echo $(sort ~/.cd_history | uniq) >~/.cd_history &
