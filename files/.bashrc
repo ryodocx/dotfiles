@@ -27,7 +27,10 @@ PROMPT_COMMAND="_prompte_command"
 unset HISTCONTROL
 export HISTSIZE=5000
 export HISTTIMEFORMAT='%F %T '
-echo $(sort ~/.cd_history | uniq) >~/.cd_history &
+(
+    list=$(cat ~/.cd_history | sort | uniq)
+    echo "${list}" >~/.cd_history
+) &
 ################################################################################
 # Bash Completion
 [ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion # mac
