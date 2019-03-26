@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-grep -E '^\d+\.\d+\.\d+$'
+grep -E '^\d+\.\d+(\.\d+)?$'
