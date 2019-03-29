@@ -3,12 +3,27 @@ set -e
 cd $(dirname $0)
 
 ################################################################################
-# mac
-if [ "$(uname -s)" = "Darwin" ]; then
+# basic packages
+case "$(uname -s)" in
+"Darwin")
     brew install \
         git ||
         :
-fi
+    ;;
+"Linux")
+    if [ -f /etc/centos-release ]; then
+        sudo yum update
+        sudo yum install -y \
+            git ||
+            :
+    elif [ -f /etc/debian_release ]; then
+        sudo apt update
+        sudo apt install -y \
+            git ||
+            :
+    fi
+    ;;
+esac
 ################################################################################
 # asdf
 (
