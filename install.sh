@@ -35,11 +35,19 @@ fi
             :
         ;;
     "Linux")
-        # ubuntu
-        #   sudo apt install \
-        #   automake autoconf libreadline-dev \
-        #   libncurses-dev libssl-dev libyaml-dev \
-        #   libxslt-dev libffi-dev libtool unixodbc-dev
+        if [ -f /etc/centos-release ]; then
+            sudo yum update
+            sudo yum install -y \
+                automake autoconf libreadline-dev \
+                libncurses-dev libssl-dev libyaml-dev \
+                libxslt-dev libffi-dev libtool unixodbc-dev
+        elif [ -f /etc/debian_release ]; then
+            sudo apt update
+            sudo apt install -y \
+                automake autoconf libreadline-dev \
+                libncurses-dev libssl-dev libyaml-dev \
+                libxslt-dev libffi-dev libtool unixodbc-dev
+        fi
         ;;
     esac
 
