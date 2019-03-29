@@ -1,0 +1,7 @@
+services:
+  - docker
+env:
+  - DOCKERFILE=ubuntu.Dockerfile
+  - DOCKERFILE=centos.Dockerfile
+script:
+- docker build -f ${DOCKERFILE} .
