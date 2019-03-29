@@ -1,7 +1,5 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args:
-    - build -f centos.Dockerfile .
+  args: ['build', '-f', 'centos.Dockerfile', '.']
 - name: 'gcr.io/cloud-builders/docker'
-  args:
-    - build -f ubuntu.Dockerfile .
+  args: ['build', '-f', 'ubuntu.Dockerfile', '.']
