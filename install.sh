@@ -1,29 +1,32 @@
 #!/usr/bin/env bash
-set -e
+set -ex
 cd $(dirname $0)
 
 ################################################################################
 # basic packages
-case "$(uname -s)" in
-"Darwin")
-    brew install \
-        git ||
-        :
-    ;;
-"Linux")
-    if [ -f /etc/centos-release ]; then
-        sudo yum update
-        sudo yum install -y \
+(
+    case "$(uname -s)" in
+    "Darwin")
+        brew install \
             git ||
             :
-    elif [ -f /etc/debian_release ]; then
-        sudo apt update
-        sudo apt install -y \
-            git ||
-            :
-    fi
-    ;;
-esac
+        ;;
+    "Linux")
+        type sudo &>/dev/null && sudo su
+        if type yum &>/dev/null; then
+            yum update -y
+            yum install -y \
+                git ||
+                :
+        elif type apt &>/dev/null; then
+            apt update -y
+            apt install -y \
+                git ||
+                :
+        fi
+        ;;
+    esac
+)
 ################################################################################
 # asdf
 (
@@ -50,15 +53,14 @@ esac
             :
         ;;
     "Linux")
-        if [ -f /etc/centos-release ]; then
-            sudo yum update
-            sudo yum install -y \
+        type sudo &>/dev/null && sudo su
+        if type yum &>/dev/null; then
+            yum install -y \
                 automake autoconf libreadline-dev \
                 libncurses-dev libssl-dev libyaml-dev \
                 libxslt-dev libffi-dev libtool unixodbc-dev
-        elif [ -f /etc/debian_release ]; then
-            sudo apt update
-            sudo apt install -y \
+        elif type apt &>/dev/null; then
+            apt install -y \
                 automake autoconf libreadline-dev \
                 libncurses-dev libssl-dev libyaml-dev \
                 libxslt-dev libffi-dev libtool unixodbc-dev
