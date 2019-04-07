@@ -65,6 +65,21 @@ cd $(dirname $0)
                 autoconf \
                 libtool \
                 unzip
+            # nodejs
+            yum install -y \
+                perl-Digest-SHA
+            # python
+            yum install -y \
+                gcc \
+                zlib-devel \
+                bzip2 \
+                bzip2-devel \
+                readline \
+                readline-devel \
+                sqlite \
+                sqlite-devel \
+                openssl \
+                openssl-devel
         elif type apt &>/dev/null; then
             apt install -y \
                 automake \
