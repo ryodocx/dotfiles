@@ -75,6 +75,7 @@ cd $(dirname $0)
     }
 
     asdf-plugin-add direnv https://github.com/ryodocx/asdf-direnv.git
+    asdf-plugin-add ghq https://github.com/ryodocx/asdf-ghq.git
     asdf-plugin-add golang
     asdf-plugin-add helm
     asdf-plugin-add jq https://github.com/ryodocx/asdf-jq.git
