@@ -6,5 +6,5 @@ kubectl 1.14.0
 nodejs 11.13.0
 peco 0.5.3
 protoc 3.7.1
-python 3.7.3
+python 3.7.2
 terraform 0.11.13
