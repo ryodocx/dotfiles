@@ -54,7 +54,7 @@ done
 export PATH=$PATH:~/.bin
 # export EDITOR=code # VSCode
 # Go
-export GOROOT=${ASDFINSTALLS}/golang/1.12.1/go
+export GOROOT=${ASDFINSTALLS}/golang/1.12.2/go
 export GOPATH=~/go
 export GO111MODULE=on
 export PATH=$PATH:${GOPATH}/bin
