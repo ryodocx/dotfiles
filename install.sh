@@ -76,10 +76,12 @@ cd $(dirname $0)
 
     asdf-plugin-add direnv https://github.com/ryodocx/asdf-direnv.git
     asdf-plugin-add golang
-    asdf-plugin-add jq https://github.com/ryodocx/asdf-jq.git
     asdf-plugin-add helm
+    asdf-plugin-add jq https://github.com/ryodocx/asdf-jq.git
     asdf-plugin-add kubectl
     asdf-plugin-add nodejs && bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
+    asdf-plugin-add peco https://github.com/ryodocx/asdf-peco.git
+    asdf-plugin-add protoc
     asdf-plugin-add python && asdf install python 2.7.16
     asdf-plugin-add terraform
     cd ~
