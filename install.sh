@@ -71,7 +71,7 @@ cd $(dirname $0)
     function asdf-plugin-add() {
         toolName=$1
         url=$2
-        asdf plugin-add ${toolName} ${url®} || :
+        asdf plugin-add ${toolName} ${url} || :
     }
 
     asdf-plugin-add direnv https://github.com/ryodocx/asdf-direnv.git
