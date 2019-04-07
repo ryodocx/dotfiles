@@ -8,6 +8,7 @@ cd $(dirname $0)
     case "$(uname -s)" in
     "Darwin")
         brew install \
+            curl \
             git ||
             :
         ;;
@@ -16,11 +17,13 @@ cd $(dirname $0)
         if type yum &>/dev/null; then
             yum update -y
             yum install -y \
+                curl \
                 git ||
                 :
         elif type apt &>/dev/null; then
             apt update -y
             apt install -y \
+                curl \
                 git ||
                 :
         fi
@@ -49,21 +52,38 @@ cd $(dirname $0)
             libxslt \
             libtool \
             gpg \
-            unixodbc ||
+            unixodbc \
+            unzip ||
             :
         ;;
     "Linux")
         type sudo &>/dev/null && sudo su
         if type yum &>/dev/null; then
             yum install -y \
-                automake autoconf libreadline-dev \
-                libncurses-dev libssl-dev libyaml-dev \
-                libxslt-dev libffi-dev libtool unixodbc-dev
+                automake \
+                autoconf \
+                libreadline-dev \
+                libncurses-dev \
+                libssl-dev \
+                libyaml-dev \
+                libxslt-dev \
+                libffi-dev \
+                libtool \
+                unixodbc-dev \
+                unzip
         elif type apt &>/dev/null; then
             apt install -y \
-                automake autoconf libreadline-dev \
-                libncurses-dev libssl-dev libyaml-dev \
-                libxslt-dev libffi-dev libtool unixodbc-dev
+                automake \
+                autoconf \
+                libreadline-dev \
+                libncurses-dev \
+                libssl-dev \
+                libyaml-dev \
+                libxslt-dev \
+                libffi-dev \
+                libtool \
+                unixodbc-dev \
+                unzip
         fi
         ;;
     esac
@@ -83,7 +103,7 @@ cd $(dirname $0)
     asdf-plugin-add nodejs && bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
     asdf-plugin-add peco https://github.com/ryodocx/asdf-peco.git
     asdf-plugin-add protoc
-    asdf-plugin-add python && asdf install python 2.7.16
+    asdf-plugin-add python #&& asdf install python 2.7.16
     asdf-plugin-add terraform
     cd ~
     asdf install
