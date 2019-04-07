@@ -3,3 +3,4 @@ steps:
   args: ['build', '-f', 'centos.Dockerfile', '.']
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-f', 'ubuntu.Dockerfile', '.']
+  waitFor: ['-']
