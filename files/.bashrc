@@ -76,7 +76,7 @@ alias relogin='exec $SHELL -l'
 function peco-cd() {
     local filtered=$(find . -type d -name '.git' -prune -o -type d 2>/dev/null | grep -vE "^\.$" | peco --query "${READLINE_LINE}" | head -n 1)
     if [ -n "${filtered}" ]; then
-        cd ${filtered}
+        cd "${filtered}"
     fi
 }
 
@@ -84,7 +84,7 @@ function peco-cd() {
 function peco-cd-history() {
     local filtered=$(cat ~/.cd_history | sort | uniq | peco --query "${READLINE_LINE}" | head -n 1)
     if [ -n "${filtered}" ]; then
-        cd ${filtered}
+        cd "${filtered}"
     fi
 }
 
@@ -100,7 +100,7 @@ bind -x '"\C-r": peco-history'
 function peco-ghq() {
     local filtered=$(ghq list --full-path | peco --query "${READLINE_LINE}" | head -n 1)
     if [ -n "${filtered}" ]; then
-        cd ${filtered}
+        cd "${filtered}"
     fi
 }
 bind -x '"\C-g": peco-ghq'
