@@ -60,16 +60,10 @@ cd $(dirname $0)
         type sudo &>/dev/null && sudo su
         if type yum &>/dev/null; then
             yum install -y \
+                make \
                 automake \
                 autoconf \
-                libreadline-dev \
-                libncurses-dev \
-                libssl-dev \
-                libyaml-dev \
-                libxslt-dev \
-                libffi-dev \
                 libtool \
-                unixodbc-dev \
                 unzip
         elif type apt &>/dev/null; then
             apt install -y \
