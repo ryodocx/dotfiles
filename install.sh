@@ -41,7 +41,7 @@ mkdir -p ~/go/src
                 git ||
                 :
         elif type apt &>/dev/null; then
-            # ${sudo} apt update -y
+            ${sudo} apt update -y
             ${sudo} apt install -y \
                 curl \
                 openssh-client \
