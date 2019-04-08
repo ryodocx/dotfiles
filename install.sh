@@ -121,7 +121,8 @@ type sudo &>/dev/null && sudo=sudo
                 sqlite \
                 sqlite-devel \
                 openssl \
-                openssl-devel
+                openssl-devel \
+                libffi-devel
         elif type apt &>/dev/null; then
             ${sudo} apt install -y \
                 automake \
