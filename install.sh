@@ -31,6 +31,29 @@ cd $(dirname $0)
     esac
 )
 ################################################################################
+# snap
+(
+    case "$(uname -s)" in
+    "Darwin")
+        :
+        ;;
+    "Linux")
+        type sudo &>/dev/null && sudo su
+        if type yum &>/dev/null; then
+            yum -y install epel-release yum-plugin-copr
+            yum -y copr enable ngompa/snapcore-el7
+            yum -y install snapd
+            systemctl enable --now snapd.socket
+            ln -s /var/lib/snapd/snap /snap
+        elif
+            type apt &>/dev/null
+        then
+            apt install -y snapd
+        fi
+        ;;
+    esac
+)
+################################################################################
 # asdf
 (
     if [ ! -d ~/.asdf ]; then
