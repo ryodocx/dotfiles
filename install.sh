@@ -24,7 +24,7 @@ mkdir -p ~/go/src
             :
 
         # enable bash
-        if [ -z "${TRAVIS_BRANCH}" ]; then
+        if [ -z "${CI}" ]; then
             grep /usr/local/bin/bash /etc/shells || {
                 ${sudo} echo '/usr/local/bin/bash' >>/etc/shells
                 chsh -s /usr/local/bin/bash
