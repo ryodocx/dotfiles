@@ -4,12 +4,10 @@ matrix:
     - os: linux
       env:
         - DESCRIPTION=Docker(CentOS)
-        - CIENV=docker
         - DOCKERFILE=.test/centos.Dockerfile
     - os: linux
       env:
         - DESCRIPTION=Docker(Ubuntu)
-        - CIENV=docker
         - DOCKERFILE=.test/ubuntu.Dockerfile
     - os: linux
       dist: xenial
@@ -18,7 +16,7 @@ matrix:
       env: DESCRIPTION=macOS
 script:
 - |
-    if [ "${CIENV}" = "docker" ]; then
+    if [ ! -z "${DOCKERFILE}" ]; then
       docker build -f ${DOCKERFILE} .
     else
       ./link.sh
