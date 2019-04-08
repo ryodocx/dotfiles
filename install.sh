@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 cd $(dirname $0)
+type sudo &>/dev/null && sudo=sudo
 
 ################################################################################
 # basic packages
@@ -23,23 +24,22 @@ cd $(dirname $0)
 
         # enable bash
         grep /usr/local/bin/bash /etc/shells || {
-            sudo echo '/usr/local/bin/bash' >>/etc/shells
+            ${sudo} echo '/usr/local/bin/bash' >>/etc/shells
             chsh -s /usr/local/bin/bash
         }
         ;;
     "Linux")
-        type sudo &>/dev/null && sudo su
         if type yum &>/dev/null; then
-            yum update -y
-            yum install -y \
+            ${sudo} yum update -y
+            ${sudo} yum install -y \
                 curl \
                 openssh-clients \
                 vim \
                 git ||
                 :
         elif type apt &>/dev/null; then
-            apt update -y
-            apt install -y \
+            ${sudo} apt update -y
+            ${sudo} apt install -y \
                 curl \
                 openssh-client \
                 vim \
@@ -57,17 +57,16 @@ cd $(dirname $0)
         :
         ;;
     "Linux")
-        type sudo &>/dev/null && sudo su
         if type yum &>/dev/null; then
-            yum -y install epel-release yum-plugin-copr
-            yum -y copr enable ngompa/snapcore-el7
-            yum -y install snapd
-            systemctl enable --now snapd.socket
-            ln -s /var/lib/snapd/snap /snap
+            ${sudo} yum -y install epel-release yum-plugin-copr
+            ${sudo} yum -y copr enable ngompa/snapcore-el7
+            ${sudo} yum -y install snapd
+            ${sudo} systemctl enable --now snapd.socket
+            ${sudo} ln -s /var/lib/snapd/snap /snap
         elif
             type apt &>/dev/null
         then
-            apt install -y snapd
+            ${sudo} apt install -y snapd
         fi
         ;;
     esac
@@ -101,17 +100,17 @@ cd $(dirname $0)
     "Linux")
         type sudo &>/dev/null && sudo su
         if type yum &>/dev/null; then
-            yum install -y \
+            ${sudo} yum install -y \
                 make \
                 automake \
                 autoconf \
                 libtool \
                 unzip
             # nodejs
-            yum install -y \
+            ${sudo} yum install -y \
                 perl-Digest-SHA
             # python
-            yum install -y \
+            ${sudo} yum install -y \
                 gcc \
                 zlib-devel \
                 bzip2 \
@@ -123,7 +122,7 @@ cd $(dirname $0)
                 openssl \
                 openssl-devel
         elif type apt &>/dev/null; then
-            apt install -y \
+            ${sudo} apt install -y \
                 automake \
                 autoconf \
                 libreadline-dev \
