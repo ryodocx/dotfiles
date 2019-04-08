@@ -33,7 +33,7 @@ mkdir -p ~
         ;;
     "Linux")
         if type yum &>/dev/null; then
-            ${sudo} yum update -y
+            # ${sudo} yum update -y
             ${sudo} yum install -y \
                 curl \
                 openssh-clients \
@@ -41,7 +41,7 @@ mkdir -p ~
                 git ||
                 :
         elif type apt &>/dev/null; then
-            ${sudo} apt update -y
+            # ${sudo} apt update -y
             ${sudo} apt install -y \
                 curl \
                 openssh-client \
@@ -184,6 +184,8 @@ mkdir -p ~
 # go get
 (
     exec $SHELL
-    go get github.com/jessfraz/netscan
+    go get github.com/rakyll/hey
 )
 ################################################################################
+echo "install completed!"
+return 0
