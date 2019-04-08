@@ -1,0 +1,9 @@
+language: minimal
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+    - os: osx
+script:
+- ./link.sh
+- ./install.sh
