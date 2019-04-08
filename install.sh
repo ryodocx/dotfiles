@@ -17,6 +17,7 @@ cd $(dirname $0)
             bash \
             curl \
             openssh \
+            vim \
             git ||
             :
 
@@ -33,6 +34,7 @@ cd $(dirname $0)
             yum install -y \
                 curl \
                 openssh-clients \
+                vim \
                 git ||
                 :
         elif type apt &>/dev/null; then
@@ -40,6 +42,7 @@ cd $(dirname $0)
             apt install -y \
                 curl \
                 openssh-client \
+                vim \
                 git ||
                 :
         fi
