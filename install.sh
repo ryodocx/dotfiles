@@ -2,6 +2,7 @@
 set -e
 cd $(dirname $0)
 type sudo &>/dev/null && sudo=sudo
+mkdir -p ~
 
 ################################################################################
 # basic packages
