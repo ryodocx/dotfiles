@@ -3,15 +3,19 @@ matrix:
   include:
     - os: linux
       env:
+        - DESCRIPTION=Docker(CentOS)
         - CIENV=docker
         - DOCKERFILE=.test/centos.Dockerfile
     - os: linux
       env:
+        - DESCRIPTION=Docker(Ubuntu)
         - CIENV=docker
         - DOCKERFILE=.test/ubuntu.Dockerfile
     - os: linux
       dist: xenial
+      env: DESCRIPTION=Ubuntu
     - os: osx
+      env: DESCRIPTION=macOS
 script:
 - |
     if [ "${CIENV}" = "docker" ]; then
