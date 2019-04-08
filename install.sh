@@ -23,10 +23,12 @@ type sudo &>/dev/null && sudo=sudo
             :
 
         # enable bash
-        grep /usr/local/bin/bash /etc/shells || {
-            ${sudo} echo '/usr/local/bin/bash' >>/etc/shells
-            chsh -s /usr/local/bin/bash
-        }
+        if [ -z "${TRAVIS_BRANCH}" ]; then
+            grep /usr/local/bin/bash /etc/shells || {
+                ${sudo} echo '/usr/local/bin/bash' >>/etc/shells
+                chsh -s /usr/local/bin/bash
+            }
+        fi
         ;;
     "Linux")
         if type yum &>/dev/null; then
