@@ -58,11 +58,13 @@ type sudo &>/dev/null && sudo=sudo
         ;;
     "Linux")
         if type yum &>/dev/null; then
-            ${sudo} yum -y install epel-release yum-plugin-copr
-            ${sudo} yum -y copr enable ngompa/snapcore-el7
-            ${sudo} yum -y install snapd
-            ${sudo} systemctl enable --now snapd.socket
-            ${sudo} ln -s /var/lib/snapd/snap /snap
+            type snap &>/dev/null || {
+                ${sudo} yum -y install epel-release yum-plugin-copr
+                ${sudo} yum -y copr enable ngompa/snapcore-el7
+                ${sudo} yum -y install snapd
+                ${sudo} systemctl enable --now snapd.socket
+                ${sudo} ln -s /var/lib/snapd/snap /snap
+            }
         elif
             type apt &>/dev/null
         then
@@ -157,5 +159,11 @@ type sudo &>/dev/null && sudo=sudo
     asdf-plugin-add vault
     cd ~
     asdf install
+)
+################################################################################
+# go get
+(
+    exec $SHELL
+    go get github.com/jessfraz/netscan
 )
 ################################################################################
