@@ -2,8 +2,21 @@ language: minimal
 matrix:
   include:
     - os: linux
+      env:
+        - CIENV=docker
+        - DOCKERFILE=.test/centos.Dockerfile
+    - os: linux
+      env:
+        - CIENV=docker
+        - DOCKERFILE=.test/ubuntu.Dockerfile
+    - os: linux
       dist: xenial
     - os: osx
 script:
-- ./link.sh
-- ./install.sh
+- |
+    if [ "${CIENV}" = "docker" ]; then
+      docker build -f ${DOCKERFILE} .
+    else
+      ./link.sh
+      ./install.sh
+    fi
