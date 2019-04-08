@@ -154,6 +154,7 @@ type sudo &>/dev/null && sudo=sudo
     asdf-plugin-add protoc
     asdf-plugin-add python && asdf install python 2.7.16
     asdf-plugin-add terraform
+    asdf-plugin-add vault
     cd ~
     asdf install
 )

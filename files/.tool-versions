@@ -9,3 +9,4 @@ peco 0.5.3
 protoc 3.7.1
 python 3.7.2
 terraform 0.11.13
+vault 1.1.0
