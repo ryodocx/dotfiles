@@ -81,9 +81,7 @@ mkdir -p ~
                 ${sudo} yum -y install epel-release yum-plugin-copr
                 ${sudo} yum -y copr enable ngompa/snapcore-el7
                 ${sudo} yum -y install snapd
-                if [ -z "${TRAVIS_BRANCH}" ]; then
-                    ${sudo} systemctl enable --now snapd.socket
-                fi
+                ${sudo} systemctl enable --now snapd.socket ||
                 ${sudo} ln -sfv /var/lib/snapd/snap /snap
             }
         elif
