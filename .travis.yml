@@ -1,9 +1,14 @@
 language: minimal
-matrix:
-  include:
-    - os: linux
-      dist: trusty
-    - os: osx
+# matrix:
+#   include:
+#     - os: linux
+#       dist: xenial
+#     - os: osx
+env:
+- OS_TYPE=ubuntu OS_VERSION=18.04
+- OS_TYPE=centos OS_VERSION=7
+- OS_TYPE=mac
+
 script:
 - ./link.sh
 - ./install.sh
