@@ -181,5 +181,4 @@ mkdir -p ~/go/src
     asdf install
 )
 ################################################################################
-exec $SHELL
 echo "install completed!"
