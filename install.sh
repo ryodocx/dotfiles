@@ -136,9 +136,6 @@ type sudo &>/dev/null && sudo=sudo
                 libtool \
                 unixodbc-dev \
                 unzip
-            # python
-            ${sudo} apt install -y \
-                libffi-devel
         fi
         ;;
     esac
