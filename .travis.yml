@@ -2,7 +2,7 @@ language: minimal
 services:
   - docker
 env:
-  - DOCKERFILE=ubuntu.Dockerfile
-  - DOCKERFILE=centos.Dockerfile
+  - DOCKERFILE=./.test/ubuntu.Dockerfile
+  # - DOCKERFILE=./.test/centos.Dockerfile
 script:
 - docker build -f ${DOCKERFILE} .

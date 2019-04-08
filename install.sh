@@ -7,10 +7,24 @@ cd $(dirname $0)
 (
     case "$(uname -s)" in
     "Darwin")
+        # brew
+        type brew &>/dev/null || {
+            xcode-select --install
+            ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+        }
+
         brew install \
+            bash \
             curl \
+            openssh \
             git ||
             :
+
+        # enable bash
+        grep /usr/local/bin/bash /etc/shells || {
+            sudo echo '/usr/local/bin/bash' >>/etc/shells
+            chsh -s /usr/local/bin/bash
+        }
         ;;
     "Linux")
         type sudo &>/dev/null && sudo su
@@ -18,12 +32,14 @@ cd $(dirname $0)
             yum update -y
             yum install -y \
                 curl \
+                openssh-clients \
                 git ||
                 :
         elif type apt &>/dev/null; then
             apt update -y
             apt install -y \
                 curl \
+                openssh-client \
                 git ||
                 :
         fi
