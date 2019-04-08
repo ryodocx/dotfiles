@@ -50,6 +50,22 @@ type sudo &>/dev/null && sudo=sudo
     esac
 )
 ################################################################################
+# https://github.com/zeit/hyper
+(
+    case "$(uname -s)" in
+    "Darwin")
+        brew cask install hyper
+        ;;
+    "Linux")
+        if type yum &>/dev/null; then
+            :
+        elif type apt &>/dev/null; then
+            :
+        fi
+        ;;
+    esac
+)
+################################################################################
 # snap
 (
     case "$(uname -s)" in
