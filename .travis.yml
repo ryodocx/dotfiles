@@ -16,7 +16,7 @@ matrix:
         - DOCKERFILE=.test/ubuntu.Dockerfile
 script:
 - |
-    if [ ! -z "${DOCKERFILE}" ]; then
+    if [ -n "${DOCKERFILE}" ]; then
       docker build -f ${DOCKERFILE} .
     else
       ./link.sh
