@@ -98,7 +98,6 @@ type sudo &>/dev/null && sudo=sudo
             :
         ;;
     "Linux")
-        type sudo &>/dev/null && sudo su
         if type yum &>/dev/null; then
             ${sudo} yum install -y \
                 make \
