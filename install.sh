@@ -2,7 +2,7 @@
 set -e
 cd $(dirname $0)
 type sudo &>/dev/null && sudo=sudo
-mkdir -p ~
+mkdir -p ~/go/src
 
 ################################################################################
 # basic packages
@@ -179,12 +179,6 @@ mkdir -p ~
     asdf-plugin-add vault
     cd ~
     asdf install
-)
-################################################################################
-# go get
-(
-    exec $SHELL
-    go get github.com/rakyll/hey
 )
 ################################################################################
 echo "install completed!"
