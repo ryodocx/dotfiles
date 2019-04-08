@@ -1,6 +1,11 @@
 language: minimal
 matrix:
   include:
+    - os: osx
+      env: DESCRIPTION=macOS
+    - os: linux
+      dist: xenial
+      env: DESCRIPTION=Ubuntu
     - os: linux
       env:
         - DESCRIPTION=Docker(CentOS)
@@ -9,11 +14,6 @@ matrix:
       env:
         - DESCRIPTION=Docker(Ubuntu)
         - DOCKERFILE=.test/ubuntu.Dockerfile
-    - os: linux
-      dist: xenial
-      env: DESCRIPTION=Ubuntu
-    - os: osx
-      env: DESCRIPTION=macOS
 script:
 - |
     if [ ! -z "${DOCKERFILE}" ]; then
