@@ -11,7 +11,7 @@ mkdir -p ~/go/src
     "Darwin")
         # brew
         type brew &>/dev/null || {
-            xcode-select --install
+            xcode-select --install ||
             ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
         }
 
