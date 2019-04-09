@@ -22,6 +22,10 @@ mkdir -p ~/go/src
             vim \
             git ||
             :
+            
+        brew cask install \
+            keepassxc ||
+            :
 
         # enable bash
         if [ -z "${CI}" ]; then
