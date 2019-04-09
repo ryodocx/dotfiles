@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+set -ex
 cd $(dirname $0)
 type sudo &>/dev/null && sudo=sudo
 mkdir -p ~/go/src
@@ -26,9 +26,11 @@ mkdir -p ~/go/src
         # enable bash
         if [ -z "${CI}" ]; then
             grep /usr/local/bin/bash /etc/shells || {
-                ${sudo} echo '/usr/local/bin/bash' >>/etc/shells
-                chsh -s /usr/local/bin/bash
+                echo '1. sudo vi /etc/shells & add "/usr/local/bin/bash" last line.' 
+                echo '2. chsh -s /usr/local/bin/bash'
+                exit 1
             }
+            
         fi
         ;;
     "Linux")
