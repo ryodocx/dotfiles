@@ -21,6 +21,7 @@ mkdir -p ~/go/src
             openssh \
             vim \
             git \
+            watch \
             bash-completion ||
             :
             
