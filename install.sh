@@ -20,7 +20,8 @@ mkdir -p ~/go/src
             curl \
             openssh \
             vim \
-            git ||
+            git \
+            bash-completion ||
             :
             
         brew cask install \
