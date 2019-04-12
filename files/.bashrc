@@ -7,7 +7,8 @@ ASDFINSTALLS=~/.asdf/installs
 asdf install 1>/dev/null &
 ################################################################################
 # Prompt
-PS1="\W \$ "
+PS1='\u@\h:\w\$ '
+
 function _prompte_command() {
     exitCode="$?"
     if [ ! $exitCode = 0 ]; then
