@@ -671,4 +671,6 @@ _docker_compose() {
 eval "$__docker_compose_previous_extglob_setting"
 unset __docker_compose_previous_extglob_setting
 
-complete -F _docker_compose docker-compose docker-compose.exe
+type docker-compose &>/dev/null && {
+	complete -F _docker_compose docker-compose docker-compose.exe
+}

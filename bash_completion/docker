@@ -5297,4 +5297,6 @@ _docker() {
 eval "$__docker_previous_extglob_setting"
 unset __docker_previous_extglob_setting
 
-complete -F _docker docker docker.exe dockerd dockerd.exe
+type docker &>/dev/null && {
+	complete -F _docker docker docker.exe dockerd dockerd.exe
+}

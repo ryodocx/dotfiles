@@ -17,4 +17,6 @@ _go_completion() {
     esac
     return 0
 }
-complete -F _go_completion go
+type go &>/dev/null && {
+    complete -F _go_completion go
+}

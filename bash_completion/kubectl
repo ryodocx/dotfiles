@@ -1,2 +1,4 @@
 #!/usr/bin/env bash
-. <(kubectl completion bash)
+type kubectl &>/dev/null && {
+    . <(kubectl completion bash)
+}
