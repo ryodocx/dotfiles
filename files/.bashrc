@@ -86,7 +86,7 @@ function peco-cd-history() {
 
 # history
 function peco-history() {
-    local cmd=$(HISTTIMEFORMAT= history | awk '{$1="";print}' | tail -r | uniq | peco --query "${READLINE_LINE}" | head -n 1)
+    local cmd=$(HISTTIMEFORMAT= history | awk '{$1="";print}' | reverse | uniq | peco --query "${READLINE_LINE}" | head -n 1)
     READLINE_LINE="${cmd## }"
     READLINE_POINT=${#cmd}
 }

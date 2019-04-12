@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -e
+
+case "$(uname -s)" in
+"Darwin")
+    tail -r
+    ;;
+"Linux")
+    tac
+    ;;
+esac
