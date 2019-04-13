@@ -1,7 +1,7 @@
 direnv 2.20.0
 ghq 0.8.0
 jq 1.6
-kubectl 1.14.0
+kubectl 1.14.1
 peco 0.5.3
 terraform 0.11.13
 golang 1.12.2
