@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -e
+
+cd ~/.dotfiles
+LOCAL_BRANCH=local
+
+git branch | grep ${LOCAL_BRANCH} 1>/dev/null || {
+    git branch ${LOCAL_BRANCH} --no-track
+}
+
+git checkout ${LOCAL_BRANCH}
+git fetch origin master:master
+git merge --no-ff --no-edit master
