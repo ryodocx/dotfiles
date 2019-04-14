@@ -24,7 +24,7 @@ mkdir -p ~/go/src
             watch \
             bash-completion ||
             :
-            
+
         brew cask install \
             keepassxc ||
             :
@@ -32,11 +32,11 @@ mkdir -p ~/go/src
         # enable bash
         if [ -z "${CI}" ]; then
             grep /usr/local/bin/bash /etc/shells || {
-                echo '1. sudo vi /etc/shells & add "/usr/local/bin/bash" last line.' 
+                echo '1. sudo vi /etc/shells & add "/usr/local/bin/bash" last line.'
                 echo '2. chsh -s /usr/local/bin/bash'
                 exit 1
             }
-            
+
         fi
         ;;
     "Linux")
@@ -174,6 +174,7 @@ mkdir -p ~/go/src
     }
 
     asdf-plugin-add direnv https://github.com/ryodocx/asdf-direnv
+    asdf-plugin-add docker-compose https://github.com/virtualstaticvoid/asdf-docker-compose.git
     asdf-plugin-add ghq https://github.com/ryodocx/asdf-ghq
     asdf-plugin-add golang
     asdf-plugin-add helm
