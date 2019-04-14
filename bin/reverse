@@ -1,11 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
-case "$(uname -s)" in
-"Darwin")
-    tail -r
-    ;;
-"Linux")
+if type tac 2>/dev/null; then
     tac
-    ;;
-esac
+else
+    tail -r
+fi
