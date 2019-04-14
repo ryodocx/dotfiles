@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+set -e
+
+for plugin in $(asdf plugin-list); do
+    if [ "${#longest_plugin_name}" -lt "${#plugin}" ]; then
+        longest_plugin_name=${plugin}
+    fi
+done
+
+for plugin in $(asdf plugin-list); do
+    latest_version="$(asdf list-all ${plugin} | grep-by-stable-version | sort-by-version | tail -1)"
+    if asdf list "${plugin}" | grep "${latest_version}" 1>/dev/null; then
+        if [ -n "${latest_version}" ]; then
+            printf "%-$((${#longest_plugin_name} + 1))s: %s\n" "${plugin}" "${latest_version} (latest)"
+        else
+            printf "%-$((${#longest_plugin_name} + 1))s: %s\n" "${plugin}" "(check version failed)"
+        fi
+    else
+        printf "%-$((${#longest_plugin_name} + 1))s: %s\n" "${plugin}" "$(asdf list "${plugin}" | sort-by-version | tail -1) -> ${latest_version}"
+        usage_flag=true
+    fi
+
+    if [ "$1" = '--install' ]; then
+        asdf install ${plugin} ${latest_version}
+    fi
+    if [ "$1" = '--set-global' ]; then
+        asdf install ${plugin} ${latest_version}
+        asdf global ${plugin} ${latest_version}
+    fi
+done
+
+if [ "${usage_flag}" = "true" ]; then
+    cat <<EOS
+
+[usage]
+    asdf-update --install
+    asdf-update --set-global
+EOS
+fi

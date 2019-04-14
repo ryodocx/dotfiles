@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-set -e
-
-for plugin in $(asdf plugin-list); do
-    version="$(asdf list-all ${plugin} | grep-by-stable-version | sort-by-version -r | head -n 1)"
-    asdf install ${plugin} ${version}
-    asdf global ${plugin} ${version}
-done
