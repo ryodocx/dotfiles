@@ -7,12 +7,12 @@ ASDFINSTALLS=~/.asdf/installs
 asdf install 1>/dev/null &
 ################################################################################
 # Prompt
-PS1='\u@\h:\w\$ '
+PS1='\[\e[0;32m\]$(date "+%Y/%m/%d %H:%M:%S") \u@\h:\w\[\e[m\]\n\$ '
 
 function _prompte_command() {
     exitCode="$?"
     if [ ! $exitCode = 0 ]; then
-        echo "[ExitCode=$exitCode]" >&2
+        echo -e "\e[1;31m[ExitCode=$exitCode]\e[m" >&2
     fi
     history -a
     echo $(pwd) >>~/.cd_history
