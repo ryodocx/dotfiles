@@ -48,6 +48,7 @@ done
 ################################################################################
 # env
 export PATH=$PATH:~/.bin
+export TERM=xterm
 # export EDITOR=code # VSCode
 # Go
 export GOROOT=${ASDFINSTALLS}/golang/1.12.2/go
