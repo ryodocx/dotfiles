@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-if type tac 2>/dev/null; then
+if type tac &>/dev/null; then
     tac
 else
     tail -r
