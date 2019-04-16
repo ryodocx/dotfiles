@@ -4,7 +4,6 @@
 ASDFINSTALLS=~/.asdf/installs
 . ~/.asdf/asdf.sh
 . ~/.asdf/completions/asdf.bash
-asdf install 1>/dev/null &
 ################################################################################
 # Prompt
 PS1='\[\e[0;32m\]$(date "+%Y/%m/%d %H:%M:%S") \u@\h \w\[\e[m\]\n\$ '
