@@ -11,12 +11,16 @@ for plugin in $(asdf plugin-list); do
     latest_version="$(asdf list-all ${plugin} | grep-by-stable-version | sort-by-version | tail -1)"
     if asdf list "${plugin}" 2>/dev/null | grep "${latest_version}" &>/dev/null; then
         if [ -n "${latest_version}" ]; then
-            printf "%-$((${#longest_plugin_name} + 1))s: %s\n" "${plugin}" "${latest_version} (latest)"
+            printf "%-$((${#longest_plugin_name} + 1))s: %-25s %s\n" "${plugin}" "${latest_version}" "(latest)"
         else
             printf "%-$((${#longest_plugin_name} + 1))s: %s\n" "${plugin}" "(check version failed)"
         fi
     else
-        printf "%-$((${#longest_plugin_name} + 1))s: %s\n" "${plugin}" "$(asdf list "${plugin}" | sort-by-version | tail -1) -> ${latest_version}"
+        if asdf current "${plugin}" &>/dev/null; then
+            printf "%-$((${#longest_plugin_name} + 1))s: %-25s %s\n" "${plugin}" "$(asdf list "${plugin}" | sort-by-version | tail -1 | tr -d ' ') -> ${latest_version}" "(update)"
+        else
+            printf "%-$((${#longest_plugin_name} + 1))s: %-25s %s\n" "${plugin}" "-> ${latest_version}" "(new install)"
+        fi
         usage_flag=true
     fi
 
