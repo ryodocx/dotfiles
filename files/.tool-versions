@@ -2,11 +2,11 @@ direnv 2.20.0
 docker-compose 1.24.0
 ghq 0.8.0
 jq 1.6
-kubectl 1.14.1
 peco 0.5.3
-terraform 0.11.13
-golang 1.12.2
 
+# kubectl 1.14.1
+# terraform 0.11.13
+# golang 1.12.2
 # helm 2.13.1
 # protoc 3.7.1
 # vault 1.1.0
