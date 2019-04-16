@@ -61,7 +61,9 @@ export CLOUDSDK_PYTHON=${ASDFINSTALLS}/python/2.7.16/bin/python
 export PATH=$PATH:~/.krew/bin
 ################################################################################
 # direnv
-eval "$(direnv hook bash)"
+if type direnv &>/dev/null; then
+    eval "$(direnv hook bash)"
+fi
 ################################################################################
 # alias
 alias ll='ls -n'
