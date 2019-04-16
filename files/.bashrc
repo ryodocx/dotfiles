@@ -24,7 +24,7 @@ unset HISTCONTROL
 export HISTSIZE=5000
 export HISTTIMEFORMAT='%F %T '
 (
-    list=$(cat ~/.cd_history | sort | uniq)
+    list=$(cat ~/.cd_history | awk '!a[$0]++')
     echo "${list}" >~/.cd_history
 ) &
 ################################################################################
@@ -73,15 +73,18 @@ alias relogin='exec $SHELL -l'
 function peco-cd() {
     local filtered=$(find . -type d -name '.git' -prune -o -type d 2>/dev/null | grep -vE "^\.$" | peco --query "${READLINE_LINE}" | head -n 1)
     if [ -n "${filtered}" ]; then
-        cd "${filtered}"
+        READLINE_LINE="cd ${filtered## }"
+        READLINE_POINT=$((3 + ${#filtered}))
     fi
 }
+bind -x '"\C- ": peco-cd'
 
 # cd-history
 function peco-cd-history() {
-    local filtered=$(cat ~/.cd_history | sort | uniq | peco --query "${READLINE_LINE}" | head -n 1)
+    local filtered=$(cat ~/.cd_history | reverse | awk '!a[$0]++' | peco --query "${READLINE_LINE}" | head -n 1)
     if [ -n "${filtered}" ]; then
-        cd "${filtered}"
+        READLINE_LINE="cd ${filtered## }"
+        READLINE_POINT=$((3 + ${#filtered}))
     fi
 }
 
@@ -97,7 +100,8 @@ bind -x '"\C-r": peco-history'
 function peco-ghq() {
     local filtered=$(ghq list --full-path | peco --query "${READLINE_LINE}" | head -n 1)
     if [ -n "${filtered}" ]; then
-        cd "${filtered}"
+        READLINE_LINE="cd ${filtered## }"
+        READLINE_POINT=$((3 + ${#filtered}))
     fi
 }
 bind -x '"\C-g": peco-ghq'
