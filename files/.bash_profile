@@ -5,6 +5,8 @@ fi
 
 ################################################################################
 # env
+ASDFINSTALLS=~/.asdf/installs
+
 export PATH=$PATH:~/.bin
 export EDITOR=code # VSCode
 export TERM=xterm
