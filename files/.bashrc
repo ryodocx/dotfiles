@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 ################################################################################
 # asdf
-ASDFINSTALLS=~/.asdf/installs
 . ~/.asdf/asdf.sh
 . ~/.asdf/completions/asdf.bash
 ################################################################################
@@ -44,18 +43,6 @@ done
 # source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.bash.inc
 # source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.bash.inc
 # source az.completion.sh
-################################################################################
-# env
-export PATH=$PATH:~/.bin
-export TERM=xterm
-# export EDITOR=code # VSCode
-# Go
-export GOROOT=${ASDFINSTALLS}/golang/1.12.2/go
-export GOPATH=~/go
-export GO111MODULE=on
-export PATH=$PATH:${GOPATH}/bin
-# gcloud
-export CLOUDSDK_PYTHON=${ASDFINSTALLS}/python/2.7.16/bin/python
 ################################################################################
 # direnv
 if type direnv &>/dev/null; then
