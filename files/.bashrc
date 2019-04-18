@@ -56,8 +56,6 @@ export GO111MODULE=on
 export PATH=$PATH:${GOPATH}/bin
 # gcloud
 export CLOUDSDK_PYTHON=${ASDFINSTALLS}/python/2.7.16/bin/python
-# krew: Package manager for "kubectl plugins" https://krew.dev
-export PATH=$PATH:~/.krew/bin
 ################################################################################
 # direnv
 if type direnv &>/dev/null; then
