@@ -12,7 +12,7 @@ mkdir -p ~/go/src
         # brew
         type brew &>/dev/null || {
             xcode-select --install ||
-            ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+                ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
         }
 
         brew install \
@@ -90,7 +90,7 @@ mkdir -p ~/go/src
                 ${sudo} yum -y copr enable ngompa/snapcore-el7
                 ${sudo} yum -y install snapd
                 ${sudo} systemctl enable --now snapd.socket ||
-                ${sudo} ln -sfv /var/lib/snapd/snap /snap
+                    ${sudo} ln -sfv /var/lib/snapd/snap /snap
             }
         elif
             type apt &>/dev/null
@@ -124,6 +124,14 @@ mkdir -p ~/go/src
             gpg \
             unixodbc \
             unzip ||
+            :
+        # python
+        brew install \
+            openssl \
+            readline \
+            sqlite3 \
+            xz \
+            zlib ||
             :
         ;;
     "Linux")
@@ -163,6 +171,25 @@ mkdir -p ~/go/src
                 libtool \
                 unixodbc-dev \
                 unzip
+            # python
+            ${sudo} apt install -y \
+                make \
+                build-essential \
+                libssl-dev \
+                zlib1g-dev \
+                libbz2-dev \
+                libreadline-dev \
+                libsqlite3-dev \
+                wget \
+                curl \
+                llvm \
+                libncurses5-dev \
+                xz-utils \
+                tk-dev \
+                libxml2-dev \
+                libxmlsec1-dev \
+                libffi-dev \
+                liblzma-dev
         fi
         ;;
     esac
