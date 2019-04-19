@@ -78,28 +78,28 @@ mkdir -p ~/go/src
 )
 ################################################################################
 # snap
-(
-    case "$(uname -s)" in
-    "Darwin")
-        :
-        ;;
-    "Linux")
-        if type yum &>/dev/null; then
-            type snap &>/dev/null || {
-                ${sudo} yum -y install epel-release yum-plugin-copr
-                ${sudo} yum -y copr enable ngompa/snapcore-el7
-                ${sudo} yum -y install snapd
-                ${sudo} systemctl enable --now snapd.socket ||
-                    ${sudo} ln -sfv /var/lib/snapd/snap /snap
-            }
-        elif
-            type apt &>/dev/null
-        then
-            ${sudo} apt install -y snapd
-        fi
-        ;;
-    esac
-)
+# (
+#     case "$(uname -s)" in
+#     "Darwin")
+#         :
+#         ;;
+#     "Linux")
+#         if type yum &>/dev/null; then
+#             type snap &>/dev/null || {
+#                 ${sudo} yum -y install epel-release yum-plugin-copr
+#                 ${sudo} yum -y copr enable ngompa/snapcore-el7
+#                 ${sudo} yum -y install snapd
+#                 ${sudo} systemctl enable --now snapd.socket ||
+#                     ${sudo} ln -sfv /var/lib/snapd/snap /snap
+#             }
+#         elif
+#             type apt &>/dev/null
+#         then
+#             ${sudo} apt install -y snapd
+#         fi
+#         ;;
+#     esac
+# )
 ################################################################################
 # asdf
 (
