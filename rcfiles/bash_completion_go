@@ -17,6 +17,6 @@ _go_completion() {
     esac
     return 0
 }
-type go &>/dev/null && {
+asdf which go &>/dev/null && {
     complete -F _go_completion go
 }

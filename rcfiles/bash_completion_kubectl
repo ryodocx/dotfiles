@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-type kubectl &>/dev/null && {
+asdf which kubectl &>/dev/null && {
     . <(kubectl completion bash)
 }
