@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-asdf which terraform &>/dev/null && {
+type terraform &>/dev/null && {
     complete -o nospace -C terraform terraform
 }
