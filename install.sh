@@ -213,8 +213,7 @@ mkdir -p ~/go/src
     asdf-plugin-add python
     asdf-plugin-add terraform
     asdf-plugin-add vault
-    cd ~
-    asdf install
 )
 ################################################################################
 echo "install completed!"
+exec $SHELL
