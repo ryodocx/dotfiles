@@ -10,10 +10,10 @@ matrix:
       env:
         - DESCRIPTION=Docker(CentOS)
         - DOCKERFILE=.test/centos.Dockerfile
-    - os: linux
-      env:
-        - DESCRIPTION=Docker(Ubuntu)
-        - DOCKERFILE=.test/ubuntu.Dockerfile
+    # - os: linux
+    #   env:
+    #     - DESCRIPTION=Docker(Ubuntu)
+    #     - DOCKERFILE=.test/ubuntu.Dockerfile
 script:
 - |
     if [ -n "${DOCKERFILE}" ]; then
