@@ -26,13 +26,15 @@ export HISTTIMEFORMAT='%F %T '
     echo "${list}" >~/.cd_history
 ) &
 ################################################################################
+# external scripts
+for script in find ~/.rcfiles/* -type f; do
+    . $script
+done
+################################################################################
 # Bash Completion
 [ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion # mac
 [ -f /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion
 [ -f /etc/bash_completion ] && . /etc/bash_completion # linux
-for script in ~/.bash_completion_local/*; do
-    . $script
-done
 for script in /etc/profile.d/*.sh; do
     if [ -f $script ]; then
         . $script

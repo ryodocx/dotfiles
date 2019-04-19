@@ -2,7 +2,7 @@
 
 cd $(dirname $0)
 ln -sfnv $(pwd)/bin/ ~/.bin
-ln -sfnv $(pwd)/bash_completion/ ~/.bash_completion_local
+ln -sfnv $(pwd)/rcfiles/ ~/.rcfiles
 
 for filepath in $(find files -type f); do
     filepath=${filepath#files/}
