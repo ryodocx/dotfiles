@@ -22,12 +22,10 @@ mkdir -p ~/go/src
             vim \
             git \
             watch \
-            bash-completion ||
-            :
+            bash-completion
 
         brew cask install \
-            keepassxc ||
-            :
+            keepassxc
 
         # enable bash
         if [ -z "${CI}" ]; then
@@ -46,16 +44,15 @@ mkdir -p ~/go/src
                 curl \
                 openssh-clients \
                 vim \
-                git ||
-                :
+                git
         elif type apt &>/dev/null; then
             ${sudo} apt update -y
             ${sudo} apt install -y \
                 curl \
                 openssh-client \
                 vim \
-                git ||
-                :
+                git \
+                bash-completion
         fi
         ;;
     esac
@@ -123,16 +120,14 @@ mkdir -p ~/go/src
             libtool \
             gpg \
             unixodbc \
-            unzip ||
-            :
+            unzip
         # python
         brew install \
             openssl \
             readline \
             sqlite3 \
             xz \
-            zlib ||
-            :
+            zlib
         ;;
     "Linux")
         if type yum &>/dev/null; then
