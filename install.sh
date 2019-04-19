@@ -215,5 +215,36 @@ mkdir -p ~/go/src
     asdf-plugin-add vault
 )
 ################################################################################
+# Docker
+if [ -z "${CI}" ]; then
+    case "$(uname -s)" in
+    "Darwin")
+        :
+        ;;
+    "Linux")
+        if type yum &>/dev/null; then
+            :
+        elif type apt &>/dev/null; then
+            ${sudo} apt -y install \
+                apt-transport-https \
+                ca-certificates \
+                curl \
+                gnupg2 \
+                software-properties-common
+            curl -fsSL https://download.docker.com/linux/debian/gpg | ${sudo} apt-key add -
+            if grep ubuntu /etc/os-release 1>/dev/null; then
+                ${sudo} add-apt-repository \
+                    "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+            elif grep debian /etc/os-release 1>/dev/null; then
+                ${sudo} add-apt-repository \
+                    "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+            fi
+            ${sudo} apt -y update
+            ${sudo} apt -y install docker-ce docker-ce-cli containerd.io
+        fi
+        ;;
+    esac
+fi
+################################################################################
 echo "install completed!"
 exit 0
