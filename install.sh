@@ -207,7 +207,7 @@ mkdir -p ~/go/src
     asdf-plugin-add helm
     asdf-plugin-add jq https://github.com/ryodocx/asdf-jq
     asdf-plugin-add kubectl
-    asdf-plugin-add nodejs && bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring 2>/dev/null
+    asdf-plugin-add nodejs && bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring 2>/dev/null || :
     asdf-plugin-add peco https://github.com/ryodocx/asdf-peco
     asdf-plugin-add protoc
     asdf-plugin-add python
