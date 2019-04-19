@@ -27,7 +27,7 @@ export HISTTIMEFORMAT='%F %T '
 ) &
 ################################################################################
 # external scripts
-for script in find ~/.rcfiles/* -type f; do
+for script in ~/.rcfiles/*; do
     . $script
 done
 ################################################################################
