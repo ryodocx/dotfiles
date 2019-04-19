@@ -44,7 +44,8 @@ mkdir -p ~/go/src
                 curl \
                 openssh-clients \
                 vim \
-                git
+                git \
+                bash-completion
         elif type apt &>/dev/null; then
             ${sudo} apt update -y
             ${sudo} apt install -y \
