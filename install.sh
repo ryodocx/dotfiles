@@ -15,6 +15,8 @@ mkdir -p ~/go/src
                 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
         }
 
+        brew upgrade
+
         brew install \
             bash \
             curl \
@@ -129,6 +131,7 @@ mkdir -p ~/go/src
             sqlite3 \
             xz \
             zlib
+        sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
         ;;
     "Linux")
         if type yum &>/dev/null; then
