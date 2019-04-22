@@ -131,7 +131,9 @@ mkdir -p ~/go/src
             sqlite3 \
             xz \
             zlib
-        sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
+        if [ -z "${CI}" ]; then
+            sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
+        fi
         ;;
     "Linux")
         if type yum &>/dev/null; then
