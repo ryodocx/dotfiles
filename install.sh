@@ -16,6 +16,7 @@ mkdir -p ~/go/src
         }
 
         brew upgrade
+        brew cask upgrade
 
         brew install \
             bash \
