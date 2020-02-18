@@ -7,3 +7,6 @@ email = email@ryodocx.net
 
 [ghq]
 root = ~/go/src
+
+[url "ssh://git@github.com"]
+insteadOf = https://github.com
