@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+type vault &>/dev/null && {
+    complete -o nospace -C vault vault
+}
