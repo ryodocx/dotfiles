@@ -243,6 +243,9 @@ if [ -z "${CI}" ]; then
             fi
             ${sudo} apt -y update
             ${sudo} apt -y install docker-ce docker-ce-cli containerd.io
+            ${sudo} groupadd docker || :
+            ${sudo} gpasswd -a $USER docker
+            ${sudo} service docker restart
         fi
         ;;
     esac
