@@ -26,6 +26,7 @@ for plugin in $(asdf plugin-list); do
 
     if [ "$1" = '--install' ]; then
         asdf-install-latest ${plugin}
+        echo
     fi
 done
 
