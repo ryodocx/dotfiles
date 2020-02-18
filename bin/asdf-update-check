@@ -25,7 +25,7 @@ for plugin in $(asdf plugin-list); do
     fi
 
     if [ "$1" = '--install' ]; then
-        asdf-install-latest
+        asdf-install-latest ${plugin}
     fi
 done
 
