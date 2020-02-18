@@ -204,7 +204,7 @@ mkdir -p ~/go/src
 
     asdf-plugin-add direnv https://github.com/ryodocx/asdf-direnv
     asdf-plugin-add docker-compose https://github.com/virtualstaticvoid/asdf-docker-compose.git
-    asdf-plugin-add ghq https://github.com/ryodocx/asdf-ghq
+    asdf-plugin-add ghq
     asdf-plugin-add golang
     asdf-plugin-add helm
     asdf-plugin-add jq https://github.com/ryodocx/asdf-jq
