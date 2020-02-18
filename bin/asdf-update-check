@@ -25,11 +25,7 @@ for plugin in $(asdf plugin-list); do
     fi
 
     if [ "$1" = '--install' ]; then
-        asdf install ${plugin} ${latest_version}
-    fi
-    if [ "$1" = '--set-global' ]; then
-        asdf install ${plugin} ${latest_version}
-        asdf global ${plugin} ${latest_version}
+        asdf-install-latest
     fi
 done
 
@@ -37,7 +33,7 @@ if [ "${usage_flag}" = "true" ]; then
     cat <<EOS
 
 [usage]
-    asdf-update --install
-    asdf-update --set-global
+    # install laest version & set global
+    $(basename $0) --install 
 EOS
 fi
