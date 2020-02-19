@@ -9,5 +9,5 @@ git branch | grep ${LOCAL_BRANCH} 1>/dev/null || {
 }
 
 git checkout ${LOCAL_BRANCH}
-git fetch origin master
+git fetch origin master:master
 git merge --no-ff --no-edit master
