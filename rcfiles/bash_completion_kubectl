@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 type kubectl &>/dev/null && {
     . <(kubectl completion bash)
-}
 
-if [[ $(type -t compopt) = "builtin" ]]; then
-    complete -o default -F __start_kubectl k
-else
-    complete -o default -o nospace -F __start_kubectl k
-fi
+    if [[ $(type -t compopt) = "builtin" ]]; then
+        complete -o default -F __start_kubectl k
+    else
+        complete -o default -o nospace -F __start_kubectl k
+    fi
+}
