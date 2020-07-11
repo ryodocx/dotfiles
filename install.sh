@@ -8,6 +8,7 @@ type sudo &>/dev/null && sudo=sudo
 # mkdir
 mkdir -p ~/go/src
 mkdir -p ~/.ssh/.ctl
+mkdir -p ~/.ssh/conf.d
 
 ################################################################################
 # basic packages
