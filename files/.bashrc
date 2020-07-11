@@ -54,6 +54,7 @@ fi
 # alias
 alias ll='ls -n'
 alias relogin='exec $SHELL -l'
+alias k='kubectl'
 ################################################################################
 # peco
 
