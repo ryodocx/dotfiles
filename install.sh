@@ -152,6 +152,7 @@ mkdir -p ~/.ssh/.ctl
             # nodejs
             ${sudo} yum install -y \
                 perl-Digest-SHA
+            bash -c '${ASDF_DATA_DIR:=$HOME/.asdf}/plugins/nodejs/bin/import-release-team-keyring'
             # python
             ${sudo} yum install -y \
                 gcc \
