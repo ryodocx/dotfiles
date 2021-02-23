@@ -3,5 +3,6 @@
 .vscode/
 .tool-versions
 .envrc
+.direnv/
 .terraform/
 node_modules/
