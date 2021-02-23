@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+type npm &>/dev/null && {
+    eval "`npm completion`"
+}
