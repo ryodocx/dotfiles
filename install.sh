@@ -6,9 +6,8 @@ type sudo &>/dev/null && sudo=sudo
 ./link.sh
 
 # mkdir
-mkdir -p ~/go/src
+mkdir -p ~/src
 mkdir -p ~/.ssh/.ctl
-mkdir -p ~/.ssh/conf.d
 
 ################################################################################
 # basic packages
@@ -238,8 +237,8 @@ if [ -z "${CI}" ]; then
             ${sudo} apt -y update
             ${sudo} apt -y install docker-ce docker-ce-cli containerd.io
             ${sudo} groupadd docker || :
-            ${sudo} gpasswd -a $USER docker
-            ${sudo} service docker restart
+            ${sudo} gpasswd -a $USER docker || :
+            ${sudo} service docker restart || ${sudo} service docker start
         fi
         ;;
     esac
