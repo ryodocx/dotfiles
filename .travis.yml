@@ -16,7 +16,7 @@ matrix:
     - os: linux
       env:
         - DESCRIPTION=Docker(Ubuntu:18:04)
-        - OSIMAGE=ubuntu:18:04
+        - OSIMAGE=ubuntu:18.04
     - os: linux
       env:
         - DESCRIPTION=Docker(CentOS:latest)
