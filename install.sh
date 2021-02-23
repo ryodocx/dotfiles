@@ -178,8 +178,6 @@ mkdir -p ~/.ssh/.ctl
                 libtool \
                 unixodbc-dev \
                 unzip
-            # nodejs
-            bash -c '${ASDF_DATA_DIR:=$HOME/.asdf}/plugins/nodejs/bin/import-release-team-keyring'
             # python
             ${sudo} apt install -y \
                 make \
