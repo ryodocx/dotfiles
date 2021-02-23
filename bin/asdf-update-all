@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -e
+
+asdf plugin-list | xargs -n 1 asdf-install-latest
