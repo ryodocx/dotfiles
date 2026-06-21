@@ -43,10 +43,23 @@ cd ~/.dotfiles
 
 ### 3. セットアップスクリプトの実行
 `install.sh` を実行します。Nix、Home Manager、nix-darwin、chezmoi、および必要なツールが自動的にセットアップされます。
+また、OS ユーザー名に応じて `flake.nix` が自動的に書き換えられます。
 
 ```bash
 ./install.sh
 ```
+
+非対話的に実行したい場合は、以下のオプションを使用して各設定値を渡すことができます。
+
+```bash
+./install.sh \
+  --os-user "your_os_username" \
+  --git-user "Your Name" \
+  --git-email "your-email@example.com" \
+  --github-token "ghp_xxxxxxxxxxxx"
+```
+
+指定されなかった項目は、スクリプト実行中にインタラクティブに入力が求められます。
 
 ## ツールチェーン & 設定の詳細
 詳細な設計決定事項やモダン CLI 代替ツールのリストについては、以下を参照してください。
