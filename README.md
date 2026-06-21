@@ -53,6 +53,87 @@ cd ~/.dotfiles
 - [implementation_plan.md](docs/implementation_plan.md)
 - [terminal_and_secrets_design.md](docs/terminal_and_secrets_design.md)
 
+## 日常の運用・操作方法 (How to Use)
+
+### 1. 設定ファイルの構成マップ (どこに何が設定されるか)
+
+リポジトリ内のソースファイルと、ホームディレクトリ（`~`）に実際に配置される設定ファイルの対応表です。
+
+| リポジトリ内のパス | 展開先のパス (ホームディレクトリ) | 用途・設定内容 |
+| :--- | :--- | :--- |
+| [home/dot_zshrc.tmpl](file:///C:/Users/ryotn/Documents/antigravity/gallant-shannon/home/dot_zshrc.tmpl) | `~/.zshrc` | Zsh の起動・シェル環境設定 (WSL SSH agent 含む) |
+| [home/dot_zshenv](file:///C:/Users/ryotn/Documents/antigravity/gallant-shannon/home/dot_zshenv) | `~/.zshenv` | 環境変数（XDGベースディレクトリ、PATHなど） |
+| [home/dot_config/git/config.tmpl](file:///C:/Users/ryotn/Documents/antigravity/gallant-shannon/home/dot_config/git/config.tmpl) | `~/.config/git/config` | Git の設定 (OSごとの資格情報ヘルパー設定含む) |
+| [home/dot_config/git/ignore](file:///C:/Users/ryotn/Documents/antigravity/gallant-shannon/home/dot_config/git/ignore) | `~/.config/git/ignore` | Git のグローバル無視設定 |
+| [home/dot_config/starship.toml](file:///C:/Users/ryotn/Documents/antigravity/gallant-shannon/home/dot_config/starship.toml) | `~/.config/starship.toml` | Starship プロンプトのデザイン設定 |
+| [home/dot_config/ghostty/config](file:///C:/Users/ryotn/Documents/antigravity/gallant-shannon/home/dot_config/ghostty/config) | `~/.config/ghostty/config` | Ghostty (macOS用ターミナル) の設定 |
+| [home/dot_config/wezterm/wezterm.lua](file:///C:/Users/ryotn/Documents/antigravity/gallant-shannon/home/dot_config/wezterm/wezterm.lua) | `~/.config/wezterm/wezterm.lua` | WezTerm (クロスプラットフォームターミナル) の設定 |
+| [home/dot_config/zellij/config.kdl](file:///C:/Users/ryotn/Documents/antigravity/gallant-shannon/home/dot_config/zellij/config.kdl) | `~/.config/zellij/config.kdl` | Zellij (ターミナルマルチプレクサ) の設定 |
+| [home/dot_config/bat/config](file:///C:/Users/ryotn/Documents/antigravity/gallant-shannon/home/dot_config/bat/config) | `~/.config/bat/config` | `bat` (cat代替ツール) のテーマ等の設定 |
+| [home/dot_config/atuin/config.toml](file:///C:/Users/ryotn/Documents/antigravity/gallant-shannon/home/dot_config/atuin/config.toml) | `~/.config/atuin/config.toml` | Atuin (シェル履歴管理) の同期無効化等の設定 |
+| [home/dot_config/sheldon/plugins.toml](file:///C:/Users/ryotn/Documents/antigravity/gallant-shannon/home/dot_config/sheldon/plugins.toml) | `~/.config/sheldon/plugins.toml` | Sheldon (Zshプラグインマネージャー) のプラグイン定義 |
+| [home/dot_config/mise/config.toml](file:///C:/Users/ryotn/Documents/antigravity/gallant-shannon/home/dot_config/mise/config.toml) | `~/.config/mise/config.toml` | Mise (開発言語・ランタイムマネージャー) の設定 |
+
+---
+
+### 2. 新しい設定ファイルを追加する (chezmoi 管理下へ)
+
+既存の設定ファイル（例: `~/.tmux.conf` や `~/.config/kitty/kitty.conf`）を新規に dotfiles リポジトリの管理下に置く手順です。
+
+1. **chezmoi にファイルを追加する**:
+   ```bash
+   chezmoi add ~/.tmux.conf
+   ```
+   ※ これにより、ファイルが `chezmoi` のソースディレクトリ（`~/.local/share/chezmoi/`）にコピーされます。
+
+2. **テンプレート化したい場合 (オプション)**:
+   もし OS ごとの条件分岐などを入れるためにテンプレートファイル化したい場合は、追加時に `--template` を付与します。
+   ```bash
+   chezmoi add --template ~/.tmux.conf
+   ```
+
+---
+
+### 3. 日常の編集と反映サイクル
+
+設定を変更し、他の環境に同期するまでの一般的なサイクルです。
+
+#### 1. 設定ファイルを編集する
+設定ファイルを編集する場合は、ホームディレクトリの実ファイルを直接触るのではなく、以下のコマンドで編集します。
+```bash
+# 例: ~/.zshrc を編集する
+chezmoi edit ~/.zshrc
+```
+※ 自動的にソースディレクトリ側のファイル（`dot_zshrc.tmpl`）がエディタで開き、保存して閉じるとホームディレクトリ側にも自動で適用されます。
+
+もしリポジトリ側のファイルを直接エディタで開いて編集した場合は、以下のコマンドでホームディレクトリに反映させます。
+```bash
+chezmoi apply
+```
+
+#### 2. 変更をリポジトリへコミット & プッシュする
+編集した設定ファイルを GitHub に保存します。chezmoi の管理ディレクトリに移動して Git 操作を行うか、chezmoi コマンド経由で実行します。
+
+```bash
+# chezmoi の管理ディレクトリ (リポジトリ) でシェルを開く
+chezmoi cd
+
+# あとは通常の Git 操作
+git status
+git add .
+git commit -m "style: update zshrc aliases"
+git push origin v2
+```
+
+#### 3. 他のマシンで最新の設定を取り込む (同期)
+別のマシンで GitHub 上の最新設定を取り込み、適用します。
+```bash
+# 最新のリポジトリの変更を取得し、自動的に適用 (apply) する
+chezmoi update
+```
+
+---
+
 ## 運用上の注意点 (Tips)
 
 - **WSL 経由での Git 操作と生体認証**: FIDO2 (Touch ID / Windows Hello) キーを利用した `git push` 時、認証プロンプトが表示されます。WSL の場合、**Windows Hello のポップアップがターミナルの裏（バックグラウンド）で開いてしまい、ターミナルがフリーズしたように見える** ことがあります。応答がない場合は `Alt+Tab` 等でバックグラウンドに隠れた認証ウィンドウを探してください。
