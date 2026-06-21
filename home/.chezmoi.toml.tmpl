@@ -11,6 +11,12 @@
   {{- end -}}
 {{- end -}}
 
+{{- $winProfileWsl := "" -}}
+{{- if $isWSL -}}
+  {{- $winProfileWin := output "sh" "-c" "/mnt/c/Windows/System32/cmd.exe /c echo %USERPROFILE% 2>/dev/null | tr -d '\\r'" | trim -}}
+  {{- $winProfileWsl = output "wslpath" $winProfileWin | trim -}}
+{{- end -}}
+
 # Ask for machine-local secrets (not committed to Git)
 {{- $githubToken := promptStringOnce . "githubToken" "Enter your GitHub Personal Access Token (for this machine only)" -}}
 
@@ -19,6 +25,9 @@
     email = "{{ $email }}"
     osId = "{{ $osId }}"
     isWSL = {{ $isWSL }}
+    {{- if $isWSL }}
+    winProfileWsl = "{{ $winProfileWsl }}"
+    {{- end }}
     githubToken = "{{ $githubToken }}"
 
 [edit]

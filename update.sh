@@ -34,7 +34,7 @@ DOTFILES_DIR="$HOME/.dotfiles"
 if [ -d "$DOTFILES_DIR" ]; then
     echo -e "${GREEN}--> Pulling latest changes from dotfiles repository...${NC}"
     cd "$DOTFILES_DIR"
-    git pull origin v2
+    git pull
 else
     echo -e "Warning: $DOTFILES_DIR not found. Skipping git pull."
 fi
