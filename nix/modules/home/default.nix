@@ -1,7 +1,7 @@
 { pkgs, user, email, isDarwin, isWSL, ... }: {
   imports = [
     ./packages.nix
-  ] ++ (if isDarwin then [ ./darwin.nix ] else [ ./linux.nix ]);
+  ];
 
   home = {
     username = user;
