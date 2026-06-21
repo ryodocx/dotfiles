@@ -33,11 +33,17 @@ if [ -f "$DOTFILES_DIR/flake.nix" ] && command -v nix >/dev/null 2>&1; then
     if [[ "$OSTYPE" == "darwin"* ]]; then
         echo -e "${GREEN}--> Applying macOS nix-darwin configurations...${NC}"
         # nix-darwin の再適用
-        darwin-rebuild switch --flake "$DOTFILES_DIR"
+        darwin-rebuild switch --flake "$DOTFILES_DIR#macbook"
     else
-        echo -e "${GREEN}--> Applying Home Manager configurations...${NC}"
+        TARGET_CONFIG="wsl"
+        if [ ! -z "${WSL_DISTRO_NAME:-}" ] || grep -q -i "microsoft" /proc/version 2>/dev/null; then
+            TARGET_CONFIG="wsl"
+        else
+            TARGET_CONFIG="linux"
+        fi
+        echo -e "${GREEN}--> Applying Home Manager configurations ($TARGET_CONFIG)...${NC}"
         # Linux / WSL の Home Manager 再適用
-        home-manager switch --flake "$DOTFILES_DIR"
+        home-manager switch --flake "$DOTFILES_DIR#${TARGET_CONFIG}"
     fi
 fi
 

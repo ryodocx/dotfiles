@@ -214,13 +214,13 @@ macOS ホスト向けエントリポイント。nix-darwin の設定（Dock, Fin
 #### [NEW] [hosts/wsl/default.nix](../hosts/wsl/default.nix)
 Windows WSL ホスト向けエントリポイント。Home Manager 単体での呼び出し。
 
-#### [NEW] [modules/packages.nix](../modules/packages.nix)
+#### [NEW] [modules/home/packages.nix](../modules/home/packages.nix)
 全OS共通でインストールする CLI ツール群のパッケージ宣言。chezmoi 本体もここからインストールする。
 
-#### [NEW] [modules/darwin.nix](../modules/darwin.nix)
+#### [NEW] [modules/home/darwin.nix](../modules/home/darwin.nix)
 macOS 固有の追加パッケージや設定（必要に応じて）。
 
-#### [NEW] [modules/linux.nix](../modules/linux.nix)
+#### [NEW] [modules/home/linux.nix](../modules/home/linux.nix)
 Linux/WSL 固有の追加パッケージ（KeePassXC SSH Agent に接続するための `socat` など）。
 
 ---
@@ -236,7 +236,7 @@ OS 別除外ルール。
 #### [NEW] [home/dot_zshrc.tmpl](../home/dot_zshrc.tmpl)
 zsh メイン設定。sheldon, Starship, Atuin, fzf, zoxide, エイリアス統合。WSL での `socat` + `npiperelay` による SSH Agent ブリッジも自動起動。
 
-#### [NEW] [home/dot_zshenv.tmpl](../home/dot_zshenv.tmpl)
+#### [NEW] [home/dot_zshenv](../home/dot_zshenv)
 XDG ベースディレクトリ、PATH 設定。
 
 #### [NEW] [home/dot_config/starship.toml](../home/dot_config/starship.toml)
