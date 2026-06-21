@@ -23,6 +23,49 @@ set -e
 # - インターネット接続があること
 # ==============================================================================
 
+# Parse arguments
+DOTFILES_OS_USER="${USER:-}"
+DOTFILES_GIT_USER=""
+DOTFILES_GIT_EMAIL=""
+DOTFILES_GITHUB_TOKEN=""
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --os-user) DOTFILES_OS_USER="$2"; shift 2 ;;
+        --git-user) DOTFILES_GIT_USER="$2"; shift 2 ;;
+        --git-email) DOTFILES_GIT_EMAIL="$2"; shift 2 ;;
+        --github-token) DOTFILES_GITHUB_TOKEN="$2"; shift 2 ;;
+        -h|--help)
+            echo "Usage: $0 [options]"
+            echo ""
+            echo "Options:"
+            echo "  --os-user <username>       Set OS username (default: \$USER)"
+            echo "  --git-user <username>      Set Git username"
+            echo "  --git-email <email>        Set Git email address"
+            echo "  --github-token <token>     Set GitHub Personal Access Token"
+            echo "  -h, --help                 Show this help message"
+            exit 0
+            ;;
+        *) echo "Unknown option: $1"; exit 1 ;;
+    esac
+done
+
+# Prompt for missing variables
+if [ -z "$DOTFILES_OS_USER" ]; then
+    read -p "Enter your OS username [${USER}]: " input
+    DOTFILES_OS_USER="${input:-${USER}}"
+fi
+if [ -z "$DOTFILES_GIT_USER" ]; then
+    read -p "Enter your Git username: " DOTFILES_GIT_USER
+fi
+if [ -z "$DOTFILES_GIT_EMAIL" ]; then
+    read -p "Enter your Git email address: " DOTFILES_GIT_EMAIL
+fi
+if [ -z "$DOTFILES_GITHUB_TOKEN" ]; then
+    read -s -p "Enter your GitHub Personal Access Token (for this machine only): " DOTFILES_GITHUB_TOKEN
+    echo ""
+fi
+
 # 1. OS & WSL Detection
 OS="$(uname -s)"
 case "${OS}" in
@@ -56,6 +99,9 @@ if [ "${OS_TYPE}" = "darwin" ] && ! command -v brew >/dev/null 2>&1; then
 fi
 
 # 3. Apply Nix (nix-darwin for macOS / home-manager for Linux)
+echo "Configuring flake.nix for user: ${DOTFILES_OS_USER}..."
+sed -e "s/user = \"[^\"]*\"/user = \"${DOTFILES_OS_USER}\"/g" flake.nix > flake.nix.tmp && mv flake.nix.tmp flake.nix
+
 echo "Applying Nix configurations..."
 if [ "${OS_TYPE}" = "darwin" ]; then
     nix run github:LnL7/nix-darwin -- switch --flake .#darwin
@@ -85,7 +131,18 @@ fi
 
 # 5. Initialize and apply chezmoi
 echo "Initializing and applying chezmoi dotfiles..."
-chezmoi init --source="$(pwd)"
+CHEZMOI_ARGS=("--source=$(pwd)")
+if [ -n "$DOTFILES_GIT_USER" ]; then
+    CHEZMOI_ARGS+=("--promptString" "user=${DOTFILES_GIT_USER}")
+fi
+if [ -n "$DOTFILES_GIT_EMAIL" ]; then
+    CHEZMOI_ARGS+=("--promptString" "email=${DOTFILES_GIT_EMAIL}")
+fi
+if [ -n "$DOTFILES_GITHUB_TOKEN" ]; then
+    CHEZMOI_ARGS+=("--promptString" "githubToken=${DOTFILES_GITHUB_TOKEN}")
+fi
+
+chezmoi init "${CHEZMOI_ARGS[@]}"
 chezmoi apply
 
 # 5.5. Initialize Lefthook in the repository
