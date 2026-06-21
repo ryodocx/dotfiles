@@ -131,6 +131,29 @@ git push origin v2
 chezmoi update
 ```
 
+#### 4. 各種ソフトウェアのアップデート
+本リポジトリに含まれる Nix、Homebrew、Mise、Sheldon などの各種ソフトウェアやプラグインを一括で最新版に更新するためのスクリプトが用意されています。Zsh 内で以下のエイリアスコマンドを実行してください。
+
+```bash
+dotfiles-update
+```
+
+または、直接以下のスクリプトを実行します。
+```bash
+~/.dotfiles/update.sh
+```
+
+このコマンドを実行すると、内部的に以下の処理が自動で行われます：
+1. **リポジトリの pull**: `~/.dotfiles` 内で最新の変更を取得 (`git pull origin v2`)
+2. **chezmoi の同期**: `chezmoi update` で最新の設定ファイルを再適用
+3. **Nix の更新**: `nix flake update` を実行し、`nix-darwin` もしくは `home-manager` の最新状態を再構築・適用
+4. **Homebrew の更新**: macOS (および Linuxbrew) の GUI アプリ・ツール群を更新 (`brew update && brew upgrade`)
+5. **Sheldon の更新**: Zsh プラグインの最新ロックファイルを生成・更新 (`sheldon lock --update`)
+6. **Mise の更新**: Mise 本体とインストール済みの言語ランタイムを更新 (`mise upgrade`)
+
+> [!NOTE]
+> `nix flake update` が走ると、ローカルリポジトリ内の `flake.lock` が書き換わります。適用が成功した後は、`flake.lock` の変更をコミットして GitHub にプッシュすることをお勧めします。
+
 ---
 
 ## 運用上の注意点 (Tips)
