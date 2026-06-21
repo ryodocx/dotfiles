@@ -203,19 +203,16 @@ SaaS に依存せず、秘密情報を「原理的に外部に持ち出せない
 
 ### Nix 基盤 (マルチホスト構成へ最適化)
 
-将来的に複数マシン（macOS, WSL, Linuxサーバーなど）を管理しやすくするため、`nix/` ディレクトリで構成を整理し、以下の Flake 構成を採用します。
+将来的に複数マシン（macOS, WSL, Linuxサーバーなど）を管理しやすくするため、`nix/` ディレクトリで構成をフラットに整理し、以下の Flake 構成を採用します。
 
 #### [NEW] [flake.nix](../flake.nix)
 Nix Flake エントリポイント。nixpkgs, home-manager, nix-darwin の入力定義。
 
-#### [NEW] [nix/hosts/darwin/default.nix](../nix/hosts/darwin/default.nix)
+#### [NEW] [nix/darwin.nix](../nix/darwin.nix)
 macOS ホスト向けエントリポイント。nix-darwin の設定（Dock, Finder, キーボード, Touch ID sudo, Homebrew Cask）および Home Manager の呼び出し。
 
-#### [NEW] [nix/modules/home/default.nix](../nix/modules/home/default.nix)
-Home Manager のメインモジュール。
-
-#### [NEW] [nix/modules/home/packages.nix](../nix/modules/home/packages.nix)
-全OS共通でインストールする CLI ツール群のパッケージ宣言。chezmoi 本体もここからインストールする。
+#### [NEW] [nix/home.nix](../nix/home.nix)
+Home Manager のメインモジュールおよびパッケージ宣言（全OS共通）。
 
 ---
 

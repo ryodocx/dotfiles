@@ -23,12 +23,12 @@
         "darwin" = darwin.lib.darwinSystem {
           system = "aarch64-darwin";
           modules = [
-            ./nix/hosts/darwin/default.nix
+            ./nix/darwin.nix
             home-manager.darwinModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.${user} = import ./nix/modules/home/default.nix;
+              home-manager.users.${user} = import ./nix/home.nix;
               home-manager.extraSpecialArgs = {
                 inherit user email;
                 isDarwin = true;
@@ -43,7 +43,7 @@
       homeConfigurations = {
         "linux" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          modules = [ ./nix/modules/home/default.nix ];
+          modules = [ ./nix/home.nix ];
           extraSpecialArgs = {
             inherit user email;
             isDarwin = false;

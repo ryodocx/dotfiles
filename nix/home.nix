@@ -1,4 +1,12 @@
-{ pkgs, ... }: {
+{ pkgs, user, email, isDarwin, ... }: {
+  home = {
+    username = user;
+    homeDirectory = if isDarwin then "/Users/${user}" else "/home/${user}";
+    stateVersion = "24.05";
+  };
+
+  programs.home-manager.enable = true;
+
   home.packages = with pkgs; [
     # ── 環境管理 ──
     chezmoi
@@ -34,5 +42,3 @@
     alejandra
   ];
 }
-
-
