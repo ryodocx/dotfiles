@@ -27,18 +27,19 @@
 * **主な競合・代替ツール**: Aider, Claude Code, GitHub Copilot CLI
 * **競合との比較・選択のポイント**: AiderやClaude Codeがコードの直接編集に特化しているのに対し、aichat は汎用チャット、シェルコマンド生成、プロンプトのテンプレート化など、「AIアシスタントを任意の CLI コマンドのパイプラインに組み込む」汎用的なスクリプト用途に最適です。
 
-### 🖥️ [cmux](https://github.com/manaflow-ai/cmux) (macOS 専用)
-* **カテゴリ**: AI エージェント特化型ターミナルエミュレータ
-* **概要**: `libghostty` をベースにした GPU 加速ターミナルで、Aider や Claude Code などの AI コーディングエージェントの運用に特化して設計されたオープンソースの macOS アプリ。マルチセッションのステータスを表示するサイドバーや、入力待ち通知リング、エージェントから操作可能な socket/CLI API を備えています。
-* **採用検討理由**: 複数のプロジェクトや AI エージェントを同時に走らせる際、Git ブランチやリスニングポートの確認、入力待ちの検知を GUI サイドバーで一覧化できます。Ghostty の設定 (`~/.config/ghostty/config`) を自動で共有するため、既存の設定を活かしつつ AI 開発体験を劇的にアップグレードできます。
-* **主な競合・代替ツール**: Ghostty (通常版), WezTerm, Warp
-* **競合との比較・選択のポイント**: Ghostty や WezTerm は通常の汎用ターミナルですが、cmux は AI エージェントの出力を監視してバックグラウンドで処理し、入力待ちになったら通知する等、AI と対話する開発スタイルに特化した専用のウィンドウレイアウトとインターフェースを持っています。
 
 ---
 
 ## 2. 開発効率化・環境管理・タスクランナー
 
 日常の開発環境の切り替え、ワークフロー自動化、およびタスク実行のためのツール群です。
+
+### ❄️ [devenv](https://github.com/cachix/devenv)
+* **カテゴリ**: Nix ベース宣言的開発環境マネージャー
+* **概要**: Nix の学習コスト（Flakes 等）を抽象化し、devenv.nix というシンプルなファイル一つで、言語ランタイム、プロセス（DB等）、Git Hooks などを一括構築するツール。
+* **採用検討理由**: Nix の恩恵（完全な再現性）を受けつつも、プロジェクトごとに Docker や docker-compose を用意する手間を削減し、ネイティブな速度で開発環境を自動構築させます。
+* **主な競合・代替ツール**: Devcontainers, Docker Compose, asdf, mise
+* **競合との比較・選択のポイント**: mise や sdf は言語のバージョン管理のみを行いますが、devenv は Nix をバックエンドに使い、PostgreSQL などのバックグラウンドプロセスや Git Hooks のセットアップまで、プロジェクトに必要な依存関係のすべてを完全に分離された状態で一瞬で立ち上げます。
 
 ### 📂 [direnv](https://github.com/direnv/direnv)
 * **カテゴリ**: ディレクトリ固有の環境変数管理
@@ -320,6 +321,20 @@ Zsh の操作性、補完、履歴検索、およびセッション・ファイ�
 
 API の疎通確認、負荷テスト、ローカルホスト公開、およびネットワークトラブル調査を行うツール群です。
 
+### 📮 [posting](https://github.com/darrenburns/posting)
+* **カテゴリ**: TUI HTTP / API クライアント (Postman 代替)
+* **概要**: Postman や Insomnia のような高機能 API クライアントの体験を、そのままターミナル上の TUI で実現した Python (Textual) 製ツール。
+* **採用検討理由**: GUI アプリを立ち上げるほどの重い操作をしたくないが、curl や xh ではリクエストヘッダーや環境変数の切り替え管理が面倒な場合に、設定をローカルファイルで管理しつつキーボード操作で高速に API テストができます。
+* **主な競合・代替ツール**: Postman, Insomnia, xh, atac
+* **競合との比較・選択のポイント**: xh 等のコマンドラインツールとは異なり、リクエストコレクションの保存機能、環境変数の管理、レスポンス履歴の閲覧など、Postman クラスの機能をフル TUI で提供するため、複雑な API 開発に最適です。
+
+### 🐶 [doggo](https://github.com/mr-karan/doggo)
+* **カテゴリ**: モダン DNS クライアント (dig 代替)
+* **概要**: 従来の dig コマンドに代わる、カラー表示、JSON 出力、DoH (DNS over HTTPS) / DoT などのモダンなプロトコルに対応した Go 製の DNS 調査ツール。
+* **採用検討理由**: ネットワークトラブルやドメイン移管時の DNS 浸透待ちの際、直感的なカラー出力でパッと見てレコードの状態を把握でき、JSON 出力を用いてスクリプト処理も容易になります。
+* **主な競合・代替ツール**: dig, nslookup, dog
+* **競合との比較・選択のポイント**: dig は出力が冗長で読みづらいですが、doggo は人間にとって非常に見やすい表形式やカラーで結果を出力し、デフォルトで複数ネームサーバーへの同時問い合わせなどもサポートしています。
+
 ### 🌐 [xh](https://github.com/ducaale/xh) / [HTTPie](https://github.com/httpie/httpie)
 * **カテゴリ**: curl 代替 (HTTP クライアント)
 * **概要**: `curl` よりも簡潔で直感的な構文を持ち、デフォルトでシンタックスハイライトや綺麗に整形された JSON 出力を提供する Rust 製の HTTP クライアント。
@@ -409,7 +424,18 @@ API の疎通確認、負荷テスト、ローカルホスト公開、および�
 
 ---
 
-## 9. Docker & Kubernetes (コンテナ・インフラ管理)
+## 9. Docker & Kubernetes
+
+### 🐳 Devcontainer 活用・抽象化ツール (DevPod / devcontainers-cli)
+VS Code に依存せず、ターミナルや任意のエディタから devcontainer.json を活用するためのツール群。
+
+* **[DevPod](https://github.com/loft-sh/devpod)**
+  * **概要**: devcontainer.json を読み込み、ローカルの Docker だけでなく、Kubernetes、AWS、GCP などの任意のバックエンドインフラ上に開発環境を立ち上げることができる OSS ツール。
+  * **採用検討理由**: Devcontainer は便利ですが VS Code (Dev Containers 拡張) への依存が強くなりがちです。DevPod を使えば、ターミナルや Neovim、Helix、Zed などの好きなエディタを使いながら、Devcontainer の恩恵（環境の再現性）をフルに享受できます。
+* **[@devcontainers/cli](https://github.com/devcontainers/cli)**
+  * **概要**: Microsoft 公式の Devcontainer オープンソース CLI 実装。
+  * **採用検討理由**: CI/CD パイプライン内で Devcontainer イメージをビルドしたり、ターミナルから直接 devcontainer up や devcontainer exec を叩いてコンテナ内でスクリプトを実行する等、Devcontainer の運用を自動化・スクリプト化する際に必須となります。
+* **競合との比較・選択のポイント**: ターミナルから単にコンテナを操作・ビルドするなら公式の devcontainers-cli が標準ですが、他のエディタとの連携やクラウドインフラ上へのデプロイ（リモート開発）まで見据えて Devcontainer の体験を向上させたい場合は DevPod が圧倒的に強力です。 (コンテナ・インフラ管理)
 
 Docker コンテナや Kubernetes リソースを効率的に運用・監視・トラブルシューティングするためのツール群です。
 
@@ -543,11 +569,45 @@ Terraform / OpenTofu のコードを DRY に保ち、複数環境での構成管
 
 ---
 
+## 11.5 モダンコーディング・エディタ・コード品質管理
+
+Rust などのモダンな言語体系で作られた、次世代の高速エディタや Linter/Formatter です。
+
+### 🧬 [Biome](https://github.com/biomejs/biome)
+* **カテゴリ**: Web 向け超高速 Linter / Formatter
+* **概要**: Prettier と ESLint を統合して Rust で書き直した、JavaScript / TypeScript / JSON 向けの爆速ツール。Rome の後継。
+* **採用検討理由**: Node.js 依存の従来のツール群で数秒〜数十秒かかっていた CI での Lint/Format 処理を、ミリ秒単位に短縮し、開発体験と CI 実行時間を劇的に改善します。
+* **主な競合・代替ツール**: Prettier, ESLint, Oxc
+* **競合との比較・選択のポイント**: Prettier や ESLint のような複雑なプラグイン構成を不要にし、ゼロコンフィグで即座に動作するスピード感において群を抜いています。
+
+### 📝 [Helix](https://github.com/helix-editor/helix)
+* **カテゴリ**: Post-Vim モダンターミナルエディタ
+* **概要**: Neovim の操作感を踏襲しつつ、「選択してから操作する (kakoune スタイル)」というより直感的なキーバインドを採用し、LSP や Tree-sitter を箱出し (Zero-config) で完全サポートする Rust 製 TUI エディタ。
+* **採用検討理由**: 巨大な init.lua やプラグインの依存関係管理に疲れた Vim/Neovim ユーザーにとって、インストール直後からモダンな IDE 機能がすべて揃っている点が最大の魅力です。
+* **主な競合・代替ツール**: Neovim, Vim, Kakoune
+* **競合との比較・選択のポイント**: Neovim は無限のカスタマイズ性（プラグインエコシステム）を持ちますが環境構築のハードルが高いのに対し、Helix は設定なしで LSP/Tree-sitter が動作し、キーバインドも Vim より視覚的でミスが少ない設計になっています。
+
+### ⚡ [Zed](https://github.com/zed-industries/zed)
+* **カテゴリ**: 超高速・マルチプレイヤー GUI エディタ
+* **概要**: Atom や Tree-sitter の作者らが開発した、Rust ベースの極めて高速な GUI テキストエディタ。リアルタイムコラボレーションと AI (Copilot/Claude 等) をネイティブサポート。
+* **採用検討理由**: VS Code の起動の遅さや Electron 特有のもたつきを嫌う場合に、Vim 並の軽快さで動作しつつ GUI のリッチさを兼ね備えたエディタとして最強の選択肢です。
+* **主な競合・代替ツール**: VS Code, Cursor, Sublime Text
+* **競合との比較・選択のポイント**: VS Code や Cursor は拡張性が高く機能豊富ですが Electron 製のためリソースを消費します。Zed は GPU レンダリングによる究極のパフォーマンス（キーストロークの遅延ゼロ）を提供し、思考を妨げないことに特化しています。
+
+---
+
 ## 12. OS 特化の環境改善ツール
 
 macOS または Windows のローカルホスト環境そのものの生産性を高める GUI/CLI ツール群です。
 
 ### 12.1 macOS 専用 (macOS Specific)
+
+### 🖥️ [cmux](https://github.com/manaflow-ai/cmux) (macOS 専用)
+* **カテゴリ**: AI エージェント特化型ターミナルエミュレータ
+* **概要**: `libghostty` をベースにした GPU 加速ターミナルで、Aider や Claude Code などの AI コーディングエージェントの運用に特化して設計されたオープンソースの macOS アプリ。マルチセッションのステータスを表示するサイドバーや、入力待ち通知リング、エージェントから操作可能な socket/CLI API を備えています。
+* **採用検討理由**: 複数のプロジェクトや AI エージェントを同時に走らせる際、Git ブランチやリスニングポートの確認、入力待ちの検知を GUI サイドバーで一覧化できます。Ghostty の設定 (`~/.config/ghostty/config`) を自動で共有するため、既存の設定を活かしつつ AI 開発体験を劇的にアップグレードできます。
+* **主な競合・代替ツール**: Ghostty (通常版), WezTerm, Warp
+* **競合との比較・選択のポイント**: Ghostty や WezTerm は通常の汎用ターミナルですが、cmux は AI エージェントの出力を監視してバックグラウンドで処理し、入力待ちになったら通知する等、AI と対話する開発スタイルに特化した専用のウィンドウレイアウトとインターフェースを持っています。
 
 ### 🪟 [AeroSpace](https://github.com/nikitabobko/AeroSpace) / [Yabai](https://github.com/koekeishiya/yabai)
 * **カテゴリ**: タイリングウィンドウマネージャー
