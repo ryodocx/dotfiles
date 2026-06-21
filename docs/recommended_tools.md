@@ -154,11 +154,12 @@
 
 ## 9. AWS / IaC (Infrastructure as Code)
 
-### ☁️ [aws-vault](https://github.com/99designs/aws-vault) / [awsp](https://github.com/johnnyopao/awsp)
-* **カテゴリ**: AWS 認証情報・プロファイル管理
-* **概要**: AWS のクレデンシャルを OS のセキュアなキーストアに保存して一時トークンを発行するツール（aws-vault）と、AWS プロファイルを素早く切り替えるツール（awsp）。
-* **採用検討理由**: 平文の `~/.aws/credentials` を持つリスクを排除し、複数環境（開発・ステージング・本番）の安全かつ高速なスイッチングを実現します。
-* **主な競合・代替ツール**: aws-sso-util, Granted, Leapp
+### ☁️ [Granted](https://github.com/common-fate/granted)
+* **カテゴリ**: AWS 認証情報・プロファイル管理 (マルチアカウント管理)
+* **概要**: AWS IAM Identity Center (SSO) や IAM ロールへのアクセスを簡素化・高速化する CLI ツール (`assume` コマンド)。ブラウザのコンテナ機能/マルチプロファイルと連携し、複数アカウントの AWS コンソールを別ブラウザセッションで同時に開くことも可能。
+* **採用検討理由**: AWS SSO (IAM Identity Center) との親和性が非常に高く、複数環境への同時アクセスやロール切り替えを高速かつセキュアに行えます。ローカルの認証情報も OS のキーストア等に安全に保管できます。
+* **主な競合・代替ツール**: aws-vault, awsp, aws-sso-util, Leapp
+
 
 ### 🏗️ [tflint](https://github.com/terraform-linters/tflint) / [tfsec (Trivy)](https://github.com/aquasecurity/tfsec)
 * **カテゴリ**: IaC 静的解析・セキュリティスキャン
