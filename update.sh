@@ -1,6 +1,27 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# ==============================================================================
+# Dotfiles Update Script (update.sh)
+#
+# このスクリプトは、日々の環境更新（パッケージやツールの最新化）を一括で行うためのものです。
+# 定期的に実行することで、すべてのツールチェインを最新の状態に保つことができます。
+#
+# 主な処理の流れ:
+# 1. ~/.dotfiles リポジトリの最新化 (git pull)
+# 2. chezmoi テンプレートとローカル設定ファイルの同期 (chezmoi update)
+# 3. Nix Flakes のロックファイル (flake.lock) の更新と、システム/ユーザー環境の再適用
+#    - macOS: darwin-rebuild switch
+#    - WSL/Linux: home-manager switch
+# 4. macOS 向けの Homebrew パッケージ更新 (brew update/upgrade)
+# 5. Zsh プラグインマネージャ (sheldon) のロックファイル更新
+# 6. 開発言語・ランタイムマネージャ (mise) のツール更新
+# 7. Gitフック管理ツール (Lefthook) のフック更新
+#
+# 注意:
+# 実行後、Nix の `flake.lock` が更新された場合は、設定を他マシンと同期するために
+# git commit および push を手動で行うことを推奨します。
+# ==============================================================================
 # カラー出力用の定義
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'

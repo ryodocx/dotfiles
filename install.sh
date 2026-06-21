@@ -1,7 +1,27 @@
 #!/bin/bash
 set -e
 
-# Cross-platform dotfiles bootstrap script
+# ==============================================================================
+# Dotfiles Bootstrap Script (install.sh)
+#
+# このスクリプトは、新しいマシンで最初に一度だけ実行するセットアップ用スクリプトです。
+# macOS、Linux、および WSL (Windows Subsystem for Linux) に対応しています。
+#
+# 主な処理の流れ:
+# 1. OSの判定 (macOS / Linux / WSL)
+# 2. Nix パッケージマネージャのインストール (未インストールの場合のみ)
+# 3. macOS の場合は Homebrew のインストール (nix-darwin のため)
+# 4. Nix Flakes を使ったシステム・パッケージ構成の適用 (nix-darwin または home-manager)
+# 5. WSL環境の場合、Windows側の OpenSSH Agent (Windows Hello対応) と連携するための
+#    npiperelay.exe を自動ダウンロード・配置
+# 6. chezmoi の初期化とローカル設定（dotfiles）の展開
+# 7. Gitフック管理ツール (Lefthook) の初期設定
+# 8. デフォルトシェルを zsh に変更
+#
+# 前提条件:
+# - git がインストールされていること
+# - インターネット接続があること
+# ==============================================================================
 
 # 1. OS & WSL Detection
 OS="$(uname -s)"
