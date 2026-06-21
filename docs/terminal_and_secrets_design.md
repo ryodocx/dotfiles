@@ -2,9 +2,17 @@
 
 本ドキュメントは、macOS、Windows (WSL)、Linux のクロスプラットフォーム環境において、**SaaS 非依存で秘密情報を物理的に外部へ持ち出し不可能な状態**を保ちつつ、**日本語環境においてストレスのない開発環境**を構築するための詳細な技術選定と設計をまとめたものです。
 
+### 想定ターゲット環境 (Target Hardware Premises)
+
+本環境の設計・チューニングにおける基準となる想定ハードウェアスペックは以下の通りです。
+- **macOS**: **MacBook Air M5 (Apple Silicon), メモリ 32GB**
+  - **32GB 大容量メモリ**: 複数の Docker コンテナ、ローカル Kubernetes クラスタ（k3d等）、AI エージェント（Claude Code, Aider 等）、Pueue によるビルドキューの同時稼働を想定し、スワップの発生を極力抑える設計としています。
+  - **ファンレス設計（MacBook Air）の考慮**: 長時間のコンパイルや高負荷な並列処理においてサーマルスロットリング（熱による性能低下）が懸念されるため、CPU効率が極めて高い Rust/Go 製ツールを積極的に採用し、無駄なプロセス負荷と発熱を最小化する構成に最適化しています。また、生体認証（Touch ID / Secure Enclave）をフル活用して物理デバイスに強固に紐づいた秘密鍵管理を行います。
+- **Windows / WSL**: ホスト PC の TPM / Windows Hello にバインドされた OpenSSH Agent および WSL ブリッジ環境。
+
 ---
 
-## 1. 秘密情報管理・認証 of 設計 (Secrets & Auth)
+## 1. 秘密情報管理・認証の設計 (Secrets & Auth)
 
 マシンの外部へ秘密情報（秘密鍵・APIキー）を持ち出す経路を遮断し、各マシンのハードウェアセキュア領域（Windows: TPM, macOS: Secure Enclave）にバインドされた安全な認証管理を行います。
 
@@ -40,7 +48,7 @@ WSL2 は独立した Linux 仮想マシンのため、Windows 側の物理 TPM (
 **具体的な設定手順**:
 
 1. **Windows 側サービス起動**:
-   Windows の管理者権限 PowerShell で以下を実行し、Windows 標準 of OpenSSH Agent を自動起動にします。
+   Windows の管理者権限 PowerShell で以下を実行し、Windows 標準の OpenSSH Agent を自動起動にします。
    ```powershell
    Set-Service ssh-agent -StartupType Automatic
    Start-Service ssh-agent
@@ -131,7 +139,7 @@ macOS と Windows を行き来する開発者向けに、日本語入力（IME�
 
 ```
 macOS 配列 (JIS)   :  [英数] (スペースの左) ──► IME OFF  /  [かな] (スペースの右) ──► IME ON
-Windows 配列 (JIS) :  [無変換] (スペース of 左) ─► IME OFF  /  [変換] (スペース of 右) ──► IME ON
+Windows 配列 (JIS) :  [無変換] (スペースの左) ─► IME OFF  /  [変換] (スペースの右) ──► IME ON
 ```
 
 ### 3.1 Windows (Host) 側での統一設定

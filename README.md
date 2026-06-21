@@ -2,6 +2,13 @@
 
 Nix と chezmoi を組み合わせた、macOS、Windows (WSL)、Linux に対応するモダンな dotfiles 環境です。
 
+### 💻 対象ハードウェア前提 (Target Environment Premises)
+* **macOS**: **MacBook Air M5 (Apple Silicon), メモリ 32GB**
+  * 32GB の大容量メモリを活かしたマルチコンテナ、ローカル LLM、AI エージェント（Claude Code / Aider）等の同時稼働に最適化。
+  * MacBook Air のファンレス設計に伴う発熱・サーマルスロットリングを考慮し、CPU/メモリ効率に優れた Rust/Go 製ツールチェーンを最優先した軽量・高速設計。
+  * 生体認証（Touch ID / Secure Enclave）と紐づいた安全な物理バインド SSH 鍵管理。
+* **Windows / WSL**: ホスト TPM (Windows Hello) にバインドされた OpenSSH Agent ＋ WSL 連携ソケットブリッジ環境。
+
 ## 特徴
 1. **ハイブリッド設計**:
    - Nix: パッケージ管理（`flake.lock` によるバージョン完全固定）および macOS のシステム設定（nix-darwin）。
