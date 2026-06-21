@@ -13,8 +13,7 @@
 | GitHub | **ryodocx** |
 | Git 名前 | **ryodocx** |
 | Git メール | **email@ryodocx.net** |
-| macOS ハードウェア前提 | **MacBook Air M5 (Apple Silicon), 32GB RAM** (ファンレス考慮・大容量メモリ最適化) |
-| Windows / WSL 前提 | **ホスト TPM (Windows Hello) バインド** ＋ WSLソケットブリッジ |
+| OS | macOS, Linux, Windows (WSL) |
 | 秘密情報管理 | **TPM / Secure Enclave バインド**（SaaS非依存・外部持出不可） |
 
 ---
