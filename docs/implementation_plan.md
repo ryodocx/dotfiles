@@ -66,8 +66,8 @@
 | | **nix-darwin** | macOS システム環境設定の宣言的管理（IaC） |
 | | **chezmoi** | dotfiles テンプレート管理、マシン固有のローカル設定 |
 | | **age** | 秘密情報のローカル暗号化用ツール |
-| **ターミナル** | **WezTerm** ⭐ | Rust製。GPU加速、Luaによる設定、OSC 52クリップボード同期 |
-| | **cmux** (macOS) | libghosttyベースの macOS ネイティブ AI 開発向けターミナル（macOS固有候補） |
+| **ターミナル** | **Windows Terminal** | Windows 標準のモダンなターミナル。Store経由で入手 |
+| | **Ghostty / cmux** (macOS) | libghosttyベースの高速かつ macOS ネイティブなターミナル |
 | | **Zellij** | Rust製のモダンなターミナルマルチプレクサ（tmux代替） |
 | **シェル & プロンプト**| **zsh** | メインシェル |
 | | **sheldon** | zsh プラグインマネージャ（Nix未使用時のFallback用） |
@@ -195,8 +195,6 @@ bat 設定。
 #### [NEW] [home/dot_config/mise/config.toml](../home/dot_config/mise/config.toml)
 mise グローバル設定。
 
-#### [NEW] [home/dot_config/wezterm/wezterm.lua](../home/dot_config/wezterm/wezterm.lua)
-WezTerm のクロスプラットフォーム設定ファイル。OS 判定、フォントフォールバック（UDEV Gothic + システムフォント）、OSC 52 クリップボード同期、IME インライン描画をサポート。
 
 #### [NEW] [home/dot_config/ghostty/config](../home/dot_config/ghostty/config)
 Ghostty 設定ファイル（macOS 上の cmux が共通で読み込む設定）。UDEV Gothic フォントの設定や基本テーマを定義。

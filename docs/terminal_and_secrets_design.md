@@ -80,21 +80,19 @@ WSL2 は独立した Linux 仮想マシンのため、Windows 側の物理 TPM (
 
 ---
 
-## 2. 日本語ターミナル環境の設計 (WezTerm / cmux)
+## 2. 日本語ターミナル環境の設計 (Windows Terminal / Ghostty / cmux)
 
-クロスプラットフォーム（Windows/WSL/macOS/Linux）で設定ファイルを共有できる **WezTerm** をメインとし、macOS 環境の固有候補として AI 開発に特化した **cmux** をサポートします。
+Windows 環境では Microsoft Store から入手可能な **Windows Terminal** を採用し、macOS 環境では高速かつ AI 開発に特化した **Ghostty** / **cmux** を採用します。
 
 ### 2.1 採用ツールとメリット
 
-#### WezTerm (Windows, macOS, Linux)
-- **設定の可搬性**: `wezterm.lua` で記述され、全 OS で共通の設定が動作します。
-- **OSC 52 クリップボード同期**: SSH 先や WSL の中からでも、特別なリレーツールなしに OS のクリップボードへヤンクした内容がコピーされます。
-- **高度なフォントフォールバック**: 欧文フォントと和文フォントを論理的に合成できます。
+#### Windows Terminal (Windows)
+- **標準搭載と高い親和性**: Windows 11 等に標準搭載（または Store から入手可能）されており、動作が軽量で WSL への接続プロファイルが自動生成されます。
+- **設定の簡便さ**: UI または `settings.json` でフォントやカラースキームを直感的に設定できます。
 
-#### cmux (macOS 固有の候補)
-- **特徴**: Ghostty (libghostty) エンジンをベースに構築された macOS ネイティブのターミナルエミュレータ。
-- **AI ワークフロー最適化**: Claude Code や Aider などの AI エージェントを並行して動かすための専用サイドバー、エージェントの通知ステータスリング、スクリプト可能なブラウザペインなどを内蔵。
-- **Ghostty 互換設定**: cmux は Ghostty の設定ファイル（`~/.config/ghostty/config`）をそのまま読み込みます。このため、dotfiles で Ghostty 設定ファイルを配置しておけば、macOS 上で cmux をインストールしてすぐにパーソナライズされた環境で利用できます。
+#### Ghostty / cmux (macOS)
+- **特徴**: Ghostty (libghostty) エンジンをベースに構築された高速なターミナルエミュレータ。cmux はその派生で、AI エージェント用の専用機能（サイドバーや通知リング等）を備えています。
+- **設定の共有**: Ghostty の設定ファイル（`~/.config/ghostty/config`）は cmux にもそのまま読み込まれます。このため、dotfiles で Ghostty の設定ファイルを配置しておけば、両エディタでシームレスに共通の設定を利用できます。
 
 ---
 
@@ -102,23 +100,16 @@ WSL2 は独立した Linux 仮想マシンのため、Windows 側の物理 TPM (
 
 英数字には Starship プロンプトやモダン CLI が多用するアイコンが崩れないよう、**UDEV Gothic 35NF** (Nerd Font 対応版) を最優先に指定し、各 OS 固有の高品質な UD 和文フォントへフォールバックさせます。
 
-#### WezTerm でのフォント設定例 (`wezterm.lua`):
-```lua
-local wezterm = require 'wezterm'
-local config = wezterm.config_builder()
-
-local is_windows = wezterm.target_triple:find("windows") ~= nil
-local is_mac = wezterm.target_triple:find("apple") ~= nil
-
-config.font = wezterm.font_with_fallback({
-  { family = "UDEV Gothic 35NF", weight = "Regular" },
-  is_mac and "Hiragino Sans" or "BIZ UD Gothic",
-  "Segoe UI Emoji",
-})
-config.font_size = 12.0
-config.line_height = 1.1
-config.use_ime = true -- IME インライン描画有効化
-return config
+#### Windows Terminal でのフォント設定例 (`settings.json`):
+```json
+"profiles": {
+    "defaults": {
+        "font": {
+            "face": "UDEV Gothic 35NF",
+            "size": 12
+        }
+    }
+}
 ```
 
 #### Ghostty / cmux でのフォント設定例 (`ghostty/config`):
@@ -214,8 +205,8 @@ Nix (Home Manager) がインストールされている環境では、zshプラ�
   ```
 
 ### 4.4 Windows ネイティブ側（PowerShell）のプロファイル要否
-Windows 側は WSL や WezTerm、KeePassXC などを動かす「ホストOS」として機能しますが、Windows の PowerShell (pwsh) 自体でも作業（CLI操作）を行うかによって、PowerShell プロファイル（`Microsoft.PowerShell_profile.ps1`）の dotfiles 管理が必要になります。
+Windows 側は WSL や Windows Terminal、KeePassXC などを動かす「ホストOS」として機能しますが、Windows の PowerShell (pwsh) 自体でも作業（CLI操作）を行うかによって、PowerShell プロファイル（`Microsoft.PowerShell_profile.ps1`）の dotfiles 管理が必要になります。
 
 - **設計指針**:
   - **PowerShell を利用する場合**: `home/Documents/PowerShell/Microsoft.PowerShell_profile.ps1`（OS別マッピング）を chezmoi に含め、PowerShell 側でも `starship` や `zoxide` が自動インテグレートされるように構成します。
-  - **PowerShell を利用しない場合（開発は100% WSL）**: PowerShell 側の設定は管理対象外とし、WezTerm のデフォルトシェルを直接 WSL (`wsl.exe -d <distro>`) に向ける設定のみを `wezterm.lua` に記述することで、構成をシンプルに保ちます。
+  - **PowerShell を利用しない場合（開発は100% WSL）**: PowerShell 側の設定は管理対象外とし、Windows Terminal のプロファイル設定でデフォルト起動シェルを直接 WSL (`wsl.exe`) に向けることで、構成をシンプルに保ちます。

@@ -38,7 +38,6 @@
     ];
     casks = [
       "keepassxc"
-      "wezterm"
       "manaflow-ai/cmux/cmux"
       "raycast"
       "arc"

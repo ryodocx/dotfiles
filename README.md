@@ -10,7 +10,7 @@ Nix と chezmoi を組み合わせた、macOS、Windows (WSL)、Linux に対応�
    - Touch ID や Windows Hello をセキュリティキーとした **FIDO2 SSH 鍵 (`ssh-keygen -t ecdsa-sk`)** を使用することで、秘密鍵が物理的にハードウェアの外へ出ない安全な運用を実現。
    - WSL 側から Windows 側の OpenSSH Agent へ自動でブリッジ（`npiperelay` ＋ `socat`）。
 3. **日本語環境の最適化**:
-   - 視認性の高いフォント **UDEV Gothic 35NF** を最優先とし、OS 固有の高品質 UD フォントへフォールバックする WezTerm および Ghostty/cmux 構成。
+   - 視認性の高いフォント **UDEV Gothic 35NF** を最優先とする Windows Terminal (Windows) および Ghostty/cmux (macOS) 構成。
    - macOS（英数/かなキー）と Windows（無変換/変換キー）の IME オン・オフ切り替え操作感の統一。
 
 ## 導入方法
@@ -67,7 +67,6 @@ cd ~/.dotfiles
 | [home/dot_config/git/ignore](file:///C:/Users/ryotn/Documents/antigravity/gallant-shannon/home/dot_config/git/ignore) | `~/.config/git/ignore` | Git のグローバル無視設定 |
 | [home/dot_config/starship.toml](file:///C:/Users/ryotn/Documents/antigravity/gallant-shannon/home/dot_config/starship.toml) | `~/.config/starship.toml` | Starship プロンプトのデザイン設定 |
 | [home/dot_config/ghostty/config](file:///C:/Users/ryotn/Documents/antigravity/gallant-shannon/home/dot_config/ghostty/config) | `~/.config/ghostty/config` | Ghostty (macOS用ターミナル) の設定 |
-| [home/dot_config/wezterm/wezterm.lua](file:///C:/Users/ryotn/Documents/antigravity/gallant-shannon/home/dot_config/wezterm/wezterm.lua) | `~/.config/wezterm/wezterm.lua` | WezTerm (クロスプラットフォームターミナル) の設定 |
 | [home/dot_config/zellij/config.kdl](file:///C:/Users/ryotn/Documents/antigravity/gallant-shannon/home/dot_config/zellij/config.kdl) | `~/.config/zellij/config.kdl` | Zellij (ターミナルマルチプレクサ) の設定 |
 | [home/dot_config/bat/config](file:///C:/Users/ryotn/Documents/antigravity/gallant-shannon/home/dot_config/bat/config) | `~/.config/bat/config` | `bat` (cat代替ツール) のテーマ等の設定 |
 | [home/dot_config/atuin/config.toml](file:///C:/Users/ryotn/Documents/antigravity/gallant-shannon/home/dot_config/atuin/config.toml) | `~/.config/atuin/config.toml` | Atuin (シェル履歴管理) の同期無効化等の設定 |
