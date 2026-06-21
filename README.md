@@ -144,7 +144,7 @@ dotfiles-update
 ```
 
 このコマンドを実行すると、内部的に以下の処理が自動で行われます：
-1. **リポジトリの pull**: `~/.dotfiles` 内で最新の変更を取得 (`git pull origin v2`)
+1. **リポジトリの pull**: `~/.dotfiles` 内で最新の変更を取得 (`git pull`)
 2. **chezmoi の同期**: `chezmoi update` で最新の設定ファイルを再適用
 3. **Nix の更新**: `nix flake update` を実行し、`nix-darwin` もしくは `home-manager` の最新状態を再構築・適用
 4. **Homebrew の更新**: macOS (および Linuxbrew) の GUI アプリ・ツール群を更新 (`brew update && brew upgrade`)

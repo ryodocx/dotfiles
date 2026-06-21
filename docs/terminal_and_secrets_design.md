@@ -61,7 +61,7 @@ WSL2 は独立した Linux 仮想マシンのため、Windows 側の物理 TPM (
        fi
    fi
    ```
-   * ※ `socat` は Nix パッケージ（`nix/home/packages.nix`）に含めることで、OS を問わず自動インストールされます。
+   * ※ `socat` は Nix パッケージ（`nix/home.nix`）に含めることで、OS を問わず自動インストールされます。
 
 ---
 

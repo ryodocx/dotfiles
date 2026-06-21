@@ -32,7 +32,7 @@
 │                    Git リポジトリ                         │
 │                                                         │
 │  ┌─ Nix (パッケージ層) ─────────────────────────────┐  │
-│  │  flake.nix + hosts/ + modules/                   │  │
+│  │  flake.nix + nix/ (darwin.nix, home.nix)         │  │
 │  │  • パッケージのインストール（バージョン完全固定）    │  │
 │  │  • nix-darwin による macOS システムレベルの設定    │  │
 │  │  • [!] programs.* による設定ファイル生成は原則禁止 │  │
@@ -63,7 +63,7 @@
 ### ケース1: 新しいCLIツール（例: `gh` コマンド）を追加したい場合
 
 1. **ツールのインストール (Nix)**
-   `modules/packages.nix` を開き、インストールリストに `gh` を追記します。
+   `nix/home.nix` を開き、インストールリストに `gh` を追記します。
    ```nix
    home.packages = with pkgs; [
      # ...既存のパッケージ...
