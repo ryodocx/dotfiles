@@ -23,12 +23,12 @@
         "macbook" = darwin.lib.darwinSystem {
           system = "aarch64-darwin";
           modules = [
-            ./hosts/macbook/default.nix
+            ./nix/hosts/macbook/default.nix
             home-manager.darwinModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.${user} = import ./modules/home/default.nix;
+              home-manager.users.${user} = import ./nix/modules/home/default.nix;
               home-manager.extraSpecialArgs = {
                 inherit user email;
                 isDarwin = true;
@@ -44,7 +44,7 @@
       homeConfigurations = {
         "wsl" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          modules = [ ./hosts/wsl/default.nix ];
+          modules = [ ./nix/hosts/wsl/default.nix ];
           extraSpecialArgs = {
             inherit user email;
             isDarwin = false;
@@ -53,7 +53,7 @@
         };
         "linux" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          modules = [ ./hosts/linux/default.nix ];
+          modules = [ ./nix/hosts/linux/default.nix ];
           extraSpecialArgs = {
             inherit user email;
             isDarwin = false;

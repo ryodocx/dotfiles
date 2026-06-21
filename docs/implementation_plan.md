@@ -203,24 +203,24 @@ SaaS に依存せず、秘密情報を「原理的に外部に持ち出せない
 
 ### Nix 基盤 (マルチホスト構成へ最適化)
 
-将来的に複数マシン（macOS, WSL, Linuxサーバーなど）を管理しやすくするため、`hosts/` ディレクトリでホストごとのエントリポイントを管理する標準的な Flake 構成を採用します。
+将来的に複数マシン（macOS, WSL, Linuxサーバーなど）を管理しやすくするため、`nix/hosts/` ディレクトリでホストごとのエントリポイントを管理する標準的な Flake 構成を採用します。
 
 #### [NEW] [flake.nix](../flake.nix)
-Nix Flake エントリポイント。nixpkgs, home-manager, nix-darwin の入力定義と、`hosts/` へのルーティング。
+Nix Flake エントリポイント。nixpkgs, home-manager, nix-darwin の入力定義と、`nix/hosts/` へのルーティング。
 
-#### [NEW] [hosts/darwin/default.nix](../hosts/darwin/default.nix)
+#### [NEW] [nix/hosts/darwin/default.nix](../nix/hosts/darwin/default.nix)
 macOS ホスト向けエントリポイント。nix-darwin の設定（Dock, Finder, キーボード, Touch ID sudo, Homebrew Cask）および Home Manager の呼び出し。
 
-#### [NEW] [hosts/wsl/default.nix](../hosts/wsl/default.nix)
+#### [NEW] [nix/hosts/wsl/default.nix](../nix/hosts/wsl/default.nix)
 Windows WSL ホスト向けエントリポイント。Home Manager 単体での呼び出し。
 
-#### [NEW] [modules/home/packages.nix](../modules/home/packages.nix)
+#### [NEW] [nix/modules/home/packages.nix](../nix/modules/home/packages.nix)
 全OS共通でインストールする CLI ツール群のパッケージ宣言。chezmoi 本体もここからインストールする。
 
-#### [NEW] [modules/home/darwin.nix](../modules/home/darwin.nix)
+#### [NEW] [nix/modules/home/darwin.nix](../nix/modules/home/darwin.nix)
 macOS 固有の追加パッケージや設定（必要に応じて）。
 
-#### [NEW] [modules/home/linux.nix](../modules/home/linux.nix)
+#### [NEW] [nix/modules/home/linux.nix](../nix/modules/home/linux.nix)
 Linux/WSL 固有の追加パッケージ（KeePassXC SSH Agent に接続するための `socat` など）。
 
 ---
