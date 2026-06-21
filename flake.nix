@@ -16,8 +16,7 @@
   outputs = { self, nixpkgs, home-manager, darwin, ... }@inputs:
     let
       user = "ryodocx";
-      email = "email@ryodocx.net";
-      extraSpecialArgs = { inherit user email; };
+      extraSpecialArgs = { inherit user; };
     in {
       # macOS (nix-darwin + Home Manager)
       darwinConfigurations.darwin = darwin.lib.darwinSystem {

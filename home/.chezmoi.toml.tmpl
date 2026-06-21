@@ -1,7 +1,7 @@
 # chezmoi configuration template
 
-{{- $user := promptStringOnce . "user" "Enter your Git username" "ryodocx" -}}
-{{- $email := promptStringOnce . "email" "Enter your Git email address" "email@ryodocx.net" -}}
+{{- $user := promptStringOnce . "user" "Enter your Git username" -}}
+{{- $email := promptStringOnce . "email" "Enter your Git email address" -}}
 
 {{- $osId := .chezmoi.os -}}
 {{- $isWSL := false -}}

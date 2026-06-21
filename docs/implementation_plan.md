@@ -12,7 +12,7 @@
 |------|-----|
 | GitHub | **ryodocx** |
 | Git 名前 | **ryodocx** |
-| Git メール | **email@ryodocx.net** |
+| Git メール | **your-email@example.com** |
 | OS | macOS, Linux, Windows (WSL) |
 | 秘密情報管理 | **TPM / Secure Enclave バインド**（SaaS非依存・外部持出不可） |
 
