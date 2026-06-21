@@ -1,0 +1,6 @@
+# chezmoiignore
+# Exclude OS-specific configurations based on target OS
+
+{{- if ne .chezmoi.os "darwin" }}
+.config/ghostty/
+{{- end }}

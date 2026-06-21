@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-type terraform &>/dev/null && {
-    complete -o nospace -C terraform terraform
-}

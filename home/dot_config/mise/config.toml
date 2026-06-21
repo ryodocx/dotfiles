@@ -1,0 +1,8 @@
+# mise global tool definitions and settings
+[tools]
+node = "lts"
+python = "latest"
+
+[settings]
+legacy_version_file = true
+asdf_compat = true

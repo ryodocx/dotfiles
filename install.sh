@@ -1,248 +1,82 @@
-#!/usr/bin/env bash
+#!/bin/bash
 set -e
-cd $(dirname $0)
-type sudo &>/dev/null && sudo=sudo
 
-./link.sh
+# Cross-platform dotfiles bootstrap script
 
-# mkdir
-mkdir -p ~/src
-mkdir -p ~/.ssh/.ctl
+# 1. OS & WSL Detection
+OS="$(uname -s)"
+case "${OS}" in
+    Darwin*)  OS_TYPE="darwin" ;;
+    Linux*)   OS_TYPE="linux" ;;
+    *)        echo "Unsupported OS: ${OS}"; exit 1 ;;
+esac
 
-################################################################################
-# basic packages
-(
-    case "$(uname -s)" in
-    "Darwin")
-        # brew
-        type brew &>/dev/null || {
-            xcode-select --install ||
-                ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-        }
-
-        brew upgrade
-        brew cask upgrade
-
-        brew install \
-            bash \
-            curl \
-            openssh \
-            vim \
-            git \
-            watch \
-            bash-completion
-
-        brew cask install \
-            keepassxc
-
-        # enable bash
-        if [ -z "${CI}" ]; then
-            grep /usr/local/bin/bash /etc/shells || {
-                echo '1. sudo vi /etc/shells & add "/usr/local/bin/bash" last line.'
-                echo '2. chsh -s /usr/local/bin/bash'
-                exit 1
-            }
-
-        fi
-        ;;
-    "Linux")
-        if type yum &>/dev/null; then
-            # ${sudo} yum update -y
-            ${sudo} yum install -y \
-                curl \
-                openssh-clients \
-                vim \
-                git \
-                bash-completion
-        elif type apt &>/dev/null; then
-            ${sudo} apt update -y
-            ${sudo} apt install -y \
-                curl \
-                openssh-client \
-                vim \
-                git \
-                bash-completion
-        fi
-        ;;
-    esac
-)
-################################################################################
-# https://github.com/zeit/hyper
-(
-    case "$(uname -s)" in
-    "Darwin")
-        brew cask install hyper
-        ;;
-    "Linux")
-        if type yum &>/dev/null; then
-            :
-        elif type apt &>/dev/null; then
-            :
-        fi
-        ;;
-    esac
-)
-################################################################################
-# snap
-# (
-#     case "$(uname -s)" in
-#     "Darwin")
-#         :
-#         ;;
-#     "Linux")
-#         if type yum &>/dev/null; then
-#             type snap &>/dev/null || {
-#                 ${sudo} yum -y install epel-release yum-plugin-copr
-#                 ${sudo} yum -y copr enable ngompa/snapcore-el7
-#                 ${sudo} yum -y install snapd
-#                 ${sudo} systemctl enable --now snapd.socket ||
-#                     ${sudo} ln -sfv /var/lib/snapd/snap /snap
-#             }
-#         elif
-#             type apt &>/dev/null
-#         then
-#             ${sudo} apt install -y snapd
-#         fi
-#         ;;
-#     esac
-# )
-################################################################################
-# asdf
-(
-    if [ ! -d ~/.asdf ]; then
-        git clone https://github.com/asdf-vm/asdf.git ~/.asdf
-    fi
-    . ~/.asdf/asdf.sh
-    . ~/.asdf/completions/asdf.bash
-    asdf update
-
-    case "$(uname -s)" in
-    "Darwin")
-        brew install \
-            coreutils \
-            automake \
-            autoconf \
-            openssl \
-            libyaml \
-            readline \
-            libxslt \
-            libtool \
-            gpg \
-            unixodbc \
-            unzip
-        # python
-        brew install \
-            openssl \
-            readline \
-            sqlite3 \
-            xz \
-            zlib
-        if [ -z "${CI}" ]; then
-            sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
-        fi
-        ;;
-    "Linux")
-        if type yum &>/dev/null; then
-            ${sudo} yum install -y \
-                make \
-                automake \
-                autoconf \
-                libtool \
-                unzip
-            # nodejs
-            ${sudo} yum install -y \
-                perl-Digest-SHA
-            # python
-            ${sudo} yum install -y \
-                gcc \
-                zlib-devel \
-                bzip2 \
-                bzip2-devel \
-                readline \
-                readline-devel \
-                sqlite \
-                sqlite-devel \
-                openssl \
-                openssl-devel \
-                libffi-devel
-        elif type apt &>/dev/null; then
-            ${sudo} apt install -y \
-                automake \
-                autoconf \
-                libreadline-dev \
-                libncurses-dev \
-                libssl-dev \
-                libyaml-dev \
-                libxslt-dev \
-                libffi-dev \
-                libtool \
-                unixodbc-dev \
-                unzip
-            # python
-            ${sudo} apt install -y \
-                make \
-                build-essential \
-                libssl-dev \
-                zlib1g-dev \
-                libbz2-dev \
-                libreadline-dev \
-                libsqlite3-dev \
-                wget \
-                curl \
-                llvm \
-                libncurses5-dev \
-                xz-utils \
-                tk-dev \
-                libxml2-dev \
-                libxmlsec1-dev \
-                libffi-dev \
-                liblzma-dev
-        fi
-        ;;
-    esac
-
-    function asdf-plugin-add() {
-        toolName=$1
-        url=$2
-        asdf plugin-add ${toolName} ${url} || :
-    }
-
-    asdf-plugin-add peco https://github.com/ryodocx/asdf-peco
-)
-################################################################################
-# Docker
-if [ -z "${CI}" ]; then
-    case "$(uname -s)" in
-    "Darwin")
-        :
-        ;;
-    "Linux")
-        if type yum &>/dev/null; then
-            :
-        elif type apt &>/dev/null; then
-            ${sudo} apt -y install \
-                apt-transport-https \
-                ca-certificates \
-                curl \
-                gnupg2 \
-                software-properties-common
-            curl -fsSL https://download.docker.com/linux/debian/gpg | ${sudo} apt-key add -
-            if grep ubuntu /etc/os-release 1>/dev/null; then
-                ${sudo} add-apt-repository \
-                    "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-            elif grep debian /etc/os-release 1>/dev/null; then
-                ${sudo} add-apt-repository \
-                    "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
-            fi
-            ${sudo} apt -y update
-            ${sudo} apt -y install docker-ce docker-ce-cli containerd.io
-            ${sudo} groupadd docker || :
-            ${sudo} gpasswd -a $USER docker || :
-            ${sudo} service docker restart || ${sudo} service docker start
-        fi
-        ;;
-    esac
+IS_WSL=false
+if [ "${OS_TYPE}" = "linux" ] && grep -q -i "microsoft" /proc/version; then
+    IS_WSL=true
 fi
-################################################################################
-echo "install completed!"
-exit 0
+
+echo "Detected OS: ${OS_TYPE} (WSL: ${IS_WSL})"
+
+# 2. Nix Installation (if missing)
+if ! command -v nix >/dev/null 2>&1; then
+    echo "Nix not found. Installing Nix via Determinate Systems installer..."
+    curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --no-confirm
+    
+    if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+        . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+    fi
+fi
+
+# 2.5. Homebrew Installation (macOS only, required by nix-darwin homebrew module)
+if [ "${OS_TYPE}" = "darwin" ] && ! command -v brew >/dev/null 2>&1; then
+    echo "Homebrew not found. Installing Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+# 3. Apply Nix (nix-darwin for macOS / home-manager for Linux)
+echo "Applying Nix configurations..."
+if [ "${OS_TYPE}" = "darwin" ]; then
+    nix run github:LnL7/nix-darwin -- switch --flake .#macbook
+else
+    TARGET_CONFIG="wsl"
+    if [ "${IS_WSL}" = "false" ]; then
+        TARGET_CONFIG="linux"
+    fi
+    nix run github:nix-community/home-manager -- switch --flake .#${TARGET_CONFIG}
+fi
+
+# 4. Automate npiperelay.exe setup for WSL
+if [ "${IS_WSL}" = "true" ]; then
+    WIN_USER_PROFILE_WINPATH=$(/mnt/c/Windows/System32/cmd.exe /c "echo %USERPROFILE%" 2>/dev/null | tr -d '\r')
+    WIN_USER_PROFILE_WSLPATH=$(wslpath "$WIN_USER_PROFILE_WINPATH" 2>/dev/null)
+    WIN_BIN_DIR="${WIN_USER_PROFILE_WSLPATH}/bin"
+    
+    if [ ! -f "${WIN_BIN_DIR}/npiperelay.exe" ]; then
+        echo "npiperelay.exe not found on Windows host. Downloading..."
+        mkdir -p "${WIN_BIN_DIR}"
+        TEMP_DIR=$(mktemp -d)
+        
+        # Download and extract npiperelay
+        curl -sSfL "https://github.com/jstarks/npiperelay/releases/latest/download/npiperelay_windows_amd64.zip" -o "${TEMP_DIR}/npiperelay.zip"
+        unzip -q "${TEMP_DIR}/npiperelay.zip" -d "${TEMP_DIR}"
+        mv "${TEMP_DIR}/npiperelay.exe" "${WIN_BIN_DIR}/"
+        rm -rf "${TEMP_DIR}"
+        echo "npiperelay.exe successfully placed in ${WIN_BIN_DIR}"
+    fi
+fi
+
+# 5. Initialize and apply chezmoi
+echo "Initializing and applying chezmoi dotfiles..."
+chezmoi init --source="$(pwd)"
+chezmoi apply
+
+# 6. Change shell to zsh (if necessary)
+ZSH_PATH=$(command -v zsh)
+if [ "${SHELL}" != "${ZSH_PATH}" ] && [ -n "${ZSH_PATH}" ]; then
+    echo "Changing default shell to zsh..."
+    chsh -s "${ZSH_PATH}"
+fi
+
+echo "🎉 Dotfiles setup completed successfully! Please restart your terminal."

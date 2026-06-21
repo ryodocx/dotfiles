@@ -1,0 +1,25 @@
+# chezmoi configuration template
+
+{{- $user := "ryodocx" -}}
+{{- $email := "email@ryodocx.net" -}}
+
+{{- $osId := .chezmoi.os -}}
+{{- $isWSL := false -}}
+{{- if eq .chezmoi.os "linux" -}}
+  {{- if (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}
+    {{- $isWSL = true -}}
+  {{- end -}}
+{{- end -}}
+
+# Ask for machine-local secrets (not committed to Git)
+{{- $githubToken := promptStringOnce . "githubToken" "Enter your GitHub Personal Access Token (for this machine only)" -}}
+
+[data]
+    user = "{{ $user }}"
+    email = "{{ $email }}"
+    osId = "{{ $osId }}"
+    isWSL = {{ $isWSL }}
+    githubToken = "{{ $githubToken }}"
+
+[edit]
+    command = "vim"

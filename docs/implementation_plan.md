@@ -1,0 +1,225 @@
+# クロスプラットフォーム dotfiles 環境構築 — 実装計画
+
+> [!TIP]
+> ユーザーフィードバックを反映した改訂版。ハイブリッド構成（Nix + chezmoi）で**実用しながら比較・段階移行**する方針。
+> 秘密情報は、マシンの外部へ持ち出し不可能な **TPM / Secure Enclave ハードウェアバインド**（FIDO2 セキュリティキー）および **chezmoi ローカル変数**で管理する設計。
+
+---
+
+## ユーザー情報
+
+| 項目 | 値 |
+|------|-----|
+| GitHub | **ryodocx** |
+| Git 名前 | **ryodocx** |
+| Git メール | **email@ryodocx.net** |
+| OS | macOS, Linux, Windows (WSL) |
+| 秘密情報管理 | **TPM / Secure Enclave バインド**（SaaS非依存・外部持出不可） |
+
+---
+
+## 採用プラン: ハイブリッド（Nix パッケージ + chezmoi コンフィグ）
+
+> **「迷っているなら両方使いながら比較する」** という方針を採用。
+> 実用しながら Nix の世界を体験し、将来の完全移行を判断できる構成。
+
+### 設計思想
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    Git リポジトリ                         │
+│                                                         │
+│  ┌─ Nix (パッケージ層) ─────────────────────────────┐  │
+│  │  flake.nix + home.nix                            │  │
+│  │  • パッケージのインストール（バージョン固定）      │  │
+│  │  • nix-darwin による macOS システム設定            │  │
+│  │  • programs.* は最小限（パッケージ install のみ）  │  │
+│  └──────────────────────────────────────────────────┘  │
+│                         ↕                               │
+│  ┌─ chezmoi (コンフィグ層) ─────────────────────────┐  │
+│  │  dot_config/, dot_zshrc.tmpl, etc.               │  │
+│  │  • 設定ファイルのテンプレート管理                  │  │
+│  │  • OS 分岐（Go テンプレート）                     │  │
+│  │  • マシン固有秘密情報のローカル管理（持出不可）    │  │
+│  └──────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────┘
+```
+
+### メリット
+
+- 🟢 **今すぐ使い始められる**: chezmoi の設定ファイルは素の TOML/zshrc なので直感的
+- 🟢 **Nix のバージョン固定**: `flake.lock` で全マシン同一パッケージ
+- 🟢 **段階的移行**: 慣れたら chezmoi の設定を 1 つずつ `programs.*` に移行可能
+- 🟢 **nix-darwin**: macOS システム設定を宣言的に管理
+- 🟢 **ハードウェアバインド**: TPM や Secure Enclave に紐づいた SSH 鍵により、秘密鍵を物理的に外部へ持ち出し不可能に
+
+---
+
+## 採用ツール一覧
+
+本 dotfiles 環境において導入・管理する最新のツール群です。
+
+| 分類 | ツール名 | 用途・特徴 |
+|---|---|---|
+| **環境・構成管理** | **Nix (Flakes)** | パッケージ宣言、依存関係の完全再現（バージョン固定） |
+| | **Home Manager** | ユーザー環境のパッケージ・構成管理 |
+| | **nix-darwin** | macOS システム環境設定の宣言的管理（IaC） |
+| | **chezmoi** | dotfiles テンプレート管理、マシン固有のローカル設定 |
+| | **age** | 秘密情報のローカル暗号化用ツール |
+| **ターミナル** | **WezTerm** ⭐ | Rust製。GPU加速、Luaによる設定、OSC 52クリップボード同期 |
+| | **cmux** (macOS) | libghosttyベースの macOS ネイティブ AI 開発向けターミナル（macOS固有候補） |
+| | **Zellij** | Rust製のモダンなターミナルマルチプレクサ（tmux代替） |
+| **シェル & プロンプト**| **zsh** | メインシェル |
+| | **sheldon** | zsh プラグインマネージャ（Nix未使用時のFallback用） |
+| | **Starship** | 高速でモダンなクロスシェルプロンプト |
+| **検索・履歴・移動** | **Atuin** | 暗号化されたシェル履歴の保存・検索 |
+| | **fzf** | コマンドラインのあいまい検索（Fuzzy Finder） |
+| | **zoxide** | コマンドライン用のスマートディレクトリ移動（cd代替） |
+| | **yazi** | Rust製。超高速ターミナルファイルマネージャ |
+| **モダン CLI 代替** | **eza** | アイコン・Gitステータス対応のディレクトリ一覧（ls代替） |
+| | **bat** | シンタックスハイライト対応のテキスト閲覧（cat代替） |
+| | **fd** | シンプルかつ高速なファイル検索（find代替） |
+| | **ripgrep (rg)** | 高速な文字列検索（grep代替） |
+| | **git-delta** | シンタックスハイライト対応の差分表示（git diff代替） |
+| | **dust** | ディスク使用量のグラフィカル表示（du代替） |
+| | **btop** | 美しいリソース・プロセスの監視（top代替） |
+| **開発環境マネージャ** | **mise** | 各種プログラミング言語のランタイム・ツール管理（asdf/fnm代替） |
+| | **lazygit** | Git 操作を爆速にするターミナル用 UI |
+| **秘密情報・ブリッジ** | **OpenSSH (FIDO2)** | TPM/Secure Enclave と連携したハードウェアバインド鍵の生成 |
+| | **socat** / **npiperelay**| WSL から Windows 側の OpenSSH Agent (Windows Hello) へのブリッジ |
+
+---
+
+## フォント選定: UDEV Gothic
+
+日本語環境に最適化されたプログラミングフォントを比較し、**UDEV Gothic** を推奨：
+
+| フォント | 欧文ベース | 和文ベース | 特徴 |
+|---------|-----------|-----------|------|
+| **UDEV Gothic** ⭐ | JetBrains Mono | BIZ UDゴシック | **UD（ユニバーサルデザイン）で視認性最高**。リガチャ対応版あり |
+| HackGen | Hack | 源柔ゴシック | Ricty 後継の定番。安定感とバランス |
+| PlemolJP | IBM Plex Mono | IBM Plex Sans JP | IBM Plex 統一でモダン。ウェイト豊富 |
+| Moralerspace | Monaspace (GitHub) | IBM Plex Sans JP | 最新。5スタイル選択可能 |
+
+> [!TIP]
+> **UDEV Gothic を推奨する理由**:
+> - JetBrains Mono ベース = Starship 推奨の JetBrainsMono Nerd Font と同じ欧文デザイン
+> - **BIZ UDゴシック** = 経済産業省が推進する UD フォント。長時間作業の視認性に優れる
+> - Nerd Font 対応版（`UDEV Gothic NF`）が用意されている
+
+---
+
+## 秘密情報管理: TPM / Secure Enclave ハードウェアバインド
+
+SaaS に依存せず、秘密情報を「原理的に外部に持ち出せない状態」で管理する設計です。
+
+### 1. SSH 鍵のハードウェアバインド (FIDO2 / Security Key 方式)
+- macOS (Secure Enclave) や Windows (TPM / Windows Hello) は、OS レベルで FIDO2 / WebAuthn プロバイダとして動作するため、外付け物理 YubiKey なしで**内蔵の生体認証（Touch ID / Windows Hello）をセキュリティキーとして指定可能**です。
+- `ssh-keygen -t ecdsa-sk` (または `-t ed25519-sk`) で鍵を生成します。
+  - 生成される秘密鍵ファイルには「ハードウェア（TPM / Secure Enclave）への参照トークン」のみが書き込まれ、実体はセキュア領域に暗号化されて格納されます。
+  - このファイルを他のマシンにコピーしても、元のハードウェアと生体認証がなければ一切署名できません。これにより「秘密情報を外部に持ち出せない状態」を担保します。
+- **WSL での利用**:
+  - Windows の OpenSSH Agent サービス（Windows Hello 連携）に、`npiperelay` + `socat` ブリッジ経由で接続することで、WSL 内の `git` や `ssh` も Windows Hello / TPM を通じて透過的に認証できます。
+
+### 2. API キー等のマシン個別ローカル管理
+- 秘密情報（API キーやアクセストークンなど）は、マシンをまたいで同期せず、各マシンで再発行・個別登録します。
+- chezmoi の **ローカルテンプレート変数** を採用します。
+  - `chezmoi init` 実行時に、対話プロンプトで API キーの入力を求めます。
+  - 入力値はローカルの `~/.config/chezmoi/chezmoi.toml` にのみ変数として保存され、Git リポジトリには絶対にコミットされません。
+  - 生成されるローカル設定ファイルは権限 `600` で保護され、外部に同期もされないため、機密情報をローカルマシン内に完全に閉じ込めることができます。
+
+---
+
+## Proposed Changes
+
+### Nix 基盤
+
+#### [NEW] [flake.nix](../flake.nix)
+Nix Flake エントリポイント。nixpkgs, home-manager, nix-darwin の入力定義。
+
+#### [NEW] [nix/home/default.nix](../nix/home/default.nix)
+Home Manager 共通設定。各モジュールの import。
+
+#### [NEW] [nix/home/packages.nix](../nix/home/packages.nix)
+CLI ツール群のパッケージ宣言。WSL から Windows の KeePassXC SSH Agent に接続するための `socat` も含める。
+
+#### [NEW] [nix/home/darwin.nix](../nix/home/darwin.nix)
+macOS 固有の Home Manager 設定。
+
+#### [NEW] [nix/home/linux.nix](../nix/home/linux.nix)
+Linux/WSL 固有の Home Manager 設定。
+
+#### [NEW] [nix/darwin/default.nix](../nix/darwin/default.nix)
+nix-darwin によるmacOS システム設定（Dock, Finder, キーボード, Touch ID sudo, Homebrew Cask）。
+
+---
+
+### chezmoi コンフィグ
+
+#### [NEW] [home/.chezmoi.toml.tmpl](../home/.chezmoi.toml.tmpl)
+chezmoi 設定。KeePassXC DB パス、ユーザー変数。
+
+#### [NEW] [home/.chezmoiignore](../home/.chezmoiignore)
+OS 別除外ルール。
+
+#### [NEW] [home/dot_zshrc.tmpl](../home/dot_zshrc.tmpl)
+zsh メイン設定。sheldon, Starship, Atuin, fzf, zoxide, エイリアス統合。WSL での `socat` + `npiperelay` による SSH Agent ブリッジも自動起動。
+
+#### [NEW] [home/dot_zshenv.tmpl](../home/dot_zshenv.tmpl)
+XDG ベースディレクトリ、PATH 設定。
+
+#### [NEW] [home/dot_config/starship.toml](../home/dot_config/starship.toml)
+Starship プロンプト設定。
+
+#### [NEW] [home/dot_config/atuin/config.toml](../home/dot_config/atuin/config.toml)
+Atuin シェル履歴設定。
+
+#### [NEW] [home/dot_config/git/config.tmpl](../home/dot_config/git/config.tmpl)
+Git 設定（OS 分岐: credential helper, autocrlf）。
+
+#### [NEW] [home/dot_config/git/ignore](../home/dot_config/git/ignore)
+グローバル gitignore。
+
+#### [NEW] [home/dot_config/git/attributes](../home/dot_config/git/attributes)
+グローバル gitattributes。
+
+#### [NEW] [home/dot_config/sheldon/plugins.toml](../home/dot_config/sheldon/plugins.toml)
+zsh プラグイン定義。
+
+#### [NEW] [home/dot_config/zellij/config.kdl](../home/dot_config/zellij/config.kdl)
+zellij 設定。
+
+#### [NEW] [home/dot_config/bat/config](../home/dot_config/bat/config)
+bat 設定。
+
+#### [NEW] [home/dot_config/mise/config.toml](../home/dot_config/mise/config.toml)
+mise グローバル設定。
+
+#### [NEW] [home/dot_config/wezterm/wezterm.lua](../home/dot_config/wezterm/wezterm.lua)
+WezTerm のクロスプラットフォーム設定ファイル。OS 判定、フォントフォールバック（UDEV Gothic + システムフォント）、OSC 52 クリップボード同期、IME インライン描画をサポート。
+
+#### [NEW] [home/dot_config/ghostty/config](../home/dot_config/ghostty/config)
+Ghostty 設定ファイル（macOS 上の cmux が共通で読み込む設定）。UDEV Gothic フォントの設定や基本テーマを定義。
+
+---
+
+### ブートストラップ & ドキュメント
+
+#### [NEW] [install.sh](../install.sh)
+ブートストラップスクリプト。OS 検出 → Nix 適用 → chezmoi 適用。
+
+#### [NEW] [README.md](../README.md)
+セットアップ手順、ツール一覧、移行ガイド。
+
+---
+
+## Verification Plan
+
+### 自動検証
+- `nix flake check` — Flake の構文・型チェック
+- `chezmoi doctor` — chezmoi の設定検証
+- `chezmoi diff` — 差分の事前確認
+
+### 手動検証（ユーザーに依頼）
+- WSL 環境で `install.sh` を実行してテスト
+- macOS 環境で nix-darwin + chezmoi をテスト

@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-type helm &>/dev/null && {
-    . <(helm completion bash)
-}

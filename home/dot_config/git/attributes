@@ -1,0 +1,10 @@
+* text=auto
+
+*.sh text eol=lf
+*.nix text eol=lf
+*.lua text eol=lf
+*.toml text eol=lf
+*.tmpl text eol=lf
+*.kdl text eol=lf
+*.config text eol=lf
+.chezmoiignore text eol=lf
