@@ -76,7 +76,7 @@
    darwin-rebuild switch --flake .#darwin
    
    # WSL/Linuxの場合
-   home-manager switch --flake .#wsl
+   home-manager switch --flake .#linux
    ```
    > [!NOTE]
    > この時点では、`gh` コマンドは使えるようになりますが、設定ファイルは一切作成されません。Home Manager の `programs.gh.enable = true` 等のNix側での設定生成は使いません。
@@ -203,25 +203,19 @@ SaaS に依存せず、秘密情報を「原理的に外部に持ち出せない
 
 ### Nix 基盤 (マルチホスト構成へ最適化)
 
-将来的に複数マシン（macOS, WSL, Linuxサーバーなど）を管理しやすくするため、`nix/hosts/` ディレクトリでホストごとのエントリポイントを管理する標準的な Flake 構成を採用します。
+将来的に複数マシン（macOS, WSL, Linuxサーバーなど）を管理しやすくするため、`nix/` ディレクトリで構成を整理し、以下の Flake 構成を採用します。
 
 #### [NEW] [flake.nix](../flake.nix)
-Nix Flake エントリポイント。nixpkgs, home-manager, nix-darwin の入力定義と、`nix/hosts/` へのルーティング。
+Nix Flake エントリポイント。nixpkgs, home-manager, nix-darwin の入力定義。
 
 #### [NEW] [nix/hosts/darwin/default.nix](../nix/hosts/darwin/default.nix)
 macOS ホスト向けエントリポイント。nix-darwin の設定（Dock, Finder, キーボード, Touch ID sudo, Homebrew Cask）および Home Manager の呼び出し。
 
-#### [NEW] [nix/hosts/wsl/default.nix](../nix/hosts/wsl/default.nix)
-Windows WSL ホスト向けエントリポイント。Home Manager 単体での呼び出し。
+#### [NEW] [nix/modules/home/default.nix](../nix/modules/home/default.nix)
+Home Manager のメインモジュール。
 
 #### [NEW] [nix/modules/home/packages.nix](../nix/modules/home/packages.nix)
 全OS共通でインストールする CLI ツール群のパッケージ宣言。chezmoi 本体もここからインストールする。
-
-#### [NEW] [nix/modules/home/darwin.nix](../nix/modules/home/darwin.nix)
-macOS 固有の追加パッケージや設定（必要に応じて）。
-
-#### [NEW] [nix/modules/home/linux.nix](../nix/modules/home/linux.nix)
-Linux/WSL 固有の追加パッケージ（KeePassXC SSH Agent に接続するための `socat` など）。
 
 ---
 

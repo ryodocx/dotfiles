@@ -32,7 +32,6 @@
               home-manager.extraSpecialArgs = {
                 inherit user email;
                 isDarwin = true;
-                isWSL = false;
               };
             }
           ];
@@ -42,22 +41,12 @@
 
       # Linux / WSL (Home Manager standalone)
       homeConfigurations = {
-        "wsl" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          modules = [ ./nix/modules/home/default.nix ];
-          extraSpecialArgs = {
-            inherit user email;
-            isDarwin = false;
-            isWSL = true;
-          };
-        };
         "linux" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           modules = [ ./nix/modules/home/default.nix ];
           extraSpecialArgs = {
             inherit user email;
             isDarwin = false;
-            isWSL = false;
           };
         };
       };

@@ -30,12 +30,9 @@ if [ ! -S "$SSH_AUTH_SOCK" ]; then
 fi
 {{- end }}
 
-# ── Nix / sheldon Plugin Loading Separation ──
-if ! [ -d "/nix" ] && [ -z "$NIX_PROFILES" ]; then
-    # Non-Nix environment: load shell plugins via sheldon
-    if command -v sheldon >/dev/null 2>&1; then
-        eval "$(sheldon source)"
-    fi
+# ── Shell Plugin Loading via sheldon ──
+if command -v sheldon >/dev/null 2>&1; then
+    eval "$(sheldon source)"
 fi
 
 # ── Tool Integrations ──

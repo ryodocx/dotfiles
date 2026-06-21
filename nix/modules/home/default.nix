@@ -1,4 +1,4 @@
-{ pkgs, user, email, isDarwin, isWSL, ... }: {
+{ pkgs, user, email, isDarwin, ... }: {
   imports = [
     ./packages.nix
   ];

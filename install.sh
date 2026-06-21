@@ -60,11 +60,7 @@ echo "Applying Nix configurations..."
 if [ "${OS_TYPE}" = "darwin" ]; then
     nix run github:LnL7/nix-darwin -- switch --flake .#darwin
 else
-    TARGET_CONFIG="wsl"
-    if [ "${IS_WSL}" = "false" ]; then
-        TARGET_CONFIG="linux"
-    fi
-    nix run github:nix-community/home-manager -- switch --flake .#${TARGET_CONFIG}
+    nix run github:nix-community/home-manager -- switch --flake .#linux
 fi
 
 # 4. Automate npiperelay.exe setup for WSL
