@@ -23,23 +23,24 @@
 > **「迷っているなら両方使いながら比較する」** という方針を採用。
 > 実用しながら Nix の世界を体験し、将来の完全移行を判断できる構成。
 
-### 設計思想
+### 設計思想と責務の厳格な分離 (Separation of Concerns)
 
-```
+ハイブリッド構成の最大の罠である「Nix と chezmoi で設定ファイルが競合する問題」を防ぐため、両者の責務を以下のように厳格に分離します。
+
+```text
 ┌─────────────────────────────────────────────────────────┐
 │                    Git リポジトリ                         │
 │                                                         │
 │  ┌─ Nix (パッケージ層) ─────────────────────────────┐  │
-│  │  flake.nix + home.nix                            │  │
-│  │  • パッケージのインストール（バージョン固定）      │  │
-│  │  • nix-darwin による macOS システム設定            │  │
-│  │  • programs.* は最小限（パッケージ install のみ）  │  │
+│  │  flake.nix + hosts/ + modules/                   │  │
+│  │  • パッケージのインストール（バージョン完全固定）    │  │
+│  │  • nix-darwin による macOS システムレベルの設定    │  │
+│  │  • [!] programs.* による設定ファイル生成は原則禁止 │  │
 │  └──────────────────────────────────────────────────┘  │
 │                         ↕                               │
 │  ┌─ chezmoi (コンフィグ層) ─────────────────────────┐  │
-│  │  dot_config/, dot_zshrc.tmpl, etc.               │  │
-│  │  • 設定ファイルのテンプレート管理                  │  │
-│  │  • OS 分岐（Go テンプレート）                     │  │
+│  │  home/ (dot_config/, dot_zshrc.tmpl, etc.)       │  │
+│  │  • 設定ファイルの配置とテンプレート処理（OS分岐等）│  │
 │  │  • マシン固有秘密情報のローカル管理（持出不可）    │  │
 │  └──────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────┘
@@ -48,13 +49,81 @@
 ### メリット
 
 - 🟢 **今すぐ使い始められる**: chezmoi の設定ファイルは素の TOML/zshrc なので直感的
-- 🟢 **Nix のバージョン固定**: `flake.lock` で全マシン同一パッケージ
-- 🟢 **段階的移行**: 慣れたら chezmoi の設定を 1 つずつ `programs.*` に移行可能
-- 🟢 **nix-darwin**: macOS システム設定を宣言的に管理
+- 🟢 **Nix のバージョン固定**: `flake.lock` で全マシン同一パッケージ。chezmoi 自体も Nix でインストール
+- 🟢 **競合の排除**: Nix は「入れるだけ」、chezmoi が「設定するだけ」と役割分担を明確化
+- 🟢 **nix-darwin**: macOS システム設定（Dock, Finder等）を宣言的に管理
 - 🟢 **ハードウェアバインド**: TPM や Secure Enclave に紐づいた SSH 鍵により、秘密鍵を物理的に外部へ持ち出し不可能に
 
 ---
 
+## 具体的な使い方のイメージ (Workflow Examples)
+
+この「ハイブリッド構成」において、日々の運用がどのようになるかの具体例です。Nix（インストール）と chezmoi（設定）の役割分担が明確になります。
+
+### ケース1: 新しいCLIツール（例: `gh` コマンド）を追加したい場合
+
+1. **ツールのインストール (Nix)**
+   `modules/packages.nix` を開き、インストールリストに `gh` を追記します。
+   ```nix
+   home.packages = with pkgs; [
+     # ...既存のパッケージ...
+     gh  # <- これを追記
+   ];
+   ```
+2. **システムへの反映**
+   ```bash
+   # macOSの場合
+   darwin-rebuild switch --flake .#darwin
+   
+   # WSL/Linuxの場合
+   home-manager switch --flake .#wsl
+   ```
+   > [!NOTE]
+   > この時点では、`gh` コマンドは使えるようになりますが、設定ファイルは一切作成されません。Home Manager の `programs.gh.enable = true` 等のNix側での設定生成は使いません。
+
+### ケース2: ツールの設定ファイル（例: `~/.config/gh/config.yml`）をカスタマイズしたい場合
+
+1. **設定の作成・反映 (chezmoi)**
+   chezmoi を使って、ローカルのホームディレクトリにある設定ファイルを dotfiles リポジトリの管理下に加えます。
+   ```bash
+   chezmoi add ~/.config/gh/config.yml
+   ```
+2. **設定の編集**
+   ```bash
+   chezmoi edit ~/.config/gh/config.yml
+   ```
+   編集を保存すると、元のファイルも自動的に更新されます。
+3. **コミットして他マシンへ共有**
+   ```bash
+   chezmoi cd
+   git add home/dot_config/gh/config.yml
+   git commit -m "Add gh config"
+   git push
+   ```
+
+### ケース3: マシン固有の秘密情報（APIキー等）を使いたい場合
+
+設定ファイルでAPIキーを使いたいが、Gitには絶対にコミットしたくない場合の運用です。
+
+1. **chezmoi変数の設定**
+   各マシンのローカル（Git管理外）にある `~/.config/chezmoi/chezmoi.toml` に変数を定義します。
+   ```toml
+   [data]
+   openai_api_key = "sk-xxxxxxxx"
+   ```
+2. **テンプレートでの利用**
+   `chezmoi edit ~/.zshrc` でテンプレートを開き、変数として参照します。
+   ```zsh
+   export OPENAI_API_KEY="{{ .openai_api_key }}"
+   ```
+3. **反映**
+   ```bash
+   chezmoi apply
+   ```
+   > [!IMPORTANT]
+   > 生成された実際の `~/.zshrc` にはキーが直接書き込まれますが、Gitリポジトリ（`dot_zshrc.tmpl`）側には `{{ .openai_api_key }}` という文字列しか存在しないため、リポジトリが公開されていても安全です。
+
+---
 ## 採用ツール一覧
 
 本 dotfiles 環境において導入・管理する最新のツール群です。
@@ -132,25 +201,27 @@ SaaS に依存せず、秘密情報を「原理的に外部に持ち出せない
 
 ## Proposed Changes
 
-### Nix 基盤
+### Nix 基盤 (マルチホスト構成へ最適化)
+
+将来的に複数マシン（macOS, WSL, Linuxサーバーなど）を管理しやすくするため、`hosts/` ディレクトリでホストごとのエントリポイントを管理する標準的な Flake 構成を採用します。
 
 #### [NEW] [flake.nix](../flake.nix)
-Nix Flake エントリポイント。nixpkgs, home-manager, nix-darwin の入力定義。
+Nix Flake エントリポイント。nixpkgs, home-manager, nix-darwin の入力定義と、`hosts/` へのルーティング。
 
-#### [NEW] [nix/home/default.nix](../nix/home/default.nix)
-Home Manager 共通設定。各モジュールの import。
+#### [NEW] [hosts/darwin/default.nix](../hosts/darwin/default.nix)
+macOS ホスト向けエントリポイント。nix-darwin の設定（Dock, Finder, キーボード, Touch ID sudo, Homebrew Cask）および Home Manager の呼び出し。
 
-#### [NEW] [nix/home/packages.nix](../nix/home/packages.nix)
-CLI ツール群のパッケージ宣言。WSL から Windows の KeePassXC SSH Agent に接続するための `socat` も含める。
+#### [NEW] [hosts/wsl/default.nix](../hosts/wsl/default.nix)
+Windows WSL ホスト向けエントリポイント。Home Manager 単体での呼び出し。
 
-#### [NEW] [nix/home/darwin.nix](../nix/home/darwin.nix)
-macOS 固有の Home Manager 設定。
+#### [NEW] [modules/packages.nix](../modules/packages.nix)
+全OS共通でインストールする CLI ツール群のパッケージ宣言。chezmoi 本体もここからインストールする。
 
-#### [NEW] [nix/home/linux.nix](../nix/home/linux.nix)
-Linux/WSL 固有の Home Manager 設定。
+#### [NEW] [modules/darwin.nix](../modules/darwin.nix)
+macOS 固有の追加パッケージや設定（必要に応じて）。
 
-#### [NEW] [nix/darwin/default.nix](../nix/darwin/default.nix)
-nix-darwin によるmacOS システム設定（Dock, Finder, キーボード, Touch ID sudo, Homebrew Cask）。
+#### [NEW] [modules/linux.nix](../modules/linux.nix)
+Linux/WSL 固有の追加パッケージ（KeePassXC SSH Agent に接続するための `socat` など）。
 
 ---
 
@@ -204,7 +275,12 @@ Ghostty 設定ファイル（macOS 上の cmux が共通で読み込む設定）
 ### ブートストラップ & ドキュメント
 
 #### [NEW] [install.sh](../install.sh)
-ブートストラップスクリプト。OS 検出 → Nix 適用 → chezmoi 適用。
+安全かつ確実な依存解決のためのブートストラップスクリプト。以下の順序で実行される：
+1. **Nix のインストール** (Determinate Systems のインストーラを推奨)
+2. **Nix Flake の適用** (`nix run nix-darwin` または `home-manager switch`)
+   -> *ここで chezmoi, zsh, git などのベースツール群がインストールされる*
+3. **chezmoi の適用** (`chezmoi init --apply`)
+   -> *Nix で入った最新の chezmoi を使い、ホームディレクトリに設定を展開*
 
 #### [NEW] [README.md](../README.md)
 セットアップ手順、ツール一覧、移行ガイド。

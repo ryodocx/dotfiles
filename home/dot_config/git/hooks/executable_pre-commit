@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# Global pre-commit hook managed by chezmoi
+
+# 1. Run global lefthook config if available
+if [ -f "$HOME/.config/lefthook/lefthook.yml" ]; then
+    LEFTHOOK_CONFIG="$HOME/.config/lefthook/lefthook.yml" lefthook run pre-commit "$@" || exit $?
+fi
+
+# 2. Run local git hook if it exists (e.g. husky or project-local lefthook)
+if [ -x ".git/hooks/pre-commit" ]; then
+    .git/hooks/pre-commit "$@" || exit $?
+elif [ -f "lefthook.yml" ] || [ -f "lefthook.yaml" ]; then
+    # If no local git hook but local lefthook config exists, run it
+    lefthook run pre-commit "$@" || exit $?
+fi

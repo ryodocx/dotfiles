@@ -33,11 +33,11 @@ if [ -f "$DOTFILES_DIR/flake.nix" ] && command -v nix >/dev/null 2>&1; then
     if [[ "$OSTYPE" == "darwin"* ]]; then
         echo -e "${GREEN}--> Applying macOS nix-darwin configurations...${NC}"
         # nix-darwin の再適用
-        nix run nix-darwin -- switch --flake "$DOTFILES_DIR"
+        darwin-rebuild switch --flake "$DOTFILES_DIR"
     else
         echo -e "${GREEN}--> Applying Home Manager configurations...${NC}"
         # Linux / WSL の Home Manager 再適用
-        nix run nixpkgs#home-manager -- switch --flake "$DOTFILES_DIR"
+        home-manager switch --flake "$DOTFILES_DIR"
     fi
 fi
 
