@@ -34,12 +34,10 @@
     enable = true;
     onActivation.cleanup = "zap";
     taps = [
-      "manaflow-ai/cmux"
     ];
     casks = [
       "keepassxc"
       "wezterm"
-      "manaflow-ai/cmux/cmux"
       "raycast"
       "arc"
     ];
@@ -47,7 +45,7 @@
 
   # Fonts
   fonts.packages = with pkgs; [
-    udev-gothic-nf
+    nerdfonts
   ];
 
   system.stateVersion = 4;

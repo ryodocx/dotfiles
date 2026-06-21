@@ -34,7 +34,7 @@ fi
 if ! [ -d "/nix" ] && [ -z "$NIX_PROFILES" ]; then
     # Non-Nix environment: load shell plugins via sheldon
     if command -v sheldon >/dev/null 2>&1; then
-        eval "$(sheldon source)"
+        eval "$(sheldon source)" || true
     fi
 fi
 
@@ -42,27 +42,27 @@ fi
 
 # Starship Prompt
 if command -v starship >/dev/null 2>&1; then
-    eval "$(starship init zsh)"
+    eval "$(starship init zsh)" || true
 fi
 
 # Atuin (Encrypted Shell History)
 if command -v atuin >/dev/null 2>&1; then
-    eval "$(atuin init zsh)"
+    eval "$(atuin init zsh)" || true
 fi
 
 # zoxide (Smart Directory Jumper)
 if command -v zoxide >/dev/null 2>&1; then
-    eval "$(zoxide init zsh --cmd cd)"
+    eval "$(zoxide init zsh --cmd cd)" || true
 fi
 
 # fzf (Fuzzy Finder)
 if command -v fzf >/dev/null 2>&1; then
-    source <(fzf --zsh)
+    source <(fzf --zsh) || true
 fi
 
 # mise (Runtime Manager)
 if command -v mise >/dev/null 2>&1; then
-    eval "$(mise activate zsh)"
+    eval "$(mise activate zsh)" || true
 fi
 
 # ── Aliases ──
