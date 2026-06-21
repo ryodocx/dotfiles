@@ -58,7 +58,7 @@ fi
 # 3. Apply Nix (nix-darwin for macOS / home-manager for Linux)
 echo "Applying Nix configurations..."
 if [ "${OS_TYPE}" = "darwin" ]; then
-    nix run github:LnL7/nix-darwin -- switch --flake .#macbook
+    nix run github:LnL7/nix-darwin -- switch --flake .#darwin
 else
     TARGET_CONFIG="wsl"
     if [ "${IS_WSL}" = "false" ]; then

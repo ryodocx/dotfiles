@@ -20,10 +20,10 @@
     in {
       # macOS (nix-darwin + Home Manager)
       darwinConfigurations = {
-        "macbook" = darwin.lib.darwinSystem {
+        "darwin" = darwin.lib.darwinSystem {
           system = "aarch64-darwin";
           modules = [
-            ./nix/hosts/macbook/default.nix
+            ./nix/hosts/darwin/default.nix
             home-manager.darwinModules.home-manager
             {
               home-manager.useGlobalPkgs = true;

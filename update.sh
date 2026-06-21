@@ -54,7 +54,7 @@ if [ -f "$DOTFILES_DIR/flake.nix" ] && command -v nix >/dev/null 2>&1; then
     if [[ "$OSTYPE" == "darwin"* ]]; then
         echo -e "${GREEN}--> Applying macOS nix-darwin configurations...${NC}"
         # nix-darwin の再適用
-        darwin-rebuild switch --flake "$DOTFILES_DIR#macbook"
+        darwin-rebuild switch --flake "$DOTFILES_DIR#darwin"
     else
         TARGET_CONFIG="wsl"
         if [ ! -z "${WSL_DISTRO_NAME:-}" ] || grep -q -i "microsoft" /proc/version 2>/dev/null; then
