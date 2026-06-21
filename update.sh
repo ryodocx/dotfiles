@@ -62,5 +62,11 @@ if command -v mise >/dev/null 2>&1; then
     mise upgrade -y
 fi
 
+# 7. Lefthook hooks のインストール・更新
+if command -v lefthook >/dev/null 2>&1; then
+    echo -e "${GREEN}--> Installing/Updating Lefthook hooks...${NC}"
+    lefthook install
+fi
+
 echo -e "${BLUE}=== Dotfiles Update Complete! ===${NC}"
 echo -e "Note: If nix 'flake.lock' was modified, please commit and push it to your repository."

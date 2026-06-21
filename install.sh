@@ -72,6 +72,12 @@ echo "Initializing and applying chezmoi dotfiles..."
 chezmoi init --source="$(pwd)"
 chezmoi apply
 
+# 5.5. Initialize Lefthook in the repository
+if command -v lefthook >/dev/null 2>&1; then
+    echo "Initializing Lefthook git hooks..."
+    lefthook install
+fi
+
 # 6. Change shell to zsh (if necessary)
 ZSH_PATH=$(command -v zsh)
 if [ "${SHELL}" != "${ZSH_PATH}" ] && [ -n "${ZSH_PATH}" ]; then

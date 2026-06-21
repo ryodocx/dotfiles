@@ -27,5 +27,12 @@
     # ── 開発環境 ──
     mise
     lazygit
+    gitleaks
+    lefthook
+    shellcheck
+    shfmt
+    alejandra
   ];
 }
+
+
