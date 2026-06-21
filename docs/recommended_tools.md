@@ -532,6 +532,18 @@ Terraform / OpenTofu のコードを DRY に保ち、複数環境での構成管
 
 クレデンシャルの暗号化、シークレット情報の漏洩検知、インフラの脆弱性スキャンやセキュリティ監査を行うツール群です。
 
+### 🔐 ハードウェア・セキュリティ (TPM / Secure Enclave) 連携ツール
+SSH 鍵や ge の暗号化キーをファイルシステム上ではなく、マシンの物理セキュリティチップ（TPM や Secure Enclave）に閉じ込めることで、鍵の流出を物理的に不可能にする次世代のセキュリティアプローチです。
+
+* **[Secretive](https://github.com/maxgoedjen/secretive) / [ssh-tpm-agent](https://github.com/Foxboron/ssh-tpm-agent)**
+  * **カテゴリ**: ハードウェア・バックエンド SSH エージェント
+  * **概要**: Secretive は macOS の Secure Enclave に、ssh-tpm-agent は Linux/Windows の TPM 2.0 チップ内に SSH 秘密鍵を生成・格納し、エージェントとして振る舞うツール。
+  * **採用検討理由**: 秘密鍵がファイルシステム上に一切保存されないため、マルウェア等に感染しても鍵データを盗まれる（エクスポートされる）リスクを完全に排除できます。SSH 接続時に Touch ID や Windows Hello (TPM PIN) を要求させることで、物理的にその場にいるユーザーしか認証できない強固なローカル環境を構築できます。
+* **[age-plugin-se](https://github.com/remko/age-plugin-se) / [age-plugin-tpm](https://github.com/Foxboron/age-plugin-tpm)**
+  * **カテゴリ**: ハードウェア暗号化連携プラグイン (age 拡張)
+  * **概要**: ファイル暗号化ツール ge に対し、復号キーを macOS の Secure Enclave (ge-plugin-se) や TPM 2.0 (ge-plugin-tpm) 内に生成・保管させるための拡張プラグイン。
+  * **採用検討理由**: 本 dotfiles では機密情報の管理に chezmoi と ge を活用できますが、このプラグインを組み合わせることで、「そのマシンのハードウェア（Touch ID 等）」でしか復号できない状態を作れます。ge のマスタキー自体を盗まれるリスクを防ぐ、2026年現在最もモダンで安全なシークレット管理手法です。
+
 ### 🔐 [SOPS](https://github.com/getsops/sops) / [Age](https://github.com/FiloSottile/age)
 * **カテゴリ**: ファイル暗号化・シークレット管理
 * **概要**: `SOPS` は YAML/JSON のキーを平文に残したまま値のみを暗号化するツール。`Age` は PGP を置き換えるモダンで安全な暗号化ツール。
