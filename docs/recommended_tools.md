@@ -3,6 +3,10 @@
 本 dotfiles 環境（Nix + chezmoi）の構成において、開発者の生産性をさらに向上させるために、将来的に導入を検討すべきモダンな CLI ツールおよび AI 統合ツールの一覧です。
 ※ 本ドキュメント内のツールは提案のみであり、設定ファイルや自動インストールの構成は含まれていません。
 
+> [!NOTE]
+> **凡例**
+> * 💳 **[有料SaaS/API]**: 利用にあたり、有料のSaaSサブスクリプション契約、または外部サービス（商用LLM等）の有料APIキー（従量課金）が必要なツールです。
+
 ---
 
 ## 目次 (Table of Contents)
@@ -26,19 +30,22 @@
 
 日常の開発に AI を深く統合するための最新 CLI ツールおよび専用ターミナル環境です。
 
-### 🤖 自律型 AI エージェント (Aider / Claude Code)
+### 🤖 自律型 AI エージェント (Aider / Claude Code) [💳 有料SaaS/API]
 自律的にコードを編集し、タスクを完遂する AI エージェント。
 
 * **[Aider](https://github.com/aider-ai/aider)**
+  * **利用コスト**: 💳 有料の商用LLM APIキー（OpenAI、Anthropic等）の契約・利用料が必要（ローカルモデルも一部対応していますが、実用上は有料API推奨）。
   * **概要**: ターミナル上で動作する最高峰の AI ペアプログラマー。ローカルの Git リポジトリと連動し、自然言語の指示に従ってコードを直接編集し、自動的にコミットまで生成します。
   * **採用検討理由**: macOS環境で cmux を使用する場合、そのAIエージェント向けインターフェースと非常に親和性が高く、エディタを離れずにターミナル内で迅速にコードの改修やリファクタリングを完結でき、Git との連携も非常にスムーズです。
 * **[Claude Code](https://github.com/anthropics/claude-code)**
+  * **利用コスト**: 💳 Anthropic Claude APIの有料利用契約・APIキーが必要（動作自体にAPIキーが必須です）。
   * **概要**: Anthropic 社が公式に提供する、ターミナルで動作する自律型開発エージェント。コードの検索、編集、テストの実行、バグ修正、Git コミットの作成などを指示に基づいて自動的に実行します。
   * **採用検討理由**: cmux の専用サイドバーやエージェント連携機能と非常に親和性が高く、複雑なリファクタリングタスクの進行状況の確認や大規模なコードベースの自動調査を効率化できます。
-* **競合との比較・選択のポイント**: Aider は主に指定したファイルの高速なインライン編集に強いのに対し、Claude Code は自律型エージェントとして、プロジェクト全体の探索、テスト実行、シェルコマンドを駆使した自律的バグ修正など、より大掛かりなタスクの自動化に優れます。
+* **競合との比較・選択のポイント**: Aider は主に指定したファイルの高速なインライン編集に強いのに対し、Claude Code は自律型エージェントとして、プロジェクト全体の探索、テスト実行、シェルコマンドを駆使した自律的バグ修正など、より大掛かりなタスクの自動化に優れます。両者とも商用APIの利用コストが発生します。
 
-### 💬 [aichat](https://sigoden.github.io/aichat/)
+### 💬 [aichat](https://sigoden.github.io/aichat/) [💳 有料SaaS/API]
 * **カテゴリ**: オールインワン AI CLI
+* **利用コスト**: 💳 商用LLM（OpenAI, Anthropic 等）の有料APIキーが必要（Ollamaなどのローカルモデル利用時は無料）。
 * **概要**: 複数の LLM（ChatGPT, Claude, Gemini, ローカルモデル）をバックエンドに持つ汎用的なターミナルチャットツール。プロンプトのテンプレート化やシェルコマンドの生成機能（Copilot 機能）を備えています。
 * **採用検討理由**: AWSの複雑なコマンドや、K8sの操作ログの解析など、日々の細かなターミナル作業でAIのサポートを瞬時に得られます。
 * **主な競合・代替ツール**: Aider, Claude Code, GitHub Copilot CLI
@@ -497,8 +504,9 @@ Docker コンテナや Kubernetes リソースを効率的に運用・監視・�
 * **主な競合・代替ツール**: kubetail, kail
 * **競合との比較・選択のポイント**: `kubectl logs` は単一の Pod またはレプリカしか追えませんが、`stern` は正規表現で複数の Pod（例: microservice-a-*）を指定して、コンテナ名や Pod 名で色分けされたログを一括でリアルタイムにストリーム出力・結合表示できます。
 
-### 🤖 [K8sGPT](https://github.com/k8sgpt-ai/k8sgpt)
+### 🤖 [K8sGPT](https://github.com/k8sgpt-ai/k8sgpt) [💳 有料SaaS/API]
 * **カテゴリ**: AI搭載 Kubernetes 診断ツール
+* **利用コスト**: 💳 商用LLM（OpenAI等）をバックエンドにする場合は有料APIキーが必要（ローカルLLMや無料の統合AIを使う場合は無料）。
 * **概要**: AI (OpenAI やローカル LLM 等) を利用して Kubernetes クラスタの状態をスキャンし、エラーや設定不備を分析して具体的な解決策を提案する CLI ツール。
 * **採用検討理由**: クラスタ内のエラー状態（CrashLoopBackOff や OOMKilled など）を自然言語で瞬時に分かりやすく解説してくれるため、Kubernetes のトラブルシューティングにおけるデバッグ作業を劇的に高速化できます。
 * **主な競合・代替ツール**: Popeye, kubectl logs (手動分析)
@@ -542,8 +550,9 @@ Terraform / OpenTofu のコードを DRY に保ち、複数環境での構成管
   * **採用検討理由**: モノレポ構成で変更があった箇所だけを自動検出して `terraform apply` を走らせるため、デプロイにかかる時間を大幅に短縮できます。ネイティブな Terraform ファイルを生成するためロックインがありません。
 * **競合との比較・選択のポイント**: **Terragrunt** はコマンドをラッピングしてランタイムで HCL を注入しますが、**Terramate** は静的なコード生成エンジンとして働き、プレーンな Terraform コードを出力します。Terramate には Git 履歴に基づく「変更されたスタックのみを実行（change detection）」機能が標準搭載されており、モノレポでの CI 高速化においては Terramate が優位です。プロジェクトの性質により排他的に選択します。
 
-### 💰 [Infracost](https://github.com/infracost/infracost)
+### 💰 [Infracost](https://github.com/infracost/infracost) [💳 有料SaaS/API]
 * **カテゴリ**: クラウドコスト（FinOps）見積もり
+* **利用コスト**: 💳 個人利用は無料枠あり。チーム開発や高度なFinOps機能、一定回数以上のクエリには有料SaaSプラン（APIキー）が必要。
 * **概要**: Terraform のコード変更に基づいて、クラウドリソースのコストがいくら変動するかをターミナル上で確認できるツール。
 * **採用検討理由**: エンジニアが IaC を記述する段階で「この変更が月額コストにどう影響するか」を意識でき、クラウドコストの意外な肥大化を防ぐことができます。
 * **主な競合・代替ツール**: Terramate, 各クラウドプロバイダーの公式 Pricing Calculator
@@ -581,8 +590,9 @@ SSH 鍵や ge の暗号化キーをファイルシステム上ではなく、�
 * **主な競合・代替ツール**: HashiCorp Vault, git-crypt, Ansible Vault, GPG
 * **競合との比較・選択のポイント**: `git-crypt` がファイル全体をバイナリとして暗号化してしまい Git 差分が読めなくなるのに対し、`SOPS` は YAML/JSON などの「キー」は平文のまま残して「値」だけを暗号化するため、Git のプルリクエスト上でどの設定値が変更されたかのレビュー可能性を保ちつつ安全にシークレットを Git 管理（GitOps）できます。
 
-### 🔑 [Doppler](https://github.com/DopplerHQ/cli) / [Infisical](https://github.com/Infisical/infisical)
+### 🔑 [Doppler](https://github.com/DopplerHQ/cli) / [Infisical](https://github.com/Infisical/infisical) [💳 有料SaaS/API]
 * **カテゴリ**: シークレット・環境変数同期サービス
+* **利用コスト**: 💳 個人向け無料プランあり。チームでの共有、アクセス制御、高度な統合機能は有料SaaS契約が必要。
 * **概要**: プロジェクトで使う環境変数の内容をクラウド上で同期し、ローカル実行時に `doppler run -- command` のように動的に環境変数を注入するツール。
 * **採用検討理由**: Slack 越しでのパスワードや API キーの共有を撲滅し、キーのローテーションやアクセス権限の管理をターミナルから安全に行えます。
 * **主な競合・代替ツール**: HashiCorp Vault, AWS Secrets Manager, 共有の `.env` ファイル
@@ -677,8 +687,9 @@ macOS または Windows のローカルホスト環境そのものの生産性�
 * **採用検討理由**: 既存のショートカットとの競合を避ける自分専用の無敵のホットキー（Hyper キー）を作成し、ターミナルからシステム操作までをシームレスに自動化できます。
 * **主な競合・代替ツール**: BetterTouchTool (BTT), Keyboard Maestro
 
-### 🔎 [Raycast](https://www.raycast.com/)
+### 🔎 [Raycast](https://www.raycast.com/) [💳 有料SaaS/API]
 * **カテゴリ**: ランチャー・Spotlight 代替
+* **利用コスト**: 💳 基本的なランチャー機能は無料。AI機能（Raycast AI）やチーム内でのスニペット/カスタムコマンド共有機能（Raycast for Teams）は有料のSaaSサブスクリプション契約が必要。
 * **概要**: 圧倒的な拡張性を持つランチャーアプリ。ウィンドウ管理からクリップボード履歴、各種 API 連携までこれ一つで完結します。
 * **採用検討理由**: ターミナル外の GUI 操作においても、キーボードから手を離さずに GitHub の PR確認や Docker の再起動などを実行できるため、Alfred からの移行が強く推奨されます。
 * **主な競合・代替ツール**: Alfred, Spotlight, LaunchBar
@@ -739,7 +750,8 @@ macOS または Windows のローカルホスト環境そのものの生産性�
 
 「Web画面をポチポチクリックしなければならない業務」や「毎日の定型文の入力」など、API化されておらずシェルスクリプトだけでは自動化しづらいアナログな作業を仕組化するためのツール群です。
 
-### 🤖 [browser-use](https://github.com/browser-use/browser-use) / [Skyvern](https://github.com/skyvern-ai/skyvern)
+### 🤖 [browser-use](https://github.com/browser-use/browser-use) / [Skyvern](https://github.com/skyvern-ai/skyvern) [💳 有料SaaS/API]
+* **利用コスト**: 💳 自律操作を行うための商用LLM（GPT-4o, Claude 3.5 Sonnet等）の有料API使用料が必要。また、Skyvernのマネージドクラウド版（Skyvern Cloud）は有料SaaS契約が必要。
 * **カテゴリ**: AI ブラウザ自動化エージェント (Web RPA)
 * **概要**: rowser-use は LLM にウェブブラウザの操作権限を与え、「社内の勤怠管理サイトにログインして出勤ボタンを押して」といった自然言語の指示から自律的に画面を解析し、クリックや入力を行うオープンソースのフレームワーク。Skyvern は特に業務フローや複雑なフォーム入力に特化した Web 自動化ツール。
 * **採用検討理由**: API が公開されていないレガシーな社内システム（勤怠打刻、経費精算など）の自動化において、Selenium や Playwright で「壊れやすい CSS セレクタをハードコードするスクリプト」を保守する苦痛から完全に解放されます。AI が視覚的にボタンを探して実行してくれます。
