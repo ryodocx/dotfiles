@@ -209,6 +209,9 @@ Ghostty 設定ファイル（macOS 上の cmux が共通で読み込む設定）
 #### [NEW] [README.md](../README.md)
 セットアップ手順、ツール一覧、移行ガイド。
 
+#### [NEW] [docs/recommended_tools.md](recommended_tools.md)
+将来的に採用を検討すべき拡張ツール提案ドキュメント。
+
 ---
 
 ## Verification Plan
