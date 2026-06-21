@@ -11,20 +11,21 @@
 
 ### 🤖 [Aider](https://github.com/aider-ai/aider)
 * **カテゴリ**: AIペアプログラミング / 自律エージェント
-* **概要**: ターミナル上で動作する最高峰 of AI ペアプログラマー。ローカルの Git リポジトリと連動し、自然言語の指示に従ってコードを直接編集し、自動的にコミットまで生成します。
-* **採用検討理由**: macOS の `cmux` が提供する AI 連携機能と非常に親和性が高く、エディタを離れずにターミナル内で迅速にコードの改修やリファクタリングを完結できます。
+* **概要**: ターミナル上で動作する最高峰の AI ペアプログラマー。ローカルの Git リポジトリと連動し、自然言語の指示に従ってコードを直接編集し、自動的にコミットまで生成します。
+* **採用検討理由**: エディタを離れずにターミナル内で迅速にコードの改修やリファクタリングを完結でき、Git との連携が非常にスムーズです。
 * **主な競合・代替ツール**: Cursor, GitHub Copilot Workspace, SWE-agent, OpenHands
 
 ### 💻 [Claude Code](https://github.com/anthropics/claude-code)
 * **カテゴリ**: 自律型 AI エージェント
 * **概要**: Anthropic 社が公式に提供する、ターミナルで動作する自律型開発エージェント。コードの検索、編集、テストの実行、バグ修正、Git コミットの作成などを指示に基づいて自動的に実行します。
-* **採用検討理由**: `cmux` の専用サイドバーやエージェントリングなどと親和性が高く、複雑なリファクタリングタスクの全自動化に貢献します。
+* **採用検討理由**: ターミナルから離れることなく、複雑なリファクタリングタスクや大規模なコードベースの調査を全自動化できます。tmux や Zellij のセッション内で並行実行するワークフローとも好相性です。
 * **主な競合・代替ツール**: Aider, GitHub Copilot CLI
 
 ### 💬 [aichat](https://github.com/sigoden/aichat)
 * **カテゴリ**: オールインワン AI CLI
 * **概要**: 複数の LLM（ChatGPT, Claude, Gemini, ローカルモデル）をバックエンドに持つ汎用的なターミナルチャットツール。プロンプトのテンプレート化やシェルコマンドの生成機能（Copilot 機能）を備えています。
 * **採用検討理由**: AWSの複雑なコマンドや、K8sの操作ログの解析など、日々の細かなターミナル作業でAIのサポートを瞬時に得られます。
+* **主な競合・代替ツール**: Aider, Claude Code, GitHub Copilot CLI
 
 ---
 
@@ -172,10 +173,9 @@
 * **採用検討理由**: AWS SSO (IAM Identity Center) との親和性が非常に高く、複数環境への同時アクセスやロール切り替えを高速かつセキュアに行えます。ローカルの認証情報も OS のキーストア等に安全に保管できます。
 * **主な競合・代替ツール**: aws-vault, awsp, aws-sso-util, Leapp
 
-
-### 🏗️ [tflint](https://github.com/terraform-linters/tflint) / [tfsec (Trivy)](https://github.com/aquasecurity/tfsec)
+### 🏗️ [tflint](https://github.com/terraform-linters/tflint) / [Trivy](https://github.com/aquasecurity/trivy)
 * **カテゴリ**: IaC 静的解析・セキュリティスキャン
-* **概要**: Terraform / OpenTofu コードのプロバイダー固有のエラーや、セキュリティ上のベストプラクティス違反（例: 公開状態の S3 バケットなど）を検出するツール。
+* **概要**: `tflint` は Terraform / OpenTofu コードのプロバイダー固有のエラーを検出するリンター。`Trivy` は IaC のセキュリティ上のベストプラクティス違反（例: 公開状態の S3 バケットなど）を検出するスキャナー（旧 tfsec を統合）。
 * **採用検討理由**: `terraform apply` を実行する前に、ローカル環境で設定ミスや脆弱性を未然に防ぎ、IaC の品質を保つことができます。
 * **主な競合・代替ツール**: Checkov, Terrascan, KICS
 
@@ -213,7 +213,7 @@
 * **採用検討理由**: 巨大な CSV ファイルやログをサクッと集計するために、わざわざ Python (Pandas) のスクリプトを書く手間が省けます。
 * **主な競合・代替ツール**: xsv, Tad, Excel, Pandas (Pythonスクリプト)
 
-### 🔧 [Miller (mlr)](https://github.com/johnkerl/miller) / [qsv](https://github.com/jqno/qsv)
+### 🔧 [Miller (mlr)](https://github.com/johnkerl/miller) / [qsv](https://github.com/jqnatividad/qsv)
 * **カテゴリ**: 構造化データ処理・CSV ツールキット
 * **概要**: CSV、TSV、JSON などの名前付きデータに対して `awk`、`sed`、`cut`、`join`、`sort` のような操作を極めて高速に行う CLI ツール。`qsv` は Rust 製で数 GB の CSV も一瞬で処理します。
 * **採用検討理由**: シェルスクリプトで複雑なテキスト処理をパイプで繋ぐより、圧倒的に簡潔な構文とパフォーマンスでデータ前処理を完了できます。
@@ -250,7 +250,7 @@
 ### 🔄 [sesh](https://github.com/joshmedeski/sesh)
 * **カテゴリ**: CLI セッションマネージャー
 * **概要**: Zellij や Tmux のセッション管理を `fzf` と統合し、爆速でプロジェクトやワークスペースを切り替える Go 製ツール。
-* **採用検討理由**: 複数のプロジェクトを並行して開発する際、ディレクトリ of 移動とターミナルセッションの立ち上げを1キーストロークで完了させます。
+* **採用検討理由**: 複数のプロジェクトを並行して開発する際、ディレクトリの移動とターミナルセッションの立ち上げを1キーストロークで完了させます。
 * **主な競合・代替ツール**: tmuxinator, tmuxp
 
 ### 🗃️ [gfold](https://github.com/nickgerace/gfold) / [gita](https://github.com/nosarthur/gita)
@@ -379,7 +379,7 @@
 * **カテゴリ**: Windows 版 `sudo` コマンド
 * **概要**: 現在のコンソールウィンドウ（Windows Terminal など）の中で直接、管理者権限に昇格してコマンドを実行できる CLI ツール。
 * **採用検討理由**: ネットワーク設定の変更や hosts ファイルの編集時などに、わざわざ「管理者として実行」で新しいウィンドウを開き直す手間が省け、CLIから一歩も出ずに作業が完結します。
-* **主な競合・代替ツール**: `runas`, 公式の Windows Sudo (Windows 11 で実装中)
+* **主な競合・代替ツール**: `runas`, Windows 11 標準の `sudo`
 
 ### 📁 [Files](https://github.com/files-community/Files)
 * **カテゴリ**: モダンなファイルエクスプローラー
@@ -513,7 +513,7 @@
 * **カテゴリ**: コマンド引数補完ジェネレーター (Zsh 連携)
 * **概要**: Go で書かれた超高速かつ強力なコマンド補完エンジン。`docker`, `git`, `aws`, `kubectl` などの数百もの主要な CLI コマンドに対し、Zsh 等で利用可能な高度な補完機能を提供。
 * **採用検討理由**: Zsh 標準の補完定義ファイルが遅かったり古かったりする問題を解決し、常に最新のオプションやサブコマンドの補完を爆速で得ることができます。
-* **主な競合・代替ツール**: Zsh 標準 of 補完機能
+* **主な競合・代替ツール**: Zsh 標準の補完機能
 
 ### 🧠 [McFly](https://github.com/cantino/mcfly)
 * **カテゴリ**: AIベース（ニューラルネットワーク）シェル履歴検索
