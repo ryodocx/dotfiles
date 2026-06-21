@@ -44,7 +44,7 @@
       homeConfigurations = {
         "wsl" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          modules = [ ./nix/hosts/wsl/default.nix ];
+          modules = [ ./nix/modules/home/default.nix ];
           extraSpecialArgs = {
             inherit user email;
             isDarwin = false;
@@ -53,7 +53,7 @@
         };
         "linux" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          modules = [ ./nix/hosts/linux/default.nix ];
+          modules = [ ./nix/modules/home/default.nix ];
           extraSpecialArgs = {
             inherit user email;
             isDarwin = false;
