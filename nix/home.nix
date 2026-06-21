@@ -1,7 +1,7 @@
-{ pkgs, user, email, isDarwin, ... }: {
+{ pkgs, user, email, ... }: {
   home = {
     username = user;
-    homeDirectory = if isDarwin then "/Users/${user}" else "/home/${user}";
+    homeDirectory = if pkgs.stdenv.isDarwin then "/Users/${user}" else "/home/${user}";
     stateVersion = "24.05";
   };
 

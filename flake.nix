@@ -17,38 +17,29 @@
     let
       user = "ryodocx";
       email = "email@ryodocx.net";
+      extraSpecialArgs = { inherit user email; };
     in {
       # macOS (nix-darwin + Home Manager)
-      darwinConfigurations = {
-        "darwin" = darwin.lib.darwinSystem {
-          system = "aarch64-darwin";
-          modules = [
-            ./nix/darwin.nix
-            home-manager.darwinModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.${user} = import ./nix/home.nix;
-              home-manager.extraSpecialArgs = {
-                inherit user email;
-                isDarwin = true;
-              };
-            }
-          ];
-          specialArgs = { inherit inputs; };
-        };
+      darwinConfigurations.darwin = darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
+        modules = [
+          ./nix/darwin.nix
+          home-manager.darwinModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.${user} = import ./nix/home.nix;
+            home-manager.extraSpecialArgs = extraSpecialArgs;
+          }
+        ];
+        specialArgs = { inherit inputs; };
       };
 
       # Linux / WSL (Home Manager standalone)
-      homeConfigurations = {
-        "linux" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          modules = [ ./nix/home.nix ];
-          extraSpecialArgs = {
-            inherit user email;
-            isDarwin = false;
-          };
-        };
+      homeConfigurations.linux = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        modules = [ ./nix/home.nix ];
+        inherit extraSpecialArgs;
       };
     };
 }
