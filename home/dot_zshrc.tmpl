@@ -23,7 +23,7 @@ if [ ! -S "$SSH_AUTH_SOCK" ]; then
     npiperelay_path="{{ .winProfileWsl }}/bin/npiperelay.exe"
     
     if [ -f "$npiperelay_path" ] && command -v socat >/dev/null 2>&1; then
-        (setsid socat UNIX-LISTEN:"$SSH_AUTH_SOCK",fork EXEC:"$npiperelay_path -ei -s //./pipe/openssh-ssh-agent",nofork &) >/dev/null 2>&1
+        (setsid socat UNIX-LISTEN:"$SSH_AUTH_SOCK",fork,umask=077 EXEC:"$npiperelay_path -ei -s //./pipe/openssh-ssh-agent",nofork &) >/dev/null 2>&1
     fi
 fi
 {{- end }}
