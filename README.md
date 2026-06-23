@@ -74,7 +74,7 @@ cd ~/.dotfiles
 
 | リポジトリ内のパス | 展開先のパス (ホームディレクトリ) | 用途・設定内容 |
 | :--- | :--- | :--- |
-| [home/dot_zshrc.tmpl](file:///C:/Users/ryotn/Documents/antigravity/gallant-shannon/home/dot_zshrc.tmpl) | `~/.zshrc` | Zsh の起動・シェル環境設定 (WSL SSH agent 含む) |
+| [home/private_dot_zshrc.tmpl](file:///C:/Users/ryotn/Documents/antigravity/gallant-shannon/home/private_dot_zshrc.tmpl) | `~/.zshrc` | Zsh の起動・シェル環境設定 (WSL SSH agent 含む) |
 | [home/dot_zshenv](file:///C:/Users/ryotn/Documents/antigravity/gallant-shannon/home/dot_zshenv) | `~/.zshenv` | 環境変数（XDGベースディレクトリ、PATHなど） |
 | [home/dot_config/git/config.tmpl](file:///C:/Users/ryotn/Documents/antigravity/gallant-shannon/home/dot_config/git/config.tmpl) | `~/.config/git/config` | Git の設定 (OSごとの資格情報ヘルパー設定含む) |
 | [home/dot_config/git/ignore](file:///C:/Users/ryotn/Documents/antigravity/gallant-shannon/home/dot_config/git/ignore) | `~/.config/git/ignore` | Git のグローバル無視設定 |
@@ -116,7 +116,7 @@ cd ~/.dotfiles
 # 例: ~/.zshrc を編集する
 chezmoi edit ~/.zshrc
 ```
-※ 自動的にソースディレクトリ側のファイル（`dot_zshrc.tmpl`）がエディタで開き、保存して閉じるとホームディレクトリ側にも自動で適用されます。
+※ 自動的にソースディレクトリ側のファイル（`private_dot_zshrc.tmpl`）がエディタで開き、保存して閉じるとホームディレクトリ側にも自動で適用されます。
 
 もしリポジトリ側のファイルを直接エディタで開いて編集した場合は、以下のコマンドでホームディレクトリに反映させます。
 ```bash

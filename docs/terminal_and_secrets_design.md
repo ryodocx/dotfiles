@@ -190,7 +190,7 @@ Windows 側で dotfiles リポジトリをチェックアウトした際、Git �
 ### 4.3 Nix/Home Manager と sheldon (zshプラグイン) の競合回避
 Nix (Home Manager) がインストールされている環境では、zshプラグイン（zsh-autosuggestions等）が Nix によって自動でインストールおよび `.zshrc` へ展開されます。Nix がない環境での Fallback として `sheldon` も dotfiles に含めるハイブリッド構成を取るため、プラグインの二重ロードによるシェルの起動遅延や挙動異常を防ぎます。
 
-- **解決策**: chezmoi で生成する `.zshrc`（または `dot_zshrc.tmpl`）内に、以下のような Nix環境の有無を判定する条件分岐を記述します。
+- **解決策**: chezmoi で生成する `.zshrc`（または `private_dot_zshrc.tmpl`）内に、以下のような Nix環境の有無を判定する条件分岐を記述します。
   ```zsh
   # Nix もしくは nix-darwin/Home-Manager の環境変数が存在するかチェック
   if [ -d "/nix" ] || [ -n "$NIX_PROFILES" ]; then

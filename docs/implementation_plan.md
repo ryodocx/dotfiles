@@ -39,7 +39,7 @@
 │  └──────────────────────────────────────────────────┘  │
 │                         ↕                               │
 │  ┌─ chezmoi (コンフィグ層) ─────────────────────────┐  │
-│  │  home/ (dot_config/, dot_zshrc.tmpl, etc.)       │  │
+│  │  home/ (dot_config/, private_dot_zshrc.tmpl, etc.)       │  │
 │  │  • 設定ファイルの配置とテンプレート処理（OS分岐等）│  │
 │  │  • マシン固有秘密情報のローカル管理（持出不可）    │  │
 │  └──────────────────────────────────────────────────┘  │
@@ -121,7 +121,7 @@
    chezmoi apply
    ```
    > [!IMPORTANT]
-   > 生成された実際の `~/.zshrc` にはキーが直接書き込まれますが、Gitリポジトリ（`dot_zshrc.tmpl`）側には `{{ .openai_api_key }}` という文字列しか存在しないため、リポジトリが公開されていても安全です。
+   > 生成された実際の `~/.zshrc` にはキーが直接書き込まれますが、Gitリポジトリ（`private_dot_zshrc.tmpl`）側には `{{ .openai_api_key }}` という文字列しか存在しないため、リポジトリが公開されていても安全です。
 
 ---
 ## 採用ツール一覧
@@ -224,7 +224,7 @@ chezmoi 設定。KeePassXC DB パス、ユーザー変数。
 #### [NEW] [home/.chezmoiignore](../home/.chezmoiignore)
 OS 別除外ルール。
 
-#### [NEW] [home/dot_zshrc.tmpl](../home/dot_zshrc.tmpl)
+#### [NEW] [home/private_dot_zshrc.tmpl](../home/private_dot_zshrc.tmpl)
 zsh メイン設定。sheldon, Starship, Atuin, fzf, zoxide, エイリアス統合。WSL での `socat` + `npiperelay` による SSH Agent ブリッジも自動起動。
 
 #### [NEW] [home/dot_zshenv](../home/dot_zshenv)
