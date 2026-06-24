@@ -139,7 +139,7 @@ if [ -n "$DOTFILES_GIT_EMAIL" ]; then
     CHEZMOI_ARGS+=("--promptString" "email=${DOTFILES_GIT_EMAIL}")
 fi
 if [ -n "$DOTFILES_GITHUB_TOKEN" ]; then
-    CHEZMOI_ARGS+=("--promptString" "githubToken=${DOTFILES_GITHUB_TOKEN}")
+    export DOTFILES_GITHUB_TOKEN
 fi
 
 chezmoi init "${CHEZMOI_ARGS[@]}"

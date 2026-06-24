@@ -18,7 +18,10 @@
 {{- end -}}
 
 # Ask for machine-local secrets (not committed to Git)
-{{- $githubToken := promptStringOnce . "githubToken" "Enter your GitHub Personal Access Token (for this machine only)" -}}
+{{- $githubToken := env "DOTFILES_GITHUB_TOKEN" -}}
+{{- if not $githubToken -}}
+  {{- $githubToken = promptStringOnce . "githubToken" "Enter your GitHub Personal Access Token (for this machine only)" -}}
+{{- end -}}
 
 [data]
     user = "{{ $user }}"
