@@ -11,3 +11,7 @@
 **Vulnerability:** The GitHub token (`DOTFILES_GITHUB_TOKEN`) was passed to `chezmoi init` using a command line argument (`--promptString githubToken=...`). Command line arguments are visible to all users on the same machine via tools like `ps`, exposing the secret token.
 **Learning:** Never pass sensitive information (secrets, tokens, passwords) via command line arguments. They are logged in shell history and visible to other processes and users.
 **Prevention:** Use environment variables, standard input (stdin), or files with restricted permissions to pass secrets to processes.
+## 2026-06-29 - Prevent Command-Line Secret Injection in install.sh
+**Vulnerability:** The bootstrap script `install.sh` allowed the GitHub Personal Access Token to be passed via the `--github-token` command-line argument. This is a critical security risk as command-line arguments are globally visible to other users on the system via process listing commands like `ps`.
+**Learning:** Shell scripts orchestrating setups often inadvertently expose sensitive initialization parameters (like PATs for Chezmoi or Git configs) when opting for CLI argument parsing over environment variables or secure prompts.
+**Prevention:** Never parse sensitive information from command-line arguments. Instead, rely on environment variables (e.g., `DOTFILES_GITHUB_TOKEN="${DOTFILES_GITHUB_TOKEN:-}"`) and prompt the user securely (`read -s -p`) as a fallback.
