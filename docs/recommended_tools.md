@@ -148,13 +148,13 @@ VS Code の拡張機能としてではなく、エディタ自体をフォーク
   * **概要**: Docker の共同創設者が開発した次世代 CI/CD エンジン。CI のパイプラインを YAML ではなく、Go, Python, TypeScript などのプログラミング言語で記述し、どこでも（ローカルでも CI サーバー上でも）同じようにコンテナ環境で実行できます。
   * **採用検討理由**: 複雑化した YAML による CI 設定地獄を解消し、アプリケーションコードと同じ言語でテスト可能な CI パイプラインを構築できます。ローカルでの再現性が 100% 保証されます。
 
-### ❄️ [devenv](https://github.com/cachix/devenv)
+### ❄️ [devenv](https://github.com/cachix/devenv) / [devbox](https://github.com/jetpack-io/devbox)
 
 * **カテゴリ**: Nix ベース宣言的開発環境マネージャー
-* **概要**: Nix の学習コスト（Flakes 等）を抽象化し、devenv.nix というシンプルなファイル一つで、言語ランタイム、プロセス（DB等）、Git Hooks などを一括構築するツール。
-* **採用検討理由**: Nix の恩恵（完全な再現性）を受けつつも、プロジェクトごとに Docker や docker-compose を用意する手間を削減し、ネイティブな速度で開発環境を自動構築させます。
+* **概要**: `devenv` は Nix の学習コストを抽象化し、`devenv.nix` で言語ランタイムやプロセスを一括構築するツール。`devbox` は JSON ベース (`devbox.json`) で完全に Nix の知識なしに隔離された開発環境を即座に立ち上げるツールです。
+* **採用検討理由**: プロジェクトごとに Docker や docker-compose を用意する手間を削減し、ネイティブな速度で再現性のある開発環境を構築できます。Nix 言語 (`.nix`) に抵抗があるチームでは `devbox` の JSON アプローチが好まれます。
 * **主な競合・代替ツール**: Devcontainers, Docker Compose, asdf, mise
-* **競合との比較・選択のポイント**: mise や sdf は言語のバージョン管理のみを行いますが、devenv は Nix をバックエンドに使い、PostgreSQL などのバックグラウンドプロセスや Git Hooks のセットアップまで、プロジェクトに必要な依存関係のすべてを完全に分離された状態で一瞬で立ち上げます。
+* **競合との比較・選択のポイント**: mise 等は言語のバージョン管理のみですが、devenv/devbox は Nix をバックエンドに使い、必要な依存関係のすべてを完全に分離された状態で立ち上げます。
 
 ### 📂 [direnv](https://github.com/direnv/direnv)
 
@@ -1089,6 +1089,12 @@ Web フロントエンド開発で使われる Rust/Go/JS 製の超高速アセ�
 macOS または Windows のローカルホスト環境そのものの生産性を高める GUI/CLI ツール群です。
 
 ### 12.1 macOS 専用 (macOS Specific)
+
+### 📊 [SketchyBar](https://github.com/FelixKratz/SketchyBar)
+
+* **カテゴリ**: 超高機能・カスタマイズ可能なメニューバー
+* **概要**: macOS のメニューバーを完全に再構築し、シェルスクリプトを用いて CPU 使用率、再生中の音楽、通知、ウィンドウマネージャのワークスペース（AeroSpace 等）を自在に表示できるツール。
+* **採用検討理由**: `AeroSpace` 等のタイリングウィンドウマネージャと組み合わせることで、Linux の `Polybar` や `Waybar` のような極めてハッカーライクで情報密度の高いデスクトップ環境を macOS 上で構築できます。
 
 ### 🖥️ [cmux](https://github.com/manaflow-ai/cmux) (macOS 専用)
 
