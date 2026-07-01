@@ -11,3 +11,8 @@
 **Vulnerability:** The GitHub token (`DOTFILES_GITHUB_TOKEN`) was passed to `chezmoi init` using a command line argument (`--promptString githubToken=...`). Command line arguments are visible to all users on the same machine via tools like `ps`, exposing the secret token.
 **Learning:** Never pass sensitive information (secrets, tokens, passwords) via command line arguments. They are logged in shell history and visible to other processes and users.
 **Prevention:** Use environment variables, standard input (stdin), or files with restricted permissions to pass secrets to processes.
+
+## 2024-10-27 - GitHub Token leak via command line arguments in wrapper script
+**Vulnerability:** The wrapper script (`install.sh`) allowed passing the sensitive GitHub token (`DOTFILES_GITHUB_TOKEN`) via a command-line argument (`--github-token`). Command line arguments are visible to all users on the same machine via process listing tools like `ps`, exposing the secret token.
+**Learning:** The vulnerability of leaking secrets via CLI arguments applies not only to direct tools (like `chezmoi`) but also to parent wrapper scripts (like `install.sh`) that accept arguments. If a parent script accepts a secret as an argument, it exposes it even if it ultimately exports it as an environment variable for child processes.
+**Prevention:** Never design scripts to accept sensitive information (secrets, tokens, passwords) via command line arguments. Always use environment variables or interactive, secure prompts (with hidden input) to gather secrets.
