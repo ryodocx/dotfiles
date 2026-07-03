@@ -52,11 +52,10 @@ cd ~/.dotfiles
 非対話的に実行したい場合は、以下のオプションを使用して各設定値を渡すことができます。
 
 ```bash
-./install.sh \
+DOTFILES_GITHUB_TOKEN="ghp_xxxxxxxxxxxx" ./install.sh \
   --os-user "your_os_username" \
   --git-user "Your Name" \
-  --git-email "your-email@example.com" \
-  --github-token "ghp_xxxxxxxxxxxx"
+  --git-email "your-email@example.com"
 ```
 
 指定されなかった項目は、スクリプト実行中にインタラクティブに入力が求められます。
