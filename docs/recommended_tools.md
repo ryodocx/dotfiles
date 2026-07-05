@@ -62,9 +62,14 @@ VS Code の拡張機能としてではなく、エディタ自体をフォーク
   * **概要**: Codeium 社が開発する、Cursor の対抗馬となる AI エディタ。エージェントがターミナルの出力まで読み取り、エラーが出たら自律的にデバッグ・修正する「Cascade」機能が特徴。
   * **採用検討理由**: 開発者がコードを書く時間よりも、AI に「この機能を作って」と指示し、AI がテストして修正するまでの一連のループを管理する次世代の開発フローに最適です。
 
-### 🤖 自律型 AI エージェント (Aider / Claude Code) [💳 有料SaaS/API]
+### 🤖 自律型 AI エージェント (Aider / Claude Code / Open Interpreter) [💳 有料SaaS/API]
 
 自律的にコードを編集し、タスクを完遂する AI エージェント。
+
+* **[Open Interpreter](https://github.com/OpenInterpreter/open-interpreter)**
+  * **利用コスト**: 💳 OpenAI API 等の有料 API キーが必要（ローカルモデル対応あり）。
+  * **概要**: ターミナルから自然言語でコンピュータ上のすべての操作（コード実行、ファイル操作、ブラウザ自動化）を指示できるツール。
+  * **採用検討理由**: システムに深く統合された作業（ローカルファイルの分析、スクリプトの一時実行など）を直感的に自動化でき、コーディング以外のインフラ作業も強力にサポートします。
 
 * **[Aider](https://github.com/aider-ai/aider)**
   * **利用コスト**: 💳 OpenAI API (ChatGPT)、Claude API (Anthropic)、Gemini API (Google AI Studio) 等の有料商用API契約の持ち込みが必要（ローカルモデルも一部対応していますが、実用上は商用APIの利用を推奨）。
@@ -148,13 +153,13 @@ VS Code の拡張機能としてではなく、エディタ自体をフォーク
   * **概要**: Docker の共同創設者が開発した次世代 CI/CD エンジン。CI のパイプラインを YAML ではなく、Go, Python, TypeScript などのプログラミング言語で記述し、どこでも（ローカルでも CI サーバー上でも）同じようにコンテナ環境で実行できます。
   * **採用検討理由**: 複雑化した YAML による CI 設定地獄を解消し、アプリケーションコードと同じ言語でテスト可能な CI パイプラインを構築できます。ローカルでの再現性が 100% 保証されます。
 
-### ❄️ [devenv](https://github.com/cachix/devenv)
+### ❄️ [devenv](https://github.com/cachix/devenv) / [Devbox](https://github.com/jetify-com/devbox)
 
 * **カテゴリ**: Nix ベース宣言的開発環境マネージャー
-* **概要**: Nix の学習コスト（Flakes 等）を抽象化し、devenv.nix というシンプルなファイル一つで、言語ランタイム、プロセス（DB等）、Git Hooks などを一括構築するツール。
-* **採用検討理由**: Nix の恩恵（完全な再現性）を受けつつも、プロジェクトごとに Docker や docker-compose を用意する手間を削減し、ネイティブな速度で開発環境を自動構築させます。
+* **概要**: どちらも Nix をバックエンドに使いつつ、学習コストの高い Nix 言語を書かずに開発環境を構築するツール。`devenv` は `devenv.nix`、`Devbox` は `devbox.json` でパッケージやプロセスを管理します。
+* **採用検討理由**: Nix の恩恵（完全な再現性）を受けつつも、プロジェクトごとに Docker や docker-compose を用意する手間を削減し、ネイティブな速度で開発環境を自動構築させます。JSON を好む場合は Devbox、より強力な統合を好む場合は devenv が選択肢になります。
 * **主な競合・代替ツール**: Devcontainers, Docker Compose, asdf, mise
-* **競合との比較・選択のポイント**: mise や sdf は言語のバージョン管理のみを行いますが、devenv は Nix をバックエンドに使い、PostgreSQL などのバックグラウンドプロセスや Git Hooks のセットアップまで、プロジェクトに必要な依存関係のすべてを完全に分離された状態で一瞬で立ち上げます。
+* **競合との比較・選択のポイント**: mise や asdf は言語のバージョン管理のみを行いますが、devenv/Devbox は Nix をバックエンドに使い、PostgreSQL などのバックグラウンドプロセスや Git Hooks のセットアップまで、プロジェクトに必要な依存関係のすべてを完全に分離された状態で一瞬で立ち上げます。
 
 ### 📂 [direnv](https://github.com/direnv/direnv)
 
@@ -172,6 +177,12 @@ VS Code の拡張機能としてではなく、エディタ自体をフォーク
 * **主な競合・代替ツール**: hub (非推奨), glab (GitLab用)
 * **競合との比較・選択のポイント**: Web ブラウザや GUI（GitKrakenやGitHub Desktop）で行う操作をコマンドラインに落とし込めるため、シェルスクリプトや fzf と組み合わせた自動化や、コンテキストスイッチの削減において他の追随を許しません。
 
+### 🐙 [ghq](https://github.com/x-motemen/ghq)
+
+* **カテゴリ**: Git リポジトリ一元管理
+* **概要**: 任意のリモートリポジトリ（GitHub 等）をローカルにクローンする際、ディレクトリ構造を統一（例: `~/ghq/github.com/user/repo`）して一元管理するツール。
+* **採用検討理由**: `git clone` 時にクローン先のディレクトリを考える手間をなくし、`fzf` などのファジーファインダーと組み合わせてローカルの全プロジェクトへ瞬時にジャンプできる環境を構築するため。
+
 ### 🤖 コマンド・タスクランナー (just / Task)
 
 プロジェクト固有のコマンドやタスクを定義・実行するためのランナー。
@@ -183,6 +194,12 @@ VS Code の拡張機能としてではなく、エディタ自体をフォーク
   * **概要**: Taskfile.yml にタスクを定義する Go 製のランナー。タスクの依存関係、並列実行、ファイル変更検知（ウォッチ機能）などをネイティブにサポートします。
   * **採用検討理由**: Go や Rust、Docker などを組み合わせた複雑なマイクロサービス開発において、クリーンな YAML でビルドパイプラインをローカルで再現するのに役立ちます。
 * **競合との比較・選択のポイント**: just はシェルスクリプトを単純に並べる簡易的な用途やコマンドランナーに向きますが、Task は YAML で記述し、タスク間の依存関係グラフや並列実行、ファイル更新検知（ウォッチ機能）などを標準で強力にサポートするため、より複雑なビルドパイプラインに適しています。
+
+### ⚙️ [Overmind](https://github.com/DarthSim/overmind) / [mprocs](https://github.com/pvolok/mprocs)
+
+* **カテゴリ**: 複数プロセス・タスクランナー (Procfile ランナー)
+* **概要**: `Procfile` 等に定義された複数のプロセス（フロントエンドの dev サーバー、バックエンド、DBなど）を 1 つのターミナル画面で起動・管理・監視できるツール。`Overmind` は tmux と連携し、`mprocs` は Rust 製の TUI で直感的にプロセスを管理します。
+* **採用検討理由**: 複数コンポーネントからなるアプリケーションのローカル開発時に、各々のサーバーログを綺麗に分離して表示し、個別の再起動などを容易に行えるようにするため。
 
 ### 👀 [watchexec](https://github.com/watchexec/watchexec)
 
@@ -226,18 +243,18 @@ Git 操作を高速化し、複数リポジトリを効率的に運用するた�
 * **概要**: Conventional Commits (例: `feat: add new button`) に従ったコミットメッセージを、対話的なプロンプトを通じて簡単に作成するツール。`czg` はより高速な代替。
 * **採用検討理由**: チーム間でコミットメッセージのフォーマットを統一し、後述する自動リリースツール（release-please等）による Semantic Versioning 自動化の基盤を作ります。
 
-### 🤖 [release-please](https://github.com/googleapis/release-please)
+### 🤖 [release-please](https://github.com/googleapis/release-please) / [git-cliff](https://github.com/orhun/git-cliff)
 
 * **カテゴリ**: リリース自動化 & Changelog 生成
-* **概要**: Conventional Commits に基づいて、自動的にバージョンをインクリメント（セマンティックバージョニング）し、CHANGELOG.md を更新して GitHub Releases を作成する Google 製ツール。
-* **採用検討理由**: リリース作業の属人化を防ぎ、コミット履歴から人間が読める更新履歴を自動生成する CI/CD のベストプラクティスです。
+* **概要**: `release-please` は Conventional Commits に基づいてバージョニングと Changelog を完全自動化する Google 製ツール。`git-cliff` は Rust 製の非常にカスタマイズ性の高い Changelog ジェネレーターで、設定ファイルから任意のフォーマットで履歴を出力できます。
+* **採用検討理由**: リリース作業の属人化を防ぎ、コミット履歴から人間が読める更新履歴を自動生成する CI/CD のベストプラクティスです。プロジェクトの要件に応じて、完全自動の release-please か、柔軟なフォーマットの git-cliff を選択します。
 
-### 🚀 [gitui](https://github.com/extrawurst/gitui)
+### 🚀 [lazygit](https://github.com/jesseduffield/lazygit) / [gitui](https://github.com/extrawurst/gitui)
 
 * **カテゴリ**: 高速 Git TUI (Terminal UI)
-* **概要**: Rust 製の超高速なターミナル Git クライアント。巨大なリポジトリでも一切フリーズせずに軽快に動作します。
-* **採用検討理由**: `lazygit` の動作が重くなるような超大規模リポジトリでの作業や、Rust のメモリ安全性を活かしたより高速な操作を求める場合に最適です。
-* **主な競合・代替ツール**: lazygit, tig, GitKraken, SourceTree
+* **概要**: `lazygit` は Go 製で非常に機能豊富かつ直感的な操作が可能な Git TUI クライアント。`gitui` は Rust 製の超高速なターミナル Git クライアント。
+* **採用検討理由**: 複雑な Git 操作（リベース、部分ステージング、チェリーピック等）をターミナルから出ることなく、GUI ライクな直感的操作で安全に行うため。巨大なリポジトリでも軽快に動作します。
+* **主な競合・代替ツール**: tig, GitKraken, SourceTree
 * **競合との比較・選択のポイント**: `lazygit` は非常に機能が豊富で操作が直感的ですが、Go 製のため超巨大リポジトリでは動作がもたつくことがあります。`gitui` は Rust 製でメモリ消費量が極めて少なく、起動や画面切り替えが瞬時に完了します。
 
 ### 🐙 [forgit](https://github.com/wfxr/forgit)
@@ -307,6 +324,12 @@ Git 操作を高速化し、複数リポジトリを効率的に運用するた�
 ## 4. シェル機能拡張・プロンプト・ターミナル効率化
 
 Zsh の操作性、補完、履歴検索、およびセッション・ファイルのナビゲーションを高速化するツール群です。
+
+### 🔍 [fzf](https://github.com/junegunn/fzf)
+
+* **カテゴリ**: 汎用ファジーファインダー
+* **概要**: ターミナル上のあらゆるリスト（ファイル、履歴、プロセス、Git ブランチなど）をインクリメンタルにあいまい検索（ファジー検索）できる Go 製のコマンドラインツール。
+* **採用検討理由**: モダンな CLI 環境の基盤となるツールであり、`vim` のプラクティスからシェルの `Ctrl+R`（履歴検索）まで、あらゆるツールの検索インターフェースを劇的に高速化・統一化します。
 
 ### 🕰️ [Atuin](https://github.com/atuinsh/atuin)
 
@@ -417,6 +440,12 @@ Zsh の操作性、補完、履歴検索、およびセッション・ファイ�
 * **競合との比較・選択のポイント**: `zinit` などのプラグインマネージャー固有の遅延読み込み（氷結機能）とは異なり、Zsh の設定ファイル (`.zshrc`) 内の任意のコマンド（nvm や direnv の eval など）を個別に、起動完了後に裏で非同期ロードさせることができるため汎用性が高いです。
 
 ---
+
+### 🗑️ [trash-cli](https://github.com/andreafrancia/trash-cli) / [rip](https://github.com/nivekuil/rip)
+
+* **カテゴリ**: 安全なファイル削除 (rm 代替)
+* **概要**: `rm` コマンドによるファイルの完全削除の代わりに、OS のゴミ箱 (Trash) にファイルを移動させるツール。`trash-cli` は Python 製で標準的な実装、`rip` は Rust 製でより高速で直感的な操作が可能です。
+* **採用検討理由**: `rm -rf` による誤削除の悲劇を防ぎ、誤って削除したファイルも簡単に復元できるようにするため。
 
 ### 📁 [eza](https://github.com/eza-community/eza) / [lsd](https://github.com/lsd-rs/lsd)
 
@@ -726,6 +755,12 @@ REST 以外の API プロトコル（gRPC, GraphQL, WebSockets）のテスト、
 
 ---
 
+### 🔑 [mkcert](https://github.com/FiloSottile/mkcert)
+
+* **カテゴリ**: ローカル環境向け HTTPS 開発証明書ジェネレーター
+* **概要**: ローカル環境専用の信頼された認証局（CA）をシステムに自動作成し、`localhost` やカスタムのローカルドメイン向けの有効な SSL 証明書をコマンド一つで発行するツール。
+* **採用検討理由**: Web 開発において、ブラウザの「この接続は保護されていません」警告を回避し、ローカル環境で本番と同じ HTTPS 通信を簡単に再現・テストできるようにするため。
+
 ### 🔒 [cloudflared](https://github.com/cloudflare/cloudflared)
 
 * **カテゴリ**: Cloudflare Tunnel クライアント
@@ -756,6 +791,12 @@ REST 以外の API プロトコル（gRPC, GraphQL, WebSockets）のテスト、
 * **採用検討理由**: DBeaver や DataGrip といった重い GUI クライアントを開くことなく、ターミナルから直接 DB のスキーマ確認やクエリ実行を快適に行うことができます。
 * **主な競合・代替ツール**: DBeaver, DataGrip, mycli / pgcli, usql
 * **競合との比較・選択のポイント**: `DBeaver` などの重い GUI ツールを開くことなく、ターミナル上でスキーマのツリー表示、補完が効く SQL エディタ、結果のスクロール表示を軽快に行えます。ローカルや踏み台サーバー経由でのサクッとしたデータ調査に最適です。
+
+### ⌨️ [pgcli](https://github.com/dbcli/pgcli) / [mycli](https://github.com/dbcli/mycli) / [iredis](https://github.com/laixintao/iredis)
+
+* **カテゴリ**: 自動補完・シンタックスハイライト付き CLI クライアント
+* **概要**: PostgreSQL (`pgcli`)、MySQL (`mycli`)、Redis (`iredis`) の標準クライアントを置き換える、強力な自動補完（オートコンプリート）とシンタックスハイライトを備えた Python 製ツール。
+* **採用検討理由**: 標準の `psql` や `mysql` クライアントではコマンドの記憶やタイピングが負担になりますが、これらを使うことでターミナル上でも GUI ツール並の快適なクエリ入力が可能になります。
 
 ### 🗺️ [Atlas](https://github.com/ariga/atlas) / [sqldef](https://github.com/sqldef/sqldef)
 
@@ -800,6 +841,12 @@ VS Code に依存せず、ターミナルや任意のエディタから devconta
 
 Docker コンテナや Kubernetes リソースを効率的に運用・監視・トラブルシューティングするためのツール群です。
 
+### 🧊 [kind](https://github.com/kubernetes-sigs/kind) / [k3d](https://github.com/k3d-io/k3d)
+
+* **カテゴリ**: ローカル Kubernetes クラスタ
+* **概要**: Docker コンテナ内に軽量な Kubernetes クラスタを構築するツール。`kind` は公式のテスト用、`k3d` は k3s ベースでより高速かつリソース消費が少ないのが特徴です。
+* **採用検討理由**: minikube や Docker Desktop の組み込み K8s よりも高速に使い捨てのクラスタを立ち上げられ、CI/CD 内での E2E テストやローカルでの Helm チャート開発に最適です。
+
 ### 🐋 [lazydocker](https://github.com/jesseduffield/lazydocker)
 
 * **カテゴリ**: Docker 管理 TUI
@@ -807,6 +854,12 @@ Docker コンテナや Kubernetes リソースを効率的に運用・監視・�
 * **採用検討理由**: ログの確認（`tail`）、コンテナの再起動や削除などをコマンドを打ち込むことなくグラフィカルに操作でき、複数コンテナを動かすローカル開発で極めて強力です。
 * **主な競合・代替ツール**: ctop, dive, Portainer
 * **競合との比較・選択のポイント**: `Portainer` などの Web UI ツールをわざわざ立ち上げることなく、ターミナルから 1 コマンドで Docker のコンテナログ確認、再起動、CPU/メモリ使用率監視、未使用イメージのクリーンアップなどを瞬時にキーボード操作できます。
+
+### 📊 [ctop](https://github.com/bcicen/ctop)
+
+* **カテゴリ**: Docker コンテナ・トップ（リソース監視）
+* **概要**: Linux の `top` コマンドのように、複数の Docker コンテナの CPU、メモリ、ネットワーク送受信量をリアルタイムで一覧表示する TUI ツール。
+* **採用検討理由**: `docker stats` の出力をより見やすく、かつ操作可能（コンテナの停止やログ確認へのジャンプ）にし、システムリソースを圧迫しているコンテナを一目で特定できるようにするため。
 
 ### ☸️ [k9s](https://github.com/derailed/k9s)
 
@@ -956,6 +1009,18 @@ SSH 鍵や ge の暗号化キーをファイルシステム上ではなく、�
 * **採用検討理由**: Lefthook 等と組み合わせて pre-commit フックに仕込むことで、クラウドのクレデンシャル漏洩事故を未然かつ全自動で防ぎます。
 * **主な競合・代替ツール**: TruffleHog, detect-secrets
 * **競合との比較・選択のポイント**: `trufflehog` が主に過去のコミット履歴やパブリックリポジトリのスキャンに強いのに対し、`GitLeaks` は非常に高速かつ軽量で、`lefthook` などの Git Hook と連携して「コミット前のステージングエリア (`git commit` 直前)」で即時にシークレット漏洩をブロックすることに優れており、開発者の日常のローカルガードとして最適です。
+
+### 🛡️ [Syft](https://github.com/anchore/syft) / [Grype](https://github.com/anchore/grype)
+
+* **カテゴリ**: SBOM (ソフトウェア部品表) 生成・脆弱性スキャナー
+* **概要**: コンテナイメージやファイルシステムから依存関係を解析して SBOM を生成する `Syft` と、その SBOM を用いて脆弱性（CVE）を高速スキャンする `Grype` の強力なコンビネーション（Anchore 社製）。
+* **採用検討理由**: ソフトウェアサプライチェーン攻撃の増加に伴い、自社の製品に「何が含まれているか」を正確に可視化し、CI 段階で脆弱な依存パッケージの混入をブロックするため。
+
+### 🛡️ [Conftest](https://github.com/open-policy-agent/conftest)
+
+* **カテゴリ**: 構成データ・IaC ポリシースキャナー (OPA)
+* **概要**: Open Policy Agent (OPA) の Rego 言語を用いて、Kubernetes マニフェスト、Terraform、Dockerfile 等の構造化データに対して独自のセキュリティや運用ポリシー（例: 「root権限での実行を禁止」など）を適用・検査するツール。
+* **採用検討理由**: 既存の Linter では検出できない、組織固有のセキュリティ要件やベストプラクティスをコード（Policy-as-Code）として定義し、CI パイプラインで強制するため。
 
 ### 🛡️ [Trivy](https://github.com/aquasecurity/trivy)
 
