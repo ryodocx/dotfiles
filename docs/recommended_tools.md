@@ -31,6 +31,13 @@
 * [17. 仮想環境・データ同期・高度バックアップ (Infrastructure & Storage)](#17-仮想環境データ同期高度バックアップ-infrastructure--storage)
 
 * [18. Nix & Flakes エコシステム (Nix Ecosystem)](#18-nix--flakes-エコシステム-nix-ecosystem)
+* [19. 次世代バージョン管理 (Next-Gen VCS)](#19-次世代バージョン管理-next-gen-vcs)
+* [20. ダッシュボード・情報集約 TUI (Terminal Dashboards)](#20-ダッシュボード情報集約-tui-terminal-dashboards)
+* [21. ローカルクラウド開発・エミュレーション (Local Cloud Mocking)](#21-ローカルクラウド開発エミュレーション-local-cloud-mocking)
+* [22. メディア処理・スクレイピング CLI (Media & Scraping)](#22-メディア処理スクレイピング-cli-media--scraping)
+* [23. 高速 Web ランタイム (Modern Web Runtimes)](#23-高速-web-ランタイム-modern-web-runtimes)
+* [24. タイムトラッキング・生産性分析 (Time Tracking)](#24-タイムトラッキング生産性分析-time-tracking)
+* [25. WebAssembly (Wasm) エコシステム](#25-webassembly-wasm-エコシステム)
 
 ## 1. AI 開発支援・エージェント環境
 
@@ -1354,3 +1361,91 @@ Nix パッケージマネージャーおよび Flakes を使用した宣言的�
 * **カテゴリ**: Nix 静的解析 (Linter)
 * **概要**: Nix 言語のアンチパターンや古い構文を検出し、より良い書き方を提案する Linter。
 * **採用検討理由**: `with` 句の誤用などの Nix における罠を避け、安全なコードベースを維持できます。
+
+## 19. 次世代バージョン管理 (Next-Gen VCS)
+
+Git の複雑さを解消し、よりシンプルで強力な操作を提供する次世代のバージョン管理システムです。
+
+### 🔄 [Jujutsu (jj)](https://github.com/martinvonz/jj)
+
+* **カテゴリ**: Git互換 次世代VCS
+* **概要**: A Git-compatible VCS that is both simple and powerful. Google のエンジニアが開発を主導している、Git のバックエンドと完全な互換性を持ちながら、より使いやすいインターフェースを提供するツール。
+* **採用検討理由**: ブランチ名の明示的な管理を不要とし、すべてのコミットを自動的に管理（自動リベース・コンフリクトの遅延解決）することで、Git で発生しがちな認知負荷やエラー状態を劇的に軽減できます。
+
+## 20. ダッシュボード・情報集約 TUI (Terminal Dashboards)
+
+ターミナル上に様々な情報を集約し、一目で全体像を把握するためのツールです。
+
+### 📊 [WTF (wtfos)](https://github.com/wtfutil/wtf)
+
+* **カテゴリ**: ターミナル・ダッシュボード
+* **概要**: The personal information dashboard for your terminal. Git、Jira、GitHub、Google Calendar などの情報をターミナル上の1画面にまとめて表示できる Go 製のツール。
+* **採用検討理由**: 開発作業を始める際に、今日のタスクや PR のレビュー状況などをブラウザを開くことなく即座に確認でき、集中力を途切れさせません。
+
+## 21. ローカルクラウド開発・エミュレーション (Local Cloud Mocking)
+
+クラウド環境への依存を減らし、ローカル環境で安全かつ高速に開発・テストを行うためのツールです。
+
+### ☁️ [LocalStack](https://github.com/localstack/localstack)
+
+* **カテゴリ**: AWS ローカルエミュレーター
+* **概要**: A fully functional local AWS cloud stack. Develop and test your cloud & Serverless apps offline. S3, Lambda, DynamoDB など主要な AWS サービスを Docker 上でエミュレートするツール。
+* **採用検討理由**: AWS の課金を気にすることなく、ローカル環境で S3 のアップロードや Lambda の実行テストを高速に行えるため、開発ループの短縮と CI への組み込みに最適です。
+
+## 22. メディア処理・スクレイピング CLI (Media & Scraping)
+
+画像や動画などのメディアファイルに対する操作をターミナルで自動化するための強力なツール群です。
+
+### 🎥 [yt-dlp](https://github.com/yt-dlp/yt-dlp)
+
+* **カテゴリ**: 高機能動画ダウンローダー
+* **概要**: A feature-rich command-line audio/video downloader. youtube-dl のフォークであり、数多くの動画サイトに対応した強力なダウンロードツール。
+* **採用検討理由**: チュートリアル動画のオフライン保存や、音声抽出（mp3変換）、字幕のダウンロードなど、スクリプトと組み合わせてメディア収集を完全に自動化できます。
+
+### 🖼️ [ImageMagick](https://github.com/ImageMagick/ImageMagick)
+
+* **カテゴリ**: 画像処理スイート
+* **概要**: ImageMagick is a free, open-source software suite for creating, editing, converting, and displaying images.
+* **採用検討理由**: ターミナルから画像のフォーマット変換、リサイズ、透かしの追加などを一括処理でき、ブログやドキュメント作成時の画像最適化に不可欠です。
+
+## 23. 高速 Web ランタイム (Modern Web Runtimes)
+
+Node.js に代わる、TypeScript ネイティブで高速な次世代の JavaScript ランタイムです。
+
+### 🥟 [Bun](https://github.com/oven-sh/bun)
+
+* **カテゴリ**: 超高速 JavaScript ランタイム・バンドラー
+* **概要**: Incredibly fast JavaScript runtime, bundler, test runner, and package manager – all in one. Zig で書かれた超高速なランタイム。
+* **採用検討理由**: `npm install` やスクリプトの実行速度が桁違いに速く、Node.js エコシステムの既存の遅延を解消し、TypeScript をトランスパイルなしで直接実行できます。
+
+### 🦕 [Deno](https://github.com/denoland/deno)
+
+* **カテゴリ**: セキュアなモダン Web ランタイム
+* **概要**: A modern runtime for JavaScript and TypeScript. Node.js の作者がセキュリティとモダンな Web 標準（fetch 等）にフォーカスして再構築したランタイム。
+* **採用検討理由**: デフォルトでファイルシステムやネットワークへのアクセスが制限されており（セキュアバイデフォルト）、より安全なスクリプト実行環境をローカルで構築できます。
+
+## 24. タイムトラッキング・生産性分析 (Time Tracking)
+
+開発作業にどれだけ時間を費やしたかをコマンドラインで記録・分析するツールです。
+
+### ⏱️ [Timewarrior](https://github.com/GothenburgBitFactory/timewarrior)
+
+* **カテゴリ**: コマンドライン・タイムトラッキング
+* **概要**: Timewarrior - Commandline Time Tracking and Reporting. `Taskwarrior` とも連携可能な、ターミナル上で作業時間を記録するツール。
+* **採用検討理由**: Toggl などの Web サービスを使わず、タスクの切り替えと同時にコマンドラインから瞬時に時間計測を開始・停止でき、正確な作業時間の把握と分析が可能です。
+
+## 25. WebAssembly (Wasm) エコシステム
+
+プラットフォームに依存しない軽量で高速なコンテナ技術である WebAssembly ランタイムです。
+
+### 🕸️ [Wasmtime](https://github.com/bytecodealliance/wasmtime)
+
+* **カテゴリ**: WebAssembly ランタイム
+* **概要**: A lightweight WebAssembly runtime that is fast, secure, and standards-compliant. Bytecode Alliance が主導する Wasm ランタイム。
+* **採用検討理由**: Docker に代わる超軽量なサンドボックス実行環境として、CLI ツールやマイクロサービスを OS 非依存かつ高速に実行できます。
+
+### 🕸️ [Wasmer](https://github.com/wasmerio/wasmer)
+
+* **カテゴリ**: ユニバーサル WebAssembly ランタイム
+* **概要**: Fast, secure, lightweight containers based on WebAssembly. 複数のバックエンドを持ち、あらゆる環境で Wasm モジュールを実行できるランタイム。
+* **採用検討理由**: `wapm` (WebAssembly Package Manager) と連携し、Rust や C/C++ で書かれたツールをプラットフォームの差異を気にせず、即座にローカルにインストール・実行できます。
