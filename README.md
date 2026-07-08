@@ -3,6 +3,7 @@
 Nix と chezmoi を組み合わせた、macOS、Windows (WSL)、Linux に対応するモダンな dotfiles 環境です。
 
 ## 特徴
+
 1. **ハイブリッド設計**:
    - Nix: パッケージ管理（`flake.lock` によるバージョン完全固定）および macOS のシステム設定（nix-darwin）。
    - chezmoi: dotfiles テンプレート管理、マシン固有設定のローカル管理（Git非公開）。
@@ -16,6 +17,7 @@ Nix と chezmoi を組み合わせた、macOS、Windows (WSL)、Linux に対応�
 ## 導入方法
 
 ### 事前準備 (Windows 固有)
+
 Windows / WSL 環境で利用する場合、OpenSSH Authentication Agent サービスを自動起動させておく必要があります。
 管理者権限で PowerShell を開き、以下のコマンドを実行してください：
 
@@ -25,15 +27,18 @@ Start-Service ssh-agent
 ```
 
 ### 1. ハードウェアバインド SSH 鍵の生成と登録
+
 リポジトリを安全にクローン・操作するために、まず各マシンで個別に生体認証ハードウェア（Touch ID / Windows Hello）に紐づいた SSH 鍵を作成し、GitHub に登録します。
 
 ```bash
 # macOS のターミナル、または Windows の PowerShell 上で実行（WSL内ではありません）
 ssh-keygen -t ecdsa-sk -C "ryodocx@device"
 ```
+
 生成された公開鍵（`~/.ssh/id_ecdsa_sk.pub`）のテキストをコピーし、[GitHub の SSH and GPG keys 設定](https://github.com/settings/keys) に登録してください。
 
 ### 2. リポジトリのクローン
+
 登録した SSH 鍵を利用して、リポジトリをローカルにクローンします。
 
 ```bash
@@ -42,6 +47,7 @@ cd ~/.dotfiles
 ```
 
 ### 3. セットアップスクリプトの実行
+
 `install.sh` を実行します。Nix、Home Manager、nix-darwin、chezmoi、および必要なツールが自動的にセットアップされます。
 また、OS ユーザー名に応じて `flake.nix` が自動的に書き換えられます。
 
@@ -52,17 +58,19 @@ cd ~/.dotfiles
 非対話的に実行したい場合は、以下のオプションを使用して各設定値を渡すことができます。
 
 ```bash
+# GITHUB_TOKENは対話プロンプトで入力するか、環境変数で指定してください
 ./install.sh \
   --os-user "your_os_username" \
   --git-user "Your Name" \
-  --git-email "your-email@example.com" \
-  --github-token "ghp_xxxxxxxxxxxx"
+  --git-email "your-email@example.com"
 ```
 
 指定されなかった項目は、スクリプト実行中にインタラクティブに入力が求められます。
 
 ## ツールチェーン & 設定の詳細
+
 詳細な設計決定事項やモダン CLI 代替ツールのリストについては、以下を参照してください。
+
 - [implementation_plan.md](docs/implementation_plan.md)
 - [terminal_and_secrets_design.md](docs/terminal_and_secrets_design.md)
 
@@ -93,13 +101,16 @@ cd ~/.dotfiles
 既存の設定ファイル（例: `~/.tmux.conf` や `~/.config/kitty/kitty.conf`）を新規に dotfiles リポジトリの管理下に置く手順です。
 
 1. **chezmoi にファイルを追加する**:
+
    ```bash
    chezmoi add ~/.tmux.conf
    ```
+
    ※ これにより、ファイルが `chezmoi` のソースディレクトリ（`~/.local/share/chezmoi/`）にコピーされます。
 
 2. **テンプレート化したい場合 (オプション)**:
    もし OS ごとの条件分岐などを入れるためにテンプレートファイル化したい場合は、追加時に `--template` を付与します。
+
    ```bash
    chezmoi add --template ~/.tmux.conf
    ```
@@ -111,19 +122,24 @@ cd ~/.dotfiles
 設定を変更し、他の環境に同期するまでの一般的なサイクルです。
 
 #### 1. 設定ファイルを編集する
+
 設定ファイルを編集する場合は、ホームディレクトリの実ファイルを直接触るのではなく、以下のコマンドで編集します。
+
 ```bash
 # 例: ~/.zshrc を編集する
 chezmoi edit ~/.zshrc
 ```
+
 ※ 自動的にソースディレクトリ側のファイル（`dot_zshrc.tmpl`）がエディタで開き、保存して閉じるとホームディレクトリ側にも自動で適用されます。
 
 もしリポジトリ側のファイルを直接エディタで開いて編集した場合は、以下のコマンドでホームディレクトリに反映させます。
+
 ```bash
 chezmoi apply
 ```
 
 #### 2. 変更をリポジトリへコミット & プッシュする
+
 編集した設定ファイルを GitHub に保存します。chezmoi の管理ディレクトリに移動して Git 操作を行うか、chezmoi コマンド経由で実行します。
 
 ```bash
@@ -138,13 +154,16 @@ git push origin v2
 ```
 
 #### 3. 他のマシンで最新の設定を取り込む (同期)
+
 別のマシンで GitHub 上の最新設定を取り込み、適用します。
+
 ```bash
 # 最新のリポジトリの変更を取得し、自動的に適用 (apply) する
 chezmoi update
 ```
 
 #### 4. 各種ソフトウェアのアップデート
+
 本リポジトリに含まれる Nix、Homebrew、Mise、Sheldon などの各種ソフトウェアやプラグインを一括で最新版に更新するためのスクリプトが用意されています。Zsh 内で以下のエイリアスコマンドを実行してください。
 
 ```bash
@@ -152,11 +171,13 @@ dotfiles-update
 ```
 
 または、直接以下のスクリプトを実行します。
+
 ```bash
 ~/.dotfiles/update.sh
 ```
 
 このコマンドを実行すると、内部的に以下の処理が自動で行われます：
+
 1. **リポジトリの pull**: `~/.dotfiles` 内で最新の変更を取得 (`git pull`)
 2. **chezmoi の同期**: `chezmoi update` で最新の設定ファイルを再適用
 3. **Nix の更新**: `nix flake update` を実行し、`nix-darwin` もしくは `home-manager` の最新状態を再構築・適用

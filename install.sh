@@ -27,14 +27,15 @@ set -e
 DOTFILES_OS_USER="${USER:-}"
 DOTFILES_GIT_USER=""
 DOTFILES_GIT_EMAIL=""
-DOTFILES_GITHUB_TOKEN=""
+# NOTE: To prevent secret leakage via process arguments (ps), DOTFILES_GITHUB_TOKEN
+# must be set via environment variable or interactive prompt, NOT command line flags.
+DOTFILES_GITHUB_TOKEN="${DOTFILES_GITHUB_TOKEN:-}"
 
 while [[ $# -gt 0 ]]; do
     case $1 in
         --os-user) DOTFILES_OS_USER="$2"; shift 2 ;;
         --git-user) DOTFILES_GIT_USER="$2"; shift 2 ;;
         --git-email) DOTFILES_GIT_EMAIL="$2"; shift 2 ;;
-        --github-token) DOTFILES_GITHUB_TOKEN="$2"; shift 2 ;;
         -h|--help)
             echo "Usage: $0 [options]"
             echo ""
@@ -42,7 +43,6 @@ while [[ $# -gt 0 ]]; do
             echo "  --os-user <username>       Set OS username (default: \$USER)"
             echo "  --git-user <username>      Set Git username"
             echo "  --git-email <email>        Set Git email address"
-            echo "  --github-token <token>     Set GitHub Personal Access Token"
             echo "  -h, --help                 Show this help message"
             exit 0
             ;;
