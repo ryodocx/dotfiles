@@ -36,6 +36,20 @@
 
 日常の開発に AI を深く統合するための最新 CLI ツールおよび専用ターミナル環境です。
 
+### ✨ [mods](https://github.com/charmbracelet/mods)
+
+* **カテゴリ**: AI パイプライン・CLI 統合
+* **利用コスト**: 💳 OpenAI API等の有料APIが必要
+* **概要**: 標準入力をLLMに流し込み、結果を標準出力として受け取るGo製のシンプルなCLI。パイプ処理に特化。
+* **採用検討理由**: シェルスクリプトの中でシームレスにAIのテキスト処理を利用可能にするため。
+
+### 🔧 [OpenHands](https://github.com/All-Hands-AI/OpenHands) [💳 有料SaaS/API]
+
+* **カテゴリ**: 自律型 AI ソフトウェアエンジニア
+* **利用コスト**: 💳 有料APIの持ち込みが必要。
+* **概要**: ブラウザ上で動作するターミナルやエディタを備えた統合型のAIコーディング環境。
+* **採用検討理由**: 隔離されたDocker環境内でAIがコード変更やテスト実行を自律的に行えるため安全。
+
 ### 🧑‍💻 エディタ統合型 AI エージェント (Cline / Roo Code / Continue)
 
 VS Code や JetBrains などの GUI エディタ内に密接に統合され、コードベースのコンテキストを視覚的に把握しながら開発を支援するツール群。
@@ -137,6 +151,18 @@ VS Code の拡張機能としてではなく、エディタ自体をフォーク
 
 日常の開発環境の切り替え、ワークフロー自動化、およびタスク実行のためのツール群です。
 
+### 🌍 [Earthly](https://github.com/earthly/earthly)
+
+* **カテゴリ**: コンテナベース・ビルド自動化
+* **概要**: MakefileとDockerfileの長所を組み合わせたような構文で、どこでも再現可能なビルドを定義するツール。
+* **採用検討理由**: ローカルとCIで全く同じビルド環境・手順を保証するため。
+
+### 📦 [Devbox](https://github.com/jetpack-io/devbox)
+
+* **カテゴリ**: 開発環境パッケージマネージャ
+* **概要**: Nixをバックエンドに利用しつつ、JSON設定ファイルだけで環境を構築できるツール。
+* **採用検討理由**: Nixの学習コストなしに、Nixの恩恵（再現性のある分離環境）を得るため。
+
 ### 🔄 CI/CD ローカルテスト・コンテナネイティブパイプライン (act / Dagger)
 
 クラウド上の CI サービス（GitHub Actions 等）にプッシュする前にローカルでパイプラインをテストし、フィードバックループを劇的に高速化するツール。
@@ -219,6 +245,24 @@ odemon, cargo watch など）に依存しないため、どんな言語やツー
 ## 3. Git ワークフロー & リポジトリ管理
 
 Git 操作を高速化し、複数リポジトリを効率的に運用するためのツール群です。
+
+### 🥋 [Jujutsu (jj)](https://github.com/martinvonz/jj)
+
+* **カテゴリ**: 次世代バージョン管理システム
+* **概要**: Gitと互換性のあるバックエンドを持ちつつ、よりシンプルで強力なコマンドを提供するRust製のVCS。
+* **採用検討理由**: Gitの複雑なインデックス管理から解放され、より直感的に履歴を操作できるため。
+
+### 🔍 [git-filter-repo](https://github.com/newren/git-filter-repo)
+
+* **カテゴリ**: Git リポジトリ履歴の書き換え・フィルタリング
+* **概要**: 従来の `git filter-branch` や `BFG Repo-Cleaner` に代わる、高速で強力な公式推奨の履歴書き換えツール。
+* **採用検討理由**: 誤ってコミットした大容量ファイルや機密情報をリポジトリの履歴から迅速かつ安全に完全消去するため。
+
+### 🎥 [git-sim](https://github.com/initialcommit-com/git-sim)
+
+* **カテゴリ**: Git コマンドシミュレーター
+* **概要**: Git コマンドを実行した結果（コミットグラフの変化など）を画像やアニメーションで視覚的にシミュレートするツール。
+* **採用検討理由**: 複雑なマージやリベース操作を行う前に、それがどのような結果になるかを安全にプレビューできるため。
 
 ### 📝 [Commitizen](https://github.com/commitizen/cz-cli) / [czg](https://github.com/Zhengqbbb/cz-git)
 
@@ -434,6 +478,12 @@ Zsh の操作性、補完、履歴検索、およびセッション・ファイ�
 
 マシンのリソース（CPU/メモリ）、実行中のプロセス、ディスク使用量などを可視化・監視するツール群です。
 
+### 🧹 [kondo](https://github.com/tbillington/kondo)
+
+* **カテゴリ**: プロジェクト依存関係クリーナー
+* **概要**: node_modules や target ディレクトリなどのビルド成果物を一括で検索・削除するツール。
+* **採用検討理由**: ディスク容量を逼迫する不要なビルドキャッシュを安全かつ簡単にクリーンアップできるため。
+
 ### 🖥️ [bottom (btm)](https://github.com/ClementTsang/bottom) / [btop](https://github.com/aristocratos/btop)
 
 * **カテゴリ**: top / htop 代替 (システムモニター)
@@ -615,6 +665,12 @@ Zsh の操作性、補完、履歴検索、およびセッション・ファイ�
 
 API の疎通確認、負荷テスト、ローカルホスト公開、およびネットワークトラブル調査を行うツール群です。
 
+### 🚀 [Hoppscotch](https://github.com/hoppscotch/hoppscotch)
+
+* **カテゴリ**: オープンソースAPI開発エコシステム
+* **概要**: Postmanの代替となるWebベース/デスクトップベースの高速なAPIクライアント。
+* **採用検討理由**: 軽量でアカウント登録なしでも利用でき、チーム共有も可能なため。
+
 ### 📮 [posting](https://github.com/darrenburns/posting)
 
 * **カテゴリ**: TUI HTTP / API クライアント (Postman 代替)
@@ -742,6 +798,18 @@ REST 以外の API プロトコル（gRPC, GraphQL, WebSockets）のテスト、
 
 データベースの操作やスキーマ設計、および構造化されたログファイルのリアルタイム解析を行うためのツール群です。
 
+### 🗃️ [pgcli](https://github.com/dbcli/pgcli) / [mycli](https://github.com/dbcli/mycli)
+
+* **カテゴリ**: 高機能SQLクライアント
+* **概要**: オートコンプリートやシンタックスハイライトを備えたPostgreSQL / MySQL用CLI。
+* **採用検討理由**: デフォルトのpsql/mysqlコマンドよりも圧倒的に使いやすく、入力補完により効率が上がるため。
+
+### 🌐 [Bytebase](https://github.com/bytebase/bytebase)
+
+* **カテゴリ**: データベース CI/CD・変更管理
+* **概要**: データベーススキーマの変更をコードとして管理し、レビューとデプロイのワークフローを自動化するツール。
+* **採用検討理由**: アプリケーションのCI/CDパイプラインにデータベースのマイグレーションを統合し、安全な変更を実現するため。
+
 ### 🦆 [DuckDB](https://duckdb.org/)
 
 * **カテゴリ**: インプロセス・分析用 (OLAP) SQL データベース
@@ -785,6 +853,18 @@ REST 以外の API プロトコル（gRPC, GraphQL, WebSockets）のテスト、
 ---
 
 ## 9. Docker & Kubernetes
+
+### 📦 [Tilt](https://github.com/tilt-dev/tilt) / [Skaffold](https://github.com/GoogleContainerTools/skaffold)
+
+* **カテゴリ**: Kubernetes ローカル開発・ホットリロード
+* **概要**: ローカルでのコード変更を検知し、自動的にコンテナイメージをビルドしてK8sクラスターにデプロイするツール。
+* **採用検討理由**: マイクロサービス開発において、ローカルの変更を即座にK8s上で確認できるため。
+
+### 🐳 [kind](https://github.com/kubernetes-sigs/kind) / [k3d](https://github.com/k3d-io/k3d)
+
+* **カテゴリ**: ローカル Kubernetes クラスター
+* **概要**: Dockerコンテナ内でKubernetesクラスターを実行するためのツール。
+* **採用検討理由**: Minikubeよりも軽量かつ高速にローカルK8s環境を立ち上げられるため。
 
 ### 🐳 Devcontainer 活用・抽象化ツール (DevPod / devcontainers-cli)
 
@@ -868,6 +948,18 @@ Docker コンテナや Kubernetes リソースを効率的に運用・監視・�
 
 AWS 認証情報の管理、Terraform をはじめとする IaC の構成・コスト・ドキュメンテーションを最適化するツール群です。
 
+### ☁️ [LocalStack](https://github.com/localstack/localstack)
+
+* **カテゴリ**: ローカル AWS クラウドエミュレーター
+* **概要**: AWSの主要なサービス（S3, Lambda, DynamoDBなど）をローカル環境でエミュレートするツール。
+* **採用検討理由**: AWSリソースを利用するアプリケーションのテストを、実際のAWSコストなしにローカルで完結できるため。
+
+### 🏗️ [Pulumi](https://github.com/pulumi/pulumi)
+
+* **カテゴリ**: 汎用言語 IaC
+* **概要**: TypeScript、Python、Goなどのプログラミング言語を使ってインフラを定義するIaCツール。
+* **採用検討理由**: HCLのような独自言語ではなく、使い慣れた言語の機能（ループ、条件分岐、テスト）をインフラ定義に活用できるため。
+
 ### ☁️ [Granted](https://github.com/common-fate/granted)
 
 * **カテゴリ**: AWS 認証情報・プロファイル管理 (マルチアカウント管理)
@@ -918,6 +1010,12 @@ Terraform / OpenTofu のコードを DRY に保ち、複数環境での構成管
 ## 11. セキュリティ・シークレット管理・クラウド監査
 
 クレデンシャルの暗号化、シークレット情報の漏洩検知、インフラの脆弱性スキャンやセキュリティ監査を行うツール群です。
+
+### 🔒 [mkcert](https://github.com/FiloSottile/mkcert)
+
+* **カテゴリ**: ローカルHTTPS証明書生成
+* **概要**: ゼロコンフィグでローカル開発用の信頼されたSSL/TLS証明書を生成するツール。
+* **採用検討理由**: localhostでの開発時にブラウザの証明書エラーを回避し、本番に近いHTTPS環境を簡単に構築するため。
 
 ### 🔐 ハードウェア・セキュリティ (TPM / Secure Enclave) 連携ツール
 
@@ -1050,6 +1148,24 @@ Rust などのモダンな言語体系で作られた、次世代の高速エデ
 ## 13. モダン・エコシステム特化 (Python / Node.js)
 
 各言語エコシステムにおいて、既存の遅いツールチェーンを Rust で書き直して「爆速化・統合化」したゲームチェンジャーたちです。
+
+### 🥟 [Bun](https://github.com/oven-sh/bun) / [Deno](https://github.com/denoland/deno)
+
+* **カテゴリ**: 次世代 JavaScript / TypeScript ランタイム
+* **概要**: Node.jsに代わる、高速でTypeScriptをネイティブサポートするランタイムおよびパッケージマネージャ群。
+* **採用検討理由**: npm/yarn/pnpmの遅さや複雑さを解消し、単一の高速なバイナリでJS/TS開発環境を統一するため。
+
+### 🐍 [pixi](https://github.com/prefix-dev/pixi)
+
+* **カテゴリ**: 高速パッケージマネージャ (Conda互換)
+* **概要**: Condaエコシステムと互換性を持ちつつ、Rustで書かれた非常に高速なパッケージマネージャ兼タスクランナー。
+* **採用検討理由**: データサイエンスや機械学習プロジェクトにおける複雑な依存関係解決を劇的に高速化するため。
+
+### 📓 [Marimo](https://github.com/marimo-team/marimo)
+
+* **カテゴリ**: リアクティブ Python ノートブック
+* **概要**: Jupyter Notebookの代替となる、リアクティブでGit管理しやすい次世代のPythonノートブック環境。
+* **採用検討理由**: ノートブックの実行状態の不整合を防ぎ、再現性の高いデータ分析やプロトタイピングを行うため。
 
 ### 🛠️ [mise](https://github.com/jdx/mise)
 
@@ -1233,6 +1349,12 @@ macOS または Windows のローカルホスト環境そのものの生産性�
 ## 16. 個人タスク・ナレッジ管理・プレゼン (PKM & Productivity)
 
 ブラウザの重い Web アプリに依存せず、ターミナル上で思考整理、ToDo 管理、および資料作成・スライド発表を行うためのツール群です。
+
+### 📝 [Typst](https://github.com/typst/typst)
+
+* **カテゴリ**: 新世代マークアップベース組版システム
+* **概要**: LaTeXの代替となる、高速でモダンな構文を持つドキュメント組版システム。
+* **採用検討理由**: LaTeXの複雑さやコンパイルの遅さを解消し、美しいPDFドキュメントを高速に生成するため。
 
 ### 📋 [Taskwarrior](https://taskwarrior.org/) / [taskwarrior-tui](https://github.com/kdheepak/taskwarrior-tui)
 
