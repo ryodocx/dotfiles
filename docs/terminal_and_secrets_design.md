@@ -57,7 +57,7 @@ WSL2 は独立した Linux 仮想マシンのため、Windows 側の物理 TPM (
        local npiperelay_path="/mnt/c/Users/ryodocx/bin/npiperelay.exe"
        
        if [ -f "$npiperelay_path" ]; then
-           (setsid socat UNIX-LISTEN:"$SSH_AUTH_SOCK",fork EXEC:"$npiperelay_path -ei -s //./pipe/openssh-ssh-agent",nofork &) >/dev/null 2>&1
+           (setsid socat UNIX-LISTEN:"$SSH_AUTH_SOCK",umask=077,mode=0600,fork EXEC:"$npiperelay_path -ei -s //./pipe/openssh-ssh-agent",nofork &) >/dev/null 2>&1
        fi
    fi
    ```

@@ -21,3 +21,9 @@
 **Vulnerability:** While a previous fix prevented `chezmoi init` from leaking the GitHub token, `install.sh` itself still accepted the token via the `--github-token` command-line argument. This exposed the token in the process list (`ps`) to any user on the system while `install.sh` was running, and in the user's shell history.
 **Learning:** When fixing command-line argument leaks for sub-processes, you must also ensure the parent script does not accept the same secrets via its own command-line arguments.
 **Prevention:** Remove command-line options for secrets in wrapper scripts and require them to be passed as environment variables or via secure interactive prompts.
+
+## 2024-10-27 - GitHub Token exposure via world-readable .zshrc
+
+**Vulnerability:** The GitHub token (`GITHUB_TOKEN`) was exported directly in `~/.zshrc`, which is typically created with default file permissions (e.g., `0644`), making the token readable by any local user on the machine.
+**Learning:** Storing secrets directly in general configuration files like `.zshrc` exposes them if the file's permissions are not tightly restricted.
+**Prevention:** Use chezmoi's `private_` prefix (e.g., `private_dot_secrets.tmpl`) to generate a dedicated secrets file with `0600` permissions, and source this secure file from the main configuration.
