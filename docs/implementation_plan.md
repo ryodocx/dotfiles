@@ -112,7 +112,7 @@
    openai_api_key = "sk-xxxxxxxx"
    ```
 2. **テンプレートでの利用**
-   `chezmoi edit ~/.zshrc` でテンプレートを開き、変数として参照します。
+   `chezmoi edit ~/.secrets` でテンプレート（または `private_dot_secrets.tmpl`）を開き、変数として参照します。
    ```zsh
    export OPENAI_API_KEY="{{ .openai_api_key }}"
    ```

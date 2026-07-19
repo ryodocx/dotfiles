@@ -89,6 +89,6 @@ function y() {
 }
 
 # ── Machine-Local secrets mapped to Environment variables ──
-{{- if .githubToken }}
-export GITHUB_TOKEN="{{ .githubToken }}"
-{{- end }}
+if [ -f "$HOME/.secrets" ]; then
+    source "$HOME/.secrets"
+fi
