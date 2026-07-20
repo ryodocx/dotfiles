@@ -1,0 +1,45 @@
+[user]
+    name = "{{ .user }}"
+    email = "{{ .email }}"
+
+[init]
+    defaultBranch = main
+
+[core]
+    autocrlf = input
+    pager = delta
+    hooksPath = ~/.config/git/hooks
+
+[diff]
+    colorMoved = default
+    algorithm = histogram
+
+[merge]
+    conflictstyle = zdiff3
+
+[pull]
+    rebase = true
+
+[push]
+    autoSetupRemote = true
+
+[delta]
+    navigate = true
+    line-numbers = true
+    side-by-side = true
+    syntax-theme = "gruvbox-dark"
+
+[interactive]
+    diffFilter = delta --color-only
+
+[rerere]
+    enabled = true
+
+[credential]
+{{- if eq .osId "darwin" }}
+    helper = osxkeychain
+{{- else if .isWSL }}
+    helper = /mnt/c/Program\ Files/Git/mingw64/bin/git-credential-manager.exe
+{{- else }}
+    helper = store
+{{- end }}

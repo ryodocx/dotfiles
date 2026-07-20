@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-type aws &>/dev/null && {
-    complete -o nospace -C aws_completer aws
-}

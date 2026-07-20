@@ -1,8 +1,0 @@
-*~
-.DS_Store
-.vscode/
-.tool-versions
-.envrc
-.direnv/
-.terraform/
-node_modules/

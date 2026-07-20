@@ -1,0 +1,94 @@
+# .zshrc - Shell configuration managed by chezmoi
+
+# ── Nix Environment Initialization ──
+if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+    . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+fi
+if [ -e "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then
+    . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+fi
+
+# ── Shell History ──
+HISTSIZE=50000
+SAVEHIST=50000
+HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/zsh/history"
+mkdir -p "$(dirname "$HISTFILE")"
+setopt HIST_IGNORE_DUPS HIST_IGNORE_SPACE SHARE_HISTORY EXTENDED_HISTORY
+
+# ── Windows/WSL SSH Agent Bridge (npiperelay + socat) ──
+{{- if .isWSL }}
+export SSH_AUTH_SOCK="$HOME/.ssh/agent.sock"
+if [ ! -S "$SSH_AUTH_SOCK" ]; then
+    rm -f "$SSH_AUTH_SOCK"
+    npiperelay_path="{{ .winProfileWsl }}/bin/npiperelay.exe"
+    
+    if [ -f "$npiperelay_path" ] && command -v socat >/dev/null 2>&1; then
+        (setsid socat UNIX-LISTEN:"$SSH_AUTH_SOCK",umask=077,mode=0600,fork EXEC:"$npiperelay_path -ei -s //./pipe/openssh-ssh-agent",nofork &) >/dev/null 2>&1
+    fi
+fi
+{{- end }}
+
+# ── Shell Plugin Loading via sheldon ──
+if command -v sheldon >/dev/null 2>&1; then
+    eval "$(sheldon source)"
+fi
+
+# ── Tool Integrations ──
+
+# Starship Prompt
+if command -v starship >/dev/null 2>&1; then
+    eval "$(starship init zsh)"
+fi
+
+# Atuin (Encrypted Shell History)
+if command -v atuin >/dev/null 2>&1; then
+    eval "$(atuin init zsh)"
+fi
+
+# zoxide (Smart Directory Jumper)
+if command -v zoxide >/dev/null 2>&1; then
+    eval "$(zoxide init zsh --cmd cd)"
+fi
+
+# fzf (Fuzzy Finder)
+if command -v fzf >/dev/null 2>&1; then
+    source <(fzf --zsh)
+fi
+
+# mise (Runtime Manager)
+if command -v mise >/dev/null 2>&1; then
+    eval "$(mise activate zsh)"
+fi
+
+# ── Aliases ──
+if command -v eza >/dev/null 2>&1; then
+    alias ls='eza --icons --group-directories-first'
+    alias ll='eza -la --icons --git --header --group-directories-first'
+    alias lt='eza --tree --icons --group-directories-first --level=2'
+fi
+
+if command -v bat >/dev/null 2>&1; then
+    alias cat='bat --paging=never'
+fi
+
+command -v rg >/dev/null 2>&1 && alias grep='rg'
+command -v fd >/dev/null 2>&1 && alias find='fd'
+command -v btop >/dev/null 2>&1 && alias top='btop'
+command -v lazygit >/dev/null 2>&1 && alias lg='lazygit'
+alias dotfiles-update="~/.dotfiles/update.sh"
+
+# ── Shell Functions ──
+# yazi: change directory on exit
+function y() {
+    local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+    yazi "$@" --cwd-file="$tmp"
+    if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+        builtin cd -- "$cwd"
+    fi
+    rm -f -- "$tmp"
+}
+
+# ── Machine-Local secrets mapped to Environment variables ──
+if [ -f "$HOME/.secrets" ]; then
+    source "$HOME/.secrets"
+fi

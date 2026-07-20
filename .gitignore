@@ -1,0 +1,17 @@
+# Nix build artifacts
+result
+result-*
+
+# Direnv
+.direnv
+.envrc
+
+# chezmoi temporary/data files
+.chezmoidata
+.chezmoi.toml
+
+# OS & Editor temporary files
+*~
+*.swp
+.DS_Store
+Thumbs.db

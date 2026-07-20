@@ -1,0 +1,37 @@
+# chezmoi configuration template
+
+{{- $user := promptStringOnce . "user" "Enter your Git username" -}}
+{{- $email := promptStringOnce . "email" "Enter your Git email address" -}}
+
+{{- $osId := .chezmoi.os -}}
+{{- $isWSL := false -}}
+{{- if eq .chezmoi.os "linux" -}}
+  {{- if (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}
+    {{- $isWSL = true -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $winProfileWsl := "" -}}
+{{- if $isWSL -}}
+  {{- $winProfileWin := output "sh" "-c" "/mnt/c/Windows/System32/cmd.exe /c echo %USERPROFILE% 2>/dev/null | tr -d '\\r'" | trim -}}
+  {{- $winProfileWsl = output "wslpath" $winProfileWin | trim -}}
+{{- end -}}
+
+# Ask for machine-local secrets (not committed to Git)
+{{- $githubToken := env "DOTFILES_GITHUB_TOKEN" -}}
+{{- if not $githubToken -}}
+  {{- $githubToken = promptStringOnce . "githubToken" "Enter your GitHub Personal Access Token (for this machine only)" -}}
+{{- end -}}
+
+[data]
+    user = "{{ $user }}"
+    email = "{{ $email }}"
+    osId = "{{ $osId }}"
+    isWSL = {{ $isWSL }}
+    {{- if $isWSL }}
+    winProfileWsl = "{{ $winProfileWsl }}"
+    {{- end }}
+    githubToken = "{{ $githubToken }}"
+
+[edit]
+    command = "vim"
