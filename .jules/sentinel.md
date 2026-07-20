@@ -27,3 +27,9 @@
 **Vulnerability:** The GitHub token (`GITHUB_TOKEN`) was exported directly in `~/.zshrc`, which is typically created with default file permissions (e.g., `0644`), making the token readable by any local user on the machine.
 **Learning:** Storing secrets directly in general configuration files like `.zshrc` exposes them if the file's permissions are not tightly restricted.
 **Prevention:** Use chezmoi's `private_` prefix (e.g., `private_dot_secrets.tmpl`) to generate a dedicated secrets file with `0600` permissions, and source this secure file from the main configuration.
+
+## 2024-11-20 - CI/CD Token leak via .git/config
+
+**Vulnerability:** The GitLab CI pipeline push token (`CI_PUSH_TOKEN`) was embedded in the Git remote URL via `git remote set-url origin`. This operation writes the cleartext token directly to the `.git/config` file on the CI runner's local filesystem.
+**Learning:** Writing credentials to `.git/config` (via `git remote add` or `git remote set-url`) leaves persistent secrets on disk. These can easily be exposed if the workspace is cached, passed as artifacts, or if a failing step dumps the git configuration to the logs.
+**Prevention:** Never configure remotes with embedded credentials in CI/CD. Instead, pass the authenticated URL directly to the `git push` command, which keeps the token entirely in memory and out of configuration files.
