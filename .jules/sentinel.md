@@ -33,3 +33,9 @@
 **Vulnerability:** The GitLab CI pipeline push token (`CI_PUSH_TOKEN`) was embedded in the Git remote URL via `git remote set-url origin`. This operation writes the cleartext token directly to the `.git/config` file on the CI runner's local filesystem.
 **Learning:** Writing credentials to `.git/config` (via `git remote add` or `git remote set-url`) leaves persistent secrets on disk. These can easily be exposed if the workspace is cached, passed as artifacts, or if a failing step dumps the git configuration to the logs.
 **Prevention:** Never configure remotes with embedded credentials in CI/CD. Instead, pass the authenticated URL directly to the `git push` command, which keeps the token entirely in memory and out of configuration files.
+
+## 2024-11-20 - Git credential storage in plaintext
+
+**Vulnerability:** The Git credential helper was configured to `store` on some operating systems. This stores credentials in plaintext on disk in the `~/.git-credentials` file, exposing them to any user or malicious process that can read the file.
+**Learning:** Hardcoding credentials on disk in plaintext creates a significant risk of exposure.
+**Prevention:** Use an OS-native secure credential manager (like macOS Keychain or Windows Credential Manager), or use `cache` to store credentials temporarily in memory instead of on disk.
